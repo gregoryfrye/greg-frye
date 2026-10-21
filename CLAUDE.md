@@ -213,6 +213,19 @@ self-center to `max-w-prose`, while stats and the `full`/`pair`/`stagger`/
 Content). Don't put multi-column or grid content inside `max-w-prose` —
 that's exactly the illegibility this rule exists to prevent.
 
+## Branches and review
+
+- `claude/preview` is the working branch. Claude pushes here; Vercel builds
+  it as Preview and serves it at **wip.gregfrye.us** (Preview domain, Git
+  branch `claude/preview`).
+- `main` is Production — gregfrye.us and www. Changes reach it only when Greg
+  merges a `claude/preview` → `main` pull request.
+- `lib/site.ts` lists the public hosts. Every other host renders the same
+  build with `robots: noindex` (set in `app/layout.tsx`).
+- DNS for gregfrye.us is managed at the registrar (Google Domains
+  nameservers). MX and SPF records carry email — add records, never change
+  nameservers.
+
 ## Scope discipline
 
 This is a small, git-native site. Don't add content types, components, or
