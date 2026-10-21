@@ -226,6 +226,22 @@ that's exactly the illegibility this rule exists to prevent.
   nameservers). MX and SPF records carry email — add records, never change
   nameservers.
 
+## Checks
+
+- `npm run qa` — content QA (broken refs, fence images, image size, drafting
+  notes). Reports only; fine to push to `claude/preview` with warnings.
+- `npm run qa:public` — the gate before merging to `main`: brackets, stub
+  lines, and placeholder images become errors. No dependencies, so it runs
+  anywhere Node runs, including the cloud workspace.
+
+## Working with Greg
+
+- New or heavy phases (a new case study, positioning, a homepage rewrite)
+  start with a voice interview: Claude asks short questions, Greg talks it
+  through, then Claude drafts. Don't open with a document or a design file.
+- What he shares about why he works the way he does is context for tone, not
+  copy to quote.
+
 ## Scope discipline
 
 This is a small, git-native site. Don't add content types, components, or
@@ -245,9 +261,9 @@ Still open:
   grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
   evaluate them against, not before.
-- Homepage featured-strip ordering. `getFeaturedOnHome()` still orders cards
-  by collection-iteration order (client, project, skill, artifact, study) —
-  incidental, not an authored order.
+- Homepage featured-strip ordering for non-client cards. Clients take an
+  authored order (`featuredOnHome: 1`, `2`, …; `true` sorts after numbered);
+  projects, skills, artifacts, and studies still follow collection order.
 - Hudson, HealHaus, Beni, Sustain Natural, and Lalo fence blocks are wired
   to images pulled from the 2026 folio PDF and the `_/` batch. App and
   ecommerce images are full folio slides (device comps on a colored field),

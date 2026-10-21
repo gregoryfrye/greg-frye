@@ -94,6 +94,14 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
   }
 }
 
+const POV = [
+  "Good work solves the real problem, inside real limits: budget, timeline, technology.",
+  "Agencies shield creatives from those limits. Clients end up paying for work that never meets the real world.",
+  "I've worked inside agencies, studios, small teams, and on my own. The useful part is the gap between them.",
+  "I hold the vision, then rally the people, budget, and process to ship it.",
+  "Every person on the team gets a real part in the win.",
+];
+
 export default function Home() {
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
@@ -106,11 +114,16 @@ export default function Home() {
       <section className="flex flex-col gap-gutter sm:flex-row sm:items-start sm:justify-between">
         <div className="sm:flex-1">
           <h1 className="text-left font-serif text-heading tracking-tight text-ink">
-            A whole-system creative director with 20 years channeling founder
-            vision into a focused brand, product, and marketing function.
+            I help things grow into clearer form.
           </h1>
+          <p className="mt-6 text-body text-ink">
+            Integrated creative director. Twenty years across brand, product,
+            marketing, and production, starting at a print shop in southern New
+            Hampshire, printing banners, cutting vinyl for shop windows, and
+            learning to code.
+          </p>
           {currentRole && (
-            <p className="mt-6 text-body text-muted">{currentRole.description}</p>
+            <p className="mt-4 text-body text-muted">{currentRole.description}</p>
           )}
         </div>
 
@@ -132,6 +145,15 @@ export default function Home() {
             })}
           </ul>
         )}
+      </section>
+
+      <section aria-label="How I work" className="max-w-prose">
+        <h2 className="font-serif text-heading text-ink">How I work</h2>
+        <ul className="mt-6 flex flex-col gap-3 text-body text-muted">
+          {POV.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
       </section>
 
       {featuredCards.length > 0 && (

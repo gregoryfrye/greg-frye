@@ -42,7 +42,11 @@ export type Client = {
   /** Three max, by design. */
   stats?: Stat[];
   content: string;
-  featuredOnHome?: boolean;
+  /**
+   * `true` features the client on the homepage; a number also sets its place
+   * in the strip (1 first). Unnumbered clients follow the numbered ones.
+   */
+  featuredOnHome?: boolean | number;
   /**
    * Short-form project slugs, in authored display order. A project on disk
    * but missing here (or vice versa) is a validateContentGraph warning.
@@ -209,7 +213,7 @@ export function getClientBySlug(slug: string): Client | null {
     summary: data.summary as string,
     stats: data.stats as Stat[] | undefined,
     content,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
     projects: data.projects as string[] | undefined,
   };
 }
@@ -434,15 +438,18 @@ export function getRolesByClient(clientSlug: string): Role[] {
  * Every entity across all six collections flagged featuredOnHome: true,
  * normalized with enough context (parent project/client) to build a card.
  * Collection order (client, project, skill, artifact, study) is the
- * display order — set featuredOnHome on exactly the entities meant to
+ * display order; clients sort by a numeric featuredOnHome (1 first) — set featuredOnHome on exactly the entities meant to
  * appear, don't hardcode the picks here.
  */
 export function getFeaturedOnHome(): FeaturedEntity[] {
   const items: FeaturedEntity[] = [];
 
-  for (const client of getAllClients()) {
-    if (client.featuredOnHome) items.push({ kind: "client", client });
-  }
+  const homeOrder = (client: Client) =>
+    typeof client.featuredOnHome === "number" ? client.featuredOnHome : Infinity;
+  const featuredClients = getAllClients()
+    .filter((client) => client.featuredOnHome)
+    .sort((a, b) => homeOrder(a) - homeOrder(b));
+  for (const client of featuredClients) items.push({ kind: "client", client });
 
   for (const project of getAllProjects()) {
     if (project.featuredOnHome) {

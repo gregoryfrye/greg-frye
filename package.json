@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "qa": "node scripts/check-content.mjs .",
+    "qa:public": "node scripts/check-content.mjs . --public"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.55.0",
