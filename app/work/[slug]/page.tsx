@@ -51,6 +51,7 @@ export default async function ClientPage({
     .join(", ");
   const eyebrow = [roleTitles, client.years].filter(Boolean).join(" · ");
   const { narrative, closing } = splitClientContent(client.content);
+  const clientImages = `/content-images/clients/${slug}/images`;
 
   return (
     <main className="mx-auto w-full max-w-wide flex-1 px-gutter pt-40 pb-20">
@@ -78,7 +79,7 @@ export default async function ClientPage({
       )}
 
       <article>
-        <MDXRemote source={preprocessFenceBlocks(narrative)} components={mdxComponents} />
+        <MDXRemote source={preprocessFenceBlocks(narrative, clientImages)} components={mdxComponents} />
       </article>
 
       {projects.length > 0 && (
@@ -86,7 +87,10 @@ export default async function ClientPage({
           {projects.map((project) => (
             <ProjectSection key={project.fullSlug} title={project.title}>
               <MDXRemote
-                source={preprocessFenceBlocks(project.content)}
+                source={preprocessFenceBlocks(
+                  project.content,
+                  `/content-images/clients/${slug}/projects/${project.slug}/images`,
+                )}
                 components={mdxComponents}
               />
             </ProjectSection>
@@ -96,7 +100,7 @@ export default async function ClientPage({
 
       {closing && (
         <div className="mt-20">
-          <MDXRemote source={preprocessFenceBlocks(closing)} components={mdxComponents} />
+          <MDXRemote source={preprocessFenceBlocks(closing, clientImages)} components={mdxComponents} />
         </div>
       )}
     </main>

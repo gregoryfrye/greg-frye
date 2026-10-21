@@ -117,13 +117,27 @@ component's children. Six types are recognized:
 | `full` | Full-bleed single image, breaks the text column (wide container) |
 | `pair` | Two side by side, equal width, stack on mobile (wide container) |
 | `inset` | Single image inline in the text column, no break (prose container) |
-| `stagger` | v1: vertical stack. Later: 2–3 offset images at different scales |
-| `scroll` | v1: vertical stack. Later: horizontal scroll-snap strip |
-| `motion` | v1: vertical stack (poster frame). Later: silent autoplay loop |
+| `stagger` | v1: grid, up to 3 across. Later: 2–3 offset images at different scales |
+| `scroll` | v1: grid, up to 3 across. Later: horizontal scroll-snap strip |
+| `motion` | v1: grid (poster frame). Later: silent autoplay loop |
 
-Every block takes an optional caption, styled as content, not metadata. No
-real images exist yet for any block — `ImageBlock` renders a placeholder
-showing the description text so layout can be evaluated before assets land.
+Every block takes an optional caption, styled as content, not metadata.
+
+A line that starts with a filename points at a real image in the owning
+entity's `/images` folder; text after ` | ` is the alt text:
+
+```
+::: pair
+1. 03-plant-sky.jpg | Cannabis plant against open sky
+2. Greenhouse canopy, overhead
+:::
+```
+
+A line without a filename stays a placeholder showing the description text,
+so a block can be wired one image at a time. Real images render at their
+natural aspect ratio; placeholders keep a fixed aspect box. The page template
+passes each entity's image URL base into `preprocessFenceBlocks()`.
+Images land web-ready: JPEG, long edge ≤ 2400px.
 Upgrading a stubbed type (`stagger`/`scroll`/`motion`) to its real behavior
 is a component swap in `app/components/image-block.tsx`, not a content
 migration — the fence syntax and props don't change.
@@ -215,12 +229,14 @@ interleave on the client page.
 Still open:
 
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
-  vertical-stack stub to real behavior (offset stack, horizontal
+  grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
   evaluate them against, not before.
 - Homepage featured-strip ordering. `getFeaturedOnHome()` still orders cards
   by collection-iteration order (client, project, skill, artifact, study) —
   incidental, not an authored order.
-- Wire real photography into Hudson Cannabis's fence blocks. A batch already
-  sits in `content/clients/hudson-cannabis/images/_/`, unmapped to specific
-  blocks — needs a deliberate pass, not a guess.
+- Hudson, HealHaus, Beni, Sustain Natural, and Lalo fence blocks are wired
+  to images pulled from the 2026 folio PDF and the `_/` batch. App and
+  ecommerce images are full folio slides (device comps on a colored field),
+  not individual screens — swap in cleaner exports when they exist. Hudson's
+  operating-model `motion` block still needs footage.

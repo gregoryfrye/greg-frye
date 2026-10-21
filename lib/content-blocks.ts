@@ -2,6 +2,11 @@ const IMAGE_BLOCK_TYPES = ["full", "pair", "inset", "stagger", "scroll", "motion
 
 export type ImageBlockType = (typeof IMAGE_BLOCK_TYPES)[number];
 
+/** One image slot in a fence block. No `src` means a placeholder showing `alt`. */
+export type ImageBlockImage = { src?: string; alt: string };
+
+const IMAGE_FILE = /^(\S+\.(?:jpe?g|png|webp|gif|avif))\s*(?:\|\s*(.*))?$/i;
+
 function isImageBlockType(value: string): value is ImageBlockType {
   return (IMAGE_BLOCK_TYPES as readonly string[]).includes(value);
 }
@@ -23,8 +28,14 @@ function isImageBlockType(value: string): value is ImageBlockType {
  * 2. Greenhouse canopy, overhead
  * Caption: Sun-grown, living soil, hand-trimmed.
  * :::
+ *
+ * A line that starts with a filename points at a real image in the owning
+ * entity's /images folder — `1. 03-plant-sky.jpg | Cannabis plant against
+ * open sky`. Text after the pipe is the alt text. A line with no filename
+ * stays a placeholder, so blocks can be wired one image at a time.
+ * `imageBase` is that folder's public URL (see content-images route).
  */
-export function preprocessFenceBlocks(source: string): string {
+export function preprocessFenceBlocks(source: string, imageBase?: string): string {
   const lines = source.split("\n");
   const out: string[] = [];
   let i = 0;
@@ -42,7 +53,7 @@ export function preprocessFenceBlocks(source: string): string {
       i++; // skip the closing ':::'
 
       let caption: string | undefined;
-      const images: string[] = [];
+      const images: ImageBlockImage[] = [];
       for (const line of blockLines) {
         const trimmed = line.trim();
         if (trimmed === "") continue;
@@ -52,7 +63,13 @@ export function preprocessFenceBlocks(source: string): string {
           continue;
         }
         const numberedMatch = trimmed.match(/^\d+\.\s*(.+)$/);
-        images.push(numberedMatch ? numberedMatch[1] : trimmed);
+        const entry = numberedMatch ? numberedMatch[1] : trimmed;
+        const fileMatch = imageBase ? entry.match(IMAGE_FILE) : null;
+        images.push(
+          fileMatch
+            ? { src: `${imageBase}/${fileMatch[1]}`, alt: fileMatch[2] ?? "" }
+            : { alt: entry },
+        );
       }
 
       const payload = encodeURIComponent(JSON.stringify({ images, caption }));
