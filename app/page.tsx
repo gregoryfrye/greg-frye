@@ -159,11 +159,11 @@ export default function Home() {
       {featuredCards.length > 0 && (
         <section
           aria-label="Featured work"
-          className="flex snap-x snap-mandatory items-start gap-6 overflow-x-auto pb-2"
+          className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {featuredCards.map((card) =>
             card.kind === "client" ? (
-              <div key={card.key} className="w-72 shrink-0 snap-start">
+              <div key={card.key}>
                 <FeaturedCard
                   type={card.type}
                   title={card.title}
@@ -173,7 +173,7 @@ export default function Home() {
                 />
               </div>
             ) : (
-              <div key={card.key} className="max-w-40 shrink-0 snap-start">
+              <div key={card.key}>
                 <Link
                   href={card.href}
                   className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
