@@ -8,6 +8,14 @@ const CLIENTS_DIR = path.join(CONTENT_DIR, "clients");
 const SKILLS_DIR = path.join(CONTENT_DIR, "skills");
 const STUDIES_DIR = path.join(CONTENT_DIR, "studies");
 
+/**
+ * Drafts (`draft: true` on a client or project) render on every review build —
+ * wip.gregfrye.us, *.vercel.app previews, local dev — and are hidden on the
+ * Production build, which only main produces. A hidden draft reads as if it
+ * isn't on disk. `npm run qa:public` also errors on any draft before a merge.
+ */
+export const SHOW_DRAFTS = process.env.VERCEL_ENV !== "production";
+
 export type Stat = {
   value: string;
   label: string;
@@ -52,6 +60,8 @@ export type Client = {
    * but missing here (or vice versa) is a validateContentGraph warning.
    */
   projects?: string[];
+  /** Visible on review builds only. See SHOW_DRAFTS. */
+  draft?: boolean;
 };
 
 /** A project is a chapter within a client's story — no beats, nested under its client. */
@@ -74,6 +84,8 @@ export type Project = {
   /** Filename within this project's /images folder. */
   featuredImage?: string;
   featuredOnHome?: boolean;
+  /** Visible on review builds only. See SHOW_DRAFTS. */
+  draft?: boolean;
 };
 
 export type Skill = {
@@ -205,6 +217,7 @@ export function getClientBySlug(slug: string): Client | null {
   const parsed = readMdx(path.join(CLIENTS_DIR, slug, "index.mdx"));
   if (!parsed) return null;
   const { data, content } = parsed;
+  if (data.draft && !SHOW_DRAFTS) return null;
   return {
     slug,
     name: data.name as string,
@@ -215,6 +228,7 @@ export function getClientBySlug(slug: string): Client | null {
     content,
     featuredOnHome: data.featuredOnHome as boolean | number | undefined,
     projects: data.projects as string[] | undefined,
+    draft: data.draft === true,
   };
 }
 
@@ -243,6 +257,7 @@ function readProject(clientSlug: string, projectSlug: string): Project | null {
   const parsed = readMdx(path.join(projectsDirFor(clientSlug), projectSlug, "index.mdx"));
   if (!parsed) return null;
   const { data, content } = parsed;
+  if (data.draft && !SHOW_DRAFTS) return null;
   return {
     slug: projectSlug,
     fullSlug: `${clientSlug}/${projectSlug}`,
@@ -255,6 +270,7 @@ function readProject(clientSlug: string, projectSlug: string): Project | null {
     content,
     featuredImage: data.featuredImage as string | undefined,
     featuredOnHome: data.featuredOnHome as boolean | undefined,
+    draft: data.draft === true,
   };
 }
 
@@ -489,7 +505,8 @@ export function getFeaturedOnHome(): FeaturedEntity[] {
 export function validateContentGraph(): string[] {
   const warnings: string[] = [];
   const roleSlugs = new Set(getAllRoles().map((role) => role.slug));
-  const clientSlugs = new Set(getAllClients().map((client) => client.slug));
+  // On-disk slugs, not getAllClients(): a draft hidden on Production isn't a broken reference.
+  const clientSlugs = new Set(listFolderSlugs(CLIENTS_DIR));
   const skillSlugs = new Set(getAllSkills().map((skill) => skill.slug));
   const allProjects = getAllProjects();
   const projectFullSlugs = new Set(allProjects.map((project) => project.fullSlug));

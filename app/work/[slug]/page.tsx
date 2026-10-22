@@ -57,8 +57,10 @@ export default async function ClientPage({
     <main className="mx-auto w-full max-w-wide flex-1 px-gutter pt-40 pb-20">
       <div className="mx-auto max-w-prose">
         <header className="mb-16">
-          {eyebrow && (
-            <p className="text-caption tracking-tight text-muted uppercase">{eyebrow}</p>
+          {(eyebrow || client.draft) && (
+            <p className="text-caption tracking-tight text-muted uppercase">
+              {[client.draft ? "Draft" : null, eyebrow].filter(Boolean).join(" · ")}
+            </p>
           )}
           <h1 className="mt-2 font-serif text-heading text-ink">{client.name}</h1>
           <p className="mt-6 text-body text-muted">{client.summary}</p>
@@ -85,7 +87,10 @@ export default async function ClientPage({
       {projects.length > 0 && (
         <div aria-label="Projects">
           {projects.map((project) => (
-            <ProjectSection key={project.fullSlug} title={project.title}>
+            <ProjectSection
+              key={project.fullSlug}
+              title={project.draft ? `${project.title} (draft)` : project.title}
+            >
               <MDXRemote
                 source={preprocessFenceBlocks(
                   project.content,
