@@ -234,6 +234,21 @@ that's exactly the illegibility this rule exists to prevent.
   lines, and placeholder images become errors. No dependencies, so it runs
   anywhere Node runs, including the cloud workspace.
 
+## Drafts and the Notion tracker
+
+- `draft: true` on a client or project shows it on review builds (wip,
+  previews, local) and hides it on Production (`SHOW_DRAFTS` in
+  `lib/content.ts`, keyed on `VERCEL_ENV`). Drafts render with a "Draft"
+  marker. `qa:public` errors on any draft, so the flag has to come off
+  before a merge to `main`.
+- Notion's **Case Studies** database (Community Garden / Projects / Frye
+  Creative) tracks each case study: Status (Draft = draft on wip, In Review
+  = on wip awaiting merge, Live = on gregfrye.us), Offerings (union of the
+  projects' skills), Preview (wip link), Repo Path. The page body is an
+  outline from `python3 scripts/notion-outline.py <slug>`. Copy stays in
+  the repo; after a content change, regenerate the outline and update the
+  row's properties to match.
+
 ## Working with Greg
 
 - New or heavy phases (a new case study, positioning, a homepage rewrite)
