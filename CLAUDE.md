@@ -16,7 +16,7 @@ children. Every cross-entity reference is a slug in frontmatter — never
 copy-pasted text. `lib/content.ts` is the only code that reads `/content`;
 it exposes a getter and `getAllX` for each collection, plus the join
 functions (`getProjectsByClient`, `getProjectsByRole`, `getProjectsBySkill`,
-`getClientsByRole`, `getRolesByClient`, `getClientSkills`,
+`getClientsByRole`, `getClientsBySkill`, `getRolesByClient`, `getClientSkills`,
 `getFeaturedOnHome`) and `validateContentGraph()`, which warns at build time
 on any slug reference that doesn't resolve. Call it, don't silently ignore
 broken refs.
@@ -75,8 +75,10 @@ reference from a study as ambiguous.
   `summary`, optional `featuredImage`, optional `featuredOnHome`. Body:
   scope and process notes, using the fence-block image primitives below.
 - **Skills** — `/content/skills/<slug>/index.mdx` + `/images`. Frontmatter:
-  `name`, `summary`, optional `featuredImage`, optional `featuredOnHome`. No
-  body.
+  `name`, `summary`, optional `question` (the one question the offering
+  answers, shown on the homepage; keep it matching the Garden seat's
+  Question in Notion), optional `featuredImage`, optional `featuredOnHome`.
+  No body. Skills are Greg's public offerings, one per Garden seat.
 - **Studies** (inputs) — `/content/studies/<slug>/index.mdx`. **Peers to
   clients, not children.** Frontmatter: `title`, `summary`, optional
   `clients` (slugs), optional `projects` (full-form slugs — required, see

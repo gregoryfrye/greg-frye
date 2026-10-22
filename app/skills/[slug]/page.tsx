@@ -20,6 +20,7 @@ export default async function SkillPage({
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-gutter pt-40 pb-20">
       <h1 className="font-serif text-heading text-ink">{skill.name}</h1>
+      {skill.question && <p className="mt-2 text-body text-ink">{skill.question}</p>}
       <p className="mt-6 text-body text-muted">{skill.summary}</p>
 
       {projects.length > 0 && (
