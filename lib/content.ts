@@ -406,14 +406,6 @@ export function getSkillBySlug(slug: string): Skill | null {
   };
 }
 
-/** Clients whose projects carry this skill, deduped, in client-directory order. */
-export function getClientsBySkill(skillSlug: string): Client[] {
-  const slugs = new Set(getProjectsBySkill(skillSlug).map((project) => project.client));
-  return [...slugs]
-    .map((slug) => getClientBySlug(slug))
-    .filter((client): client is Client => client !== null);
-}
-
 export function getSkillImages(slug: string): string[] {
   return listImageFiles(path.join(SKILLS_DIR, slug, "images"));
 }

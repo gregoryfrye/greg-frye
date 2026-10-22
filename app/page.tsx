@@ -5,7 +5,6 @@ import {
   getArtifactCardImage,
   getClientImages,
   getClientsByRole,
-  getClientsBySkill,
   getCurrentRole,
   getFeaturedOnHome,
   getProjectCardImage,
@@ -112,49 +111,44 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
-      <section className="max-w-prose">
-        <h1 className="text-left font-serif text-heading tracking-tight text-ink">
-          I help things grow into clearer form.
-        </h1>
-        <p className="mt-6 text-body text-ink">
-          Integrated creative director. Twenty years across brand, product,
-          marketing, and production, starting at a print shop in southern New
-          Hampshire, printing banners, cutting vinyl for shop windows, and
-          learning to code.
-        </p>
-        {currentRole && (
-          <p className="mt-4 text-body text-muted">{currentRole.description}</p>
+      <section className="flex flex-col gap-gutter sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-prose sm:flex-1">
+          <h1 className="text-left font-serif text-heading tracking-tight text-ink">
+            I help things grow into clearer form.
+          </h1>
+          <p className="mt-6 text-body text-ink">
+            Integrated creative director. Twenty years across brand, product,
+            marketing, and production, starting at a print shop in southern New
+            Hampshire, printing banners, cutting vinyl for shop windows, and
+            learning to code.
+          </p>
+          {currentRole && (
+            <p className="mt-4 text-body text-muted">{currentRole.description}</p>
+          )}
+        </div>
+
+        {currentRole && currentRole.skills.length > 0 && (
+          <nav aria-label="Services" className="shrink-0">
+            <h2 className="text-caption tracking-tight text-muted uppercase">Services</h2>
+            <ul className="mt-3 flex flex-col gap-2">
+              {currentRole.skills.map((skillSlug) => {
+                const skill = getSkillBySlug(skillSlug);
+                if (!skill) return null;
+                return (
+                  <li key={skillSlug}>
+                    <Link
+                      href={`/skills/${skillSlug}`}
+                      className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
+                    >
+                      {skill.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
         )}
       </section>
-
-      {currentRole && currentRole.skills.length > 0 && (
-        <section aria-label="What I do">
-          <h2 className="font-serif text-heading text-ink">What I do</h2>
-          <ul className="mt-6 grid grid-cols-1 gap-x-gutter gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-            {currentRole.skills.map((skillSlug) => {
-              const skill = getSkillBySlug(skillSlug);
-              if (!skill) return null;
-              const proof = getClientsBySkill(skillSlug).map((client) => client.name);
-              return (
-                <li key={skillSlug} className="border-t border-border pt-4">
-                  <Link
-                    href={`/skills/${skillSlug}`}
-                    className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
-                  >
-                    {skill.name}
-                  </Link>
-                  {skill.question && (
-                    <p className="mt-2 text-body text-muted">{skill.question}</p>
-                  )}
-                  {proof.length > 0 && (
-                    <p className="mt-2 text-caption text-muted">{proof.join(" · ")}</p>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      )}
 
       <section aria-label="How I work" className="max-w-prose">
         <h2 className="font-serif text-heading text-ink">How I work</h2>
