@@ -17,7 +17,7 @@ export function Nav() {
           href="mailto:gregoryfrye@gmail.com"
           className="col-start-3 justify-self-end text-body text-muted no-underline hover:text-ink"
         >
-          gregoryfrye@gmail.com
+          Contact
         </a>
       </div>
     </nav>

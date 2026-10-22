@@ -240,8 +240,9 @@ that's exactly the illegibility this rule exists to prevent.
 - `draft: true` on a client or project shows it on review builds (wip,
   previews, local) and hides it on Production (`SHOW_DRAFTS` in
   `lib/content.ts`, keyed on `VERCEL_ENV`). Drafts render with a "Draft"
-  marker. `qa:public` errors on any draft, so the flag has to come off
-  before a merge to `main`.
+  marker. Drafts can merge to `main`: `qa:public` keeps drafting notes and
+  placeholders inside a draft as warnings, and stays strict on everything
+  visible.
 - Notion's **Case Studies** database (Community Garden / Projects / Frye
   Creative) tracks each case study: Status (Draft = draft on wip, In Review
   = on wip awaiting merge, Live = on gregfrye.us), Offerings (union of the

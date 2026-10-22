@@ -38,14 +38,18 @@ const MOOD = /\b(shepherd\w*|resonan\w*|journey\w*)\b/gi;
 const STUB_CS = /\b(TBD|TODO|FIXME|TK|NEEDED|XXX)\b/; // case-sensitive
 const STUB_CI = /\b(phase\s*[2-9]|lorem ipsum|coming soon)\b/i;
 const BRACKET = /\[([^\]\n]+)\](?!\()/g; // [note] but not [link](url)
-const PROMOTE_IN_PUBLIC = new Set(["bracket", "stub", "placeholder", "draft"]);
+const PROMOTE_IN_PUBLIC = new Set(["bracket", "stub", "placeholder"]);
 
 // ---------------------------------------------------------------- findings
 
 const findings = [];
 const rel = (p) => path.relative(repo, p);
+// Folders of draft clients/projects. Drafts are hidden on Production, so their
+// drafting notes and placeholders stay warnings even under --public.
+const draftDirs = [];
+const inDraft = (file) => !!file && draftDirs.some((d) => file === d || file.startsWith(d + path.sep));
 function add(page, severity, code, file, line, msg) {
-  if (PUBLIC && severity === "WARN" && PROMOTE_IN_PUBLIC.has(code)) severity = "ERROR";
+  if (PUBLIC && severity === "WARN" && PROMOTE_IN_PUBLIC.has(code) && !inDraft(file)) severity = "ERROR";
   findings.push({ page, severity, code, file: file ? rel(file) : "", line, msg });
 }
 const stats = new Map(); // page -> { counters }
@@ -434,12 +438,16 @@ for (const slug of folderSlugs(studiesDir)) {
   studies.set(slug, { slug, file, p: parseMdx(file) });
 }
 
-// drafts: visible on wip, hidden on Production; --public blocks the merge until the flag comes off
+// drafts: visible on wip, hidden on Production. Fine to merge; their own notes don't block --public.
+for (const c of clients.values()) {
+  if (c.p.data.draft === true) draftDirs.push(c.dir);
+  for (const pr of c.projects.values()) if (pr.p.data.draft === true) draftDirs.push(pr.dir);
+}
 for (const c of clients.values()) {
   const page = clientPage(c.slug, c.p.data.name);
-  if (c.p.data.draft === true) add(page, "WARN", "draft", c.file, c.p.keyLines.draft, "draft: true — hidden on gregfrye.us");
+  if (c.p.data.draft === true) add(page, "INFO", "draft", c.file, c.p.keyLines.draft, "draft: true — hidden on gregfrye.us");
   for (const pr of c.projects.values())
-    if (pr.p.data.draft === true) add(page, "WARN", "draft", pr.file, pr.p.keyLines.draft, `project "${pr.slug}" is draft: true — hidden on gregfrye.us`);
+    if (pr.p.data.draft === true) add(page, "INFO", "draft", pr.file, pr.p.keyLines.draft, `project "${pr.slug}" is draft: true — hidden on gregfrye.us`);
 }
 
 // directories the loader silently skips
