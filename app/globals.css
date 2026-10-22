@@ -53,4 +53,7 @@
   body:has(main[data-canvas="home"]) {
     @apply bg-canvas-home;
   }
+  body:has(main[data-canvas="home"]) > nav {
+    @apply bg-canvas-home/85;
+  }
 }
