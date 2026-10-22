@@ -75,10 +75,9 @@ reference from a study as ambiguous.
   `summary`, optional `featuredImage`, optional `featuredOnHome`. Body:
   scope and process notes, using the fence-block image primitives below.
 - **Skills** — `/content/skills/<slug>/index.mdx` + `/images`. Frontmatter:
-  `name`, `summary`, optional `question` (the one question the offering
-  answers, shown on its skill page; keep it matching the Garden seat's
-  Question in Notion), optional `featuredImage`, optional `featuredOnHome`.
-  No body. Skills are Greg's public offerings, one per Garden seat.
+  `name`, `summary`, optional `featuredImage`, optional `featuredOnHome`. No
+  body. Skills are Greg's public services, one per Garden seat (the seat's
+  Offering in Notion's Agents database).
 - **Studies** (inputs) — `/content/studies/<slug>/index.mdx`. **Peers to
   clients, not children.** Frontmatter: `title`, `summary`, optional
   `clients` (slugs), optional `projects` (full-form slugs — required, see

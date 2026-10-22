@@ -92,8 +92,6 @@ export type Skill = {
   slug: string;
   name: string;
   summary: string;
-  /** The one question this offering answers. Mirrors the matching Garden seat. */
-  question?: string;
   /** Filename within this skill's /images folder. */
   featuredImage?: string;
   featuredOnHome?: boolean;
@@ -400,7 +398,6 @@ export function getSkillBySlug(slug: string): Skill | null {
     slug,
     name: data.name as string,
     summary: data.summary as string,
-    question: data.question as string | undefined,
     featuredImage: data.featuredImage as string | undefined,
     featuredOnHome: data.featuredOnHome as boolean | undefined,
   };
