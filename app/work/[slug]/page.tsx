@@ -62,7 +62,7 @@ export default async function ClientPage({
               {[client.draft ? "Draft" : null, eyebrow].filter(Boolean).join(" · ")}
             </p>
           )}
-          <h1 className="mt-2 font-serif text-heading text-ink">{client.name}</h1>
+          <h1 className="mt-2 font-serif text-display tracking-tight text-ink">{client.name}</h1>
           <p className="mt-6 text-body text-muted">{client.summary}</p>
         </header>
       </div>
