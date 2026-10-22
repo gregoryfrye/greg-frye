@@ -285,4 +285,5 @@ Still open:
   to images pulled from the 2026 folio PDF and the `_/` batch. App and
   ecommerce images are full folio slides (device comps on a colored field),
   not individual screens — swap in cleaner exports when they exist. Hudson's
-  operating-model `motion` block still needs footage.
+  operating-model `motion` block was pulled for 1.0 (see the MDX comment
+  in that project) and comes back with footage.
