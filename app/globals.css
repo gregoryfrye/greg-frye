@@ -49,11 +49,15 @@
   body {
     @apply bg-canvas font-serif text-ink antialiased;
   }
-  /* The homepage marks its <main data-canvas="home">; the whole page takes the field color. */
-  body:has(main[data-canvas="home"]) {
-    @apply bg-canvas-home;
-  }
-  body:has(main[data-canvas="home"]) > nav {
-    @apply bg-canvas-home/85;
-  }
+}
+
+/*
+ * The homepage marks its <main data-canvas="home">; the whole page, nav
+ * included, takes the field color. Unlayered so it wins over utilities.
+ */
+body:has(main[data-canvas="home"]) {
+  background-color: var(--color-canvas-home);
+}
+body:has(main[data-canvas="home"]) > nav {
+  background-color: color-mix(in srgb, var(--color-canvas-home) 85%, transparent);
 }
