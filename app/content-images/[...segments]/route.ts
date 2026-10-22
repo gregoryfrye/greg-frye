@@ -20,7 +20,9 @@ export async function GET(
 ) {
   const { segments } = await params;
 
-  if (segments.some((segment) => segment.includes(".."))) {
+  // Folders starting with "_" (e.g. images/_/ raw selects) are source
+  // material, not published content — never serve them.
+  if (segments.some((segment) => segment.includes("..") || segment.startsWith("_"))) {
     return new Response("Not found", { status: 404 });
   }
 
