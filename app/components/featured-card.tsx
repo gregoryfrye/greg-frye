@@ -21,7 +21,7 @@ export function FeaturedCard({ type, title, summary, href, imageSrc }: FeaturedC
             src={imageSrc}
             alt={title}
             fill
-            sizes="(min-width: 640px) 288px, 100vw"
+            sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
             className="object-cover"
           />
         </div>

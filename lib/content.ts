@@ -8,6 +8,14 @@ const CLIENTS_DIR = path.join(CONTENT_DIR, "clients");
 const SKILLS_DIR = path.join(CONTENT_DIR, "skills");
 const STUDIES_DIR = path.join(CONTENT_DIR, "studies");
 
+/**
+ * Drafts (`draft: true` on a client or project) render on every review build —
+ * wip.gregfrye.us, *.vercel.app previews, local dev — and are hidden on the
+ * Production build, which only main produces. A hidden draft reads as if it
+ * isn't on disk. `npm run qa:public` also errors on any draft before a merge.
+ */
+export const SHOW_DRAFTS = process.env.VERCEL_ENV !== "production";
+
 export type Stat = {
   value: string;
   label: string;
@@ -42,12 +50,18 @@ export type Client = {
   /** Three max, by design. */
   stats?: Stat[];
   content: string;
-  featuredOnHome?: boolean;
+  /**
+   * `true` features the client on the homepage; a number also sets its place
+   * in the strip (1 first). Unnumbered clients follow the numbered ones.
+   */
+  featuredOnHome?: boolean | number;
   /**
    * Short-form project slugs, in authored display order. A project on disk
    * but missing here (or vice versa) is a validateContentGraph warning.
    */
   projects?: string[];
+  /** Visible on review builds only. See SHOW_DRAFTS. */
+  draft?: boolean;
 };
 
 /** A project is a chapter within a client's story — no beats, nested under its client. */
@@ -70,6 +84,8 @@ export type Project = {
   /** Filename within this project's /images folder. */
   featuredImage?: string;
   featuredOnHome?: boolean;
+  /** Visible on review builds only. See SHOW_DRAFTS. */
+  draft?: boolean;
 };
 
 export type Skill = {
@@ -201,6 +217,7 @@ export function getClientBySlug(slug: string): Client | null {
   const parsed = readMdx(path.join(CLIENTS_DIR, slug, "index.mdx"));
   if (!parsed) return null;
   const { data, content } = parsed;
+  if (data.draft && !SHOW_DRAFTS) return null;
   return {
     slug,
     name: data.name as string,
@@ -209,8 +226,9 @@ export function getClientBySlug(slug: string): Client | null {
     summary: data.summary as string,
     stats: data.stats as Stat[] | undefined,
     content,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
     projects: data.projects as string[] | undefined,
+    draft: data.draft === true,
   };
 }
 
@@ -239,6 +257,7 @@ function readProject(clientSlug: string, projectSlug: string): Project | null {
   const parsed = readMdx(path.join(projectsDirFor(clientSlug), projectSlug, "index.mdx"));
   if (!parsed) return null;
   const { data, content } = parsed;
+  if (data.draft && !SHOW_DRAFTS) return null;
   return {
     slug: projectSlug,
     fullSlug: `${clientSlug}/${projectSlug}`,
@@ -251,6 +270,7 @@ function readProject(clientSlug: string, projectSlug: string): Project | null {
     content,
     featuredImage: data.featuredImage as string | undefined,
     featuredOnHome: data.featuredOnHome as boolean | undefined,
+    draft: data.draft === true,
   };
 }
 
@@ -434,15 +454,18 @@ export function getRolesByClient(clientSlug: string): Role[] {
  * Every entity across all six collections flagged featuredOnHome: true,
  * normalized with enough context (parent project/client) to build a card.
  * Collection order (client, project, skill, artifact, study) is the
- * display order — set featuredOnHome on exactly the entities meant to
+ * display order; clients sort by a numeric featuredOnHome (1 first) — set featuredOnHome on exactly the entities meant to
  * appear, don't hardcode the picks here.
  */
 export function getFeaturedOnHome(): FeaturedEntity[] {
   const items: FeaturedEntity[] = [];
 
-  for (const client of getAllClients()) {
-    if (client.featuredOnHome) items.push({ kind: "client", client });
-  }
+  const homeOrder = (client: Client) =>
+    typeof client.featuredOnHome === "number" ? client.featuredOnHome : Infinity;
+  const featuredClients = getAllClients()
+    .filter((client) => client.featuredOnHome)
+    .sort((a, b) => homeOrder(a) - homeOrder(b));
+  for (const client of featuredClients) items.push({ kind: "client", client });
 
   for (const project of getAllProjects()) {
     if (project.featuredOnHome) {
@@ -482,7 +505,8 @@ export function getFeaturedOnHome(): FeaturedEntity[] {
 export function validateContentGraph(): string[] {
   const warnings: string[] = [];
   const roleSlugs = new Set(getAllRoles().map((role) => role.slug));
-  const clientSlugs = new Set(getAllClients().map((client) => client.slug));
+  // On-disk slugs, not getAllClients(): a draft hidden on Production isn't a broken reference.
+  const clientSlugs = new Set(listFolderSlugs(CLIENTS_DIR));
   const skillSlugs = new Set(getAllSkills().map((skill) => skill.slug));
   const allProjects = getAllProjects();
   const projectFullSlugs = new Set(allProjects.map((project) => project.fullSlug));

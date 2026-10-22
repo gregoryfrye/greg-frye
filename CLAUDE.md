@@ -76,7 +76,8 @@ reference from a study as ambiguous.
   scope and process notes, using the fence-block image primitives below.
 - **Skills** — `/content/skills/<slug>/index.mdx` + `/images`. Frontmatter:
   `name`, `summary`, optional `featuredImage`, optional `featuredOnHome`. No
-  body.
+  body. Skills are Greg's public services, one per Garden seat (the seat's
+  Offering in Notion's Agents database).
 - **Studies** (inputs) — `/content/studies/<slug>/index.mdx`. **Peers to
   clients, not children.** Frontmatter: `title`, `summary`, optional
   `clients` (slugs), optional `projects` (full-form slugs — required, see
@@ -117,13 +118,27 @@ component's children. Six types are recognized:
 | `full` | Full-bleed single image, breaks the text column (wide container) |
 | `pair` | Two side by side, equal width, stack on mobile (wide container) |
 | `inset` | Single image inline in the text column, no break (prose container) |
-| `stagger` | v1: vertical stack. Later: 2–3 offset images at different scales |
-| `scroll` | v1: vertical stack. Later: horizontal scroll-snap strip |
-| `motion` | v1: vertical stack (poster frame). Later: silent autoplay loop |
+| `stagger` | v1: grid, up to 3 across. Later: 2–3 offset images at different scales |
+| `scroll` | v1: grid, up to 3 across. Later: horizontal scroll-snap strip |
+| `motion` | v1: grid (poster frame). Later: silent autoplay loop |
 
-Every block takes an optional caption, styled as content, not metadata. No
-real images exist yet for any block — `ImageBlock` renders a placeholder
-showing the description text so layout can be evaluated before assets land.
+Every block takes an optional caption, styled as content, not metadata.
+
+A line that starts with a filename points at a real image in the owning
+entity's `/images` folder; text after ` | ` is the alt text:
+
+```
+::: pair
+1. 03-plant-sky.jpg | Cannabis plant against open sky
+2. Greenhouse canopy, overhead
+:::
+```
+
+A line without a filename stays a placeholder showing the description text,
+so a block can be wired one image at a time. Real images render at their
+natural aspect ratio; placeholders keep a fixed aspect box. The page template
+passes each entity's image URL base into `preprocessFenceBlocks()`.
+Images land web-ready: JPEG, long edge ≤ 2400px.
 Upgrading a stubbed type (`stagger`/`scroll`/`motion`) to its real behavior
 is a component swap in `app/components/image-block.tsx`, not a content
 migration — the fence syntax and props don't change.
@@ -199,6 +214,51 @@ self-center to `max-w-prose`, while stats and the `full`/`pair`/`stagger`/
 Content). Don't put multi-column or grid content inside `max-w-prose` —
 that's exactly the illegibility this rule exists to prevent.
 
+## Branches and review
+
+- `claude/preview` is the working branch. Claude pushes here; Vercel builds
+  it as Preview and serves it at **wip.gregfrye.us** (Preview domain, Git
+  branch `claude/preview`).
+- `main` is Production — gregfrye.us and www. Changes reach it only when Greg
+  merges a `claude/preview` → `main` pull request.
+- `lib/site.ts` lists the public hosts. Every other host renders the same
+  build with `robots: noindex` (set in `app/layout.tsx`).
+- DNS for gregfrye.us is managed at the registrar (Google Domains
+  nameservers). MX and SPF records carry email — add records, never change
+  nameservers.
+
+## Checks
+
+- `npm run qa` — content QA (broken refs, fence images, image size, drafting
+  notes). Reports only; fine to push to `claude/preview` with warnings.
+- `npm run qa:public` — the gate before merging to `main`: brackets, stub
+  lines, and placeholder images become errors. No dependencies, so it runs
+  anywhere Node runs, including the cloud workspace.
+
+## Drafts and the Notion tracker
+
+- `draft: true` on a client or project shows it on review builds (wip,
+  previews, local) and hides it on Production (`SHOW_DRAFTS` in
+  `lib/content.ts`, keyed on `VERCEL_ENV`). Drafts render with a "Draft"
+  marker. Drafts can merge to `main`: `qa:public` keeps drafting notes and
+  placeholders inside a draft as warnings, and stays strict on everything
+  visible.
+- Notion's **Case Studies** database (Community Garden / Projects / Frye
+  Creative) tracks each case study: Status (Draft = draft on wip, In Review
+  = on wip awaiting merge, Live = on gregfrye.us), Offerings (union of the
+  projects' skills), Preview (wip link), Repo Path. The page body is an
+  outline from `python3 scripts/notion-outline.py <slug>`. Copy stays in
+  the repo; after a content change, regenerate the outline and update the
+  row's properties to match.
+
+## Working with Greg
+
+- New or heavy phases (a new case study, positioning, a homepage rewrite)
+  start with a voice interview: Claude asks short questions, Greg talks it
+  through, then Claude drafts. Don't open with a document or a design file.
+- What he shares about why he works the way he does is context for tone, not
+  copy to quote.
+
 ## Scope discipline
 
 This is a small, git-native site. Don't add content types, components, or
@@ -215,12 +275,15 @@ interleave on the client page.
 Still open:
 
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
-  vertical-stack stub to real behavior (offset stack, horizontal
+  grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
   evaluate them against, not before.
-- Homepage featured-strip ordering. `getFeaturedOnHome()` still orders cards
-  by collection-iteration order (client, project, skill, artifact, study) —
-  incidental, not an authored order.
-- Wire real photography into Hudson Cannabis's fence blocks. A batch already
-  sits in `content/clients/hudson-cannabis/images/_/`, unmapped to specific
-  blocks — needs a deliberate pass, not a guess.
+- Homepage featured-strip ordering for non-client cards. Clients take an
+  authored order (`featuredOnHome: 1`, `2`, …; `true` sorts after numbered);
+  projects, skills, artifacts, and studies still follow collection order.
+- Hudson, HealHaus, Beni, Sustain Natural, and Lalo fence blocks are wired
+  to images pulled from the 2026 folio PDF and the `_/` batch. App and
+  ecommerce images are full folio slides (device comps on a colored field),
+  not individual screens — swap in cleaner exports when they exist. Hudson's
+  operating-model `motion` block was pulled for 1.0 (see the MDX comment
+  in that project) and comes back with footage.

@@ -94,6 +94,14 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
   }
 }
 
+const POV = [
+  "Good work solves the real problem, inside real limits: budget, timeline, technology.",
+  "Agencies shield creatives from those limits. Clients end up paying for work that never meets the real world.",
+  "I've worked inside agencies, studios, small teams, and on my own. The useful part is the gap between them.",
+  "I hold the vision, then rally the people, budget, and process to ship it.",
+  "Every person on the team gets a real part in the win.",
+];
+
 export default function Home() {
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
@@ -104,44 +112,61 @@ export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
       <section className="flex flex-col gap-gutter sm:flex-row sm:items-start sm:justify-between">
-        <div className="sm:flex-1">
+        <div className="max-w-prose sm:flex-1">
           <h1 className="text-left font-serif text-heading tracking-tight text-ink">
-            A whole-system creative director with 20 years channeling founder
-            vision into a focused brand, product, and marketing function.
+            I help things grow into clearer form.
           </h1>
+          <p className="mt-6 text-body text-ink">
+            Integrated creative director. Twenty years across brand, product,
+            marketing, and production, starting at a print shop in southern New
+            Hampshire, printing banners, cutting vinyl for shop windows, and
+            learning to code.
+          </p>
           {currentRole && (
-            <p className="mt-6 text-body text-muted">{currentRole.description}</p>
+            <p className="mt-4 text-body text-muted">{currentRole.description}</p>
           )}
         </div>
 
         {currentRole && currentRole.skills.length > 0 && (
-          <ul className="flex shrink-0 flex-col gap-2">
-            {currentRole.skills.map((skillSlug) => {
-              const skill = getSkillBySlug(skillSlug);
-              if (!skill) return null;
-              return (
-                <li key={skillSlug}>
-                  <Link
-                    href={`/skills/${skillSlug}`}
-                    className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
-                  >
-                    {skill.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <nav aria-label="Services" className="shrink-0">
+            <h2 className="text-caption tracking-tight text-muted uppercase">Services</h2>
+            <ul className="mt-3 flex flex-col gap-2">
+              {currentRole.skills.map((skillSlug) => {
+                const skill = getSkillBySlug(skillSlug);
+                if (!skill) return null;
+                return (
+                  <li key={skillSlug}>
+                    <Link
+                      href={`/skills/${skillSlug}`}
+                      className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
+                    >
+                      {skill.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
         )}
+      </section>
+
+      <section aria-label="How I work" className="max-w-prose">
+        <h2 className="font-serif text-heading text-ink">How I work</h2>
+        <ul className="mt-6 flex flex-col gap-3 text-body text-muted">
+          {POV.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
       </section>
 
       {featuredCards.length > 0 && (
         <section
           aria-label="Featured work"
-          className="flex snap-x snap-mandatory items-start gap-6 overflow-x-auto pb-2"
+          className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {featuredCards.map((card) =>
             card.kind === "client" ? (
-              <div key={card.key} className="w-72 shrink-0 snap-start">
+              <div key={card.key}>
                 <FeaturedCard
                   type={card.type}
                   title={card.title}
@@ -151,7 +176,7 @@ export default function Home() {
                 />
               </div>
             ) : (
-              <div key={card.key} className="max-w-40 shrink-0 snap-start">
+              <div key={card.key}>
                 <Link
                   href={card.href}
                   className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
