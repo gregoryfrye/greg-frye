@@ -29,7 +29,8 @@ export async function generateMetadata({
   const client = getClientBySlug(slug);
   if (!client) return {};
   const title = `${client.name} — Greg Frye`;
-  const image = getClientLeadImageUrl(slug);
+  // Falls back to the site's placeholder share image when a client has none.
+  const image = getClientLeadImageUrl(slug) ?? getClientLeadImageUrl("hudson-cannabis");
   return {
     title,
     description: client.summary,
