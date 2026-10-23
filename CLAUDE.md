@@ -192,14 +192,16 @@ the `@theme` block in `app/globals.css`. Never hardcode a color, font size, or
 spacing value in a component. If a value doesn't have a token yet, add the
 token, don't inline the value.
 
-Current tokens (seeded from the pre-1.0 site, meant to be swapped wholesale
-from a Figma sketch later):
+Current tokens (seeded from Greg's 2026 Figma, file `19deN2JJWs7hvt12Z0neT4`,
+newest frames on the right; nothing there is final):
 
-- Colors: `canvas`, `ink`, `muted`, `border`
+- Colors: `canvas` (white, inner pages), `canvas-home` (the homepage's brown
+  field, applied when the page's `<main data-canvas="home">`), `ink`, `muted`,
+  `border`
 - Fonts: `font-serif` (primary), `font-sans` (secondary)
 - Type scale: `text-display`, `text-heading`, `text-body`, `text-caption`
 - Spacing: `spacing-nav`, `spacing-gutter`
-- Containers: `container-wide` (`max-w-wide`, ~1152px), `container-prose`
+- Containers: `container-wide` (`max-w-wide`, 1280px), `container-prose`
   (`max-w-prose`, 672px)
 
 **Two-container rule.** `max-w-wide` is for layout — anything with real
@@ -232,7 +234,12 @@ that's exactly the illegibility this rule exists to prevent.
 - `npm run qa` — content QA (broken refs, fence images, image size, drafting
   notes). Reports only; fine to push to `claude/preview` with warnings.
 - `npm run qa:public` — the gate before merging to `main`: brackets, stub
-  lines, and placeholder images become errors. No dependencies, so it runs
+  lines, placeholder images, and design-system findings become errors.
+- Design-system findings (both modes) scan `app/`: raw hex or color
+  functions outside the `@theme` block, arbitrary Tailwind values
+  (`text-[13px]`; aspect ratios are allowed), inline style objects, and
+  craft antipatterns (`transition-all`, gradients, decorative shadows). Fix
+  by adding or using a token, never by inlining. No dependencies, so it runs
   anywhere Node runs, including the cloud workspace.
 
 ## Drafts and the Notion tracker

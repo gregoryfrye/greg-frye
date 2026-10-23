@@ -236,6 +236,20 @@ export function getClientImages(slug: string): string[] {
   return listImageFiles(path.join(CLIENTS_DIR, slug, "images"));
 }
 
+/**
+ * The URL of a client's lead image: first client image → first image of its
+ * first project that has one → undefined. Used for cards and share images.
+ */
+export function getClientLeadImageUrl(slug: string): string | undefined {
+  const own = getClientImages(slug)[0];
+  if (own) return `/content-images/clients/${slug}/images/${own}`;
+  for (const project of getProjectsByClient(slug)) {
+    const image = getProjectCardImage(project);
+    if (image) return `/content-images/clients/${slug}/projects/${project.slug}/images/${image}`;
+  }
+  return undefined;
+}
+
 /** Union of this client's projects' skills, resolved to Skill objects. Derived, never authored. */
 export function getClientSkills(clientSlug: string): Skill[] {
   const slugs = new Set<string>();

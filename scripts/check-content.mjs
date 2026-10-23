@@ -38,7 +38,7 @@ const MOOD = /\b(shepherd\w*|resonan\w*|journey\w*)\b/gi;
 const STUB_CS = /\b(TBD|TODO|FIXME|TK|NEEDED|XXX)\b/; // case-sensitive
 const STUB_CI = /\b(phase\s*[2-9]|lorem ipsum|coming soon)\b/i;
 const BRACKET = /\[([^\]\n]+)\](?!\()/g; // [note] but not [link](url)
-const PROMOTE_IN_PUBLIC = new Set(["bracket", "stub", "placeholder"]);
+const PROMOTE_IN_PUBLIC = new Set(["bracket", "stub", "placeholder", "token", "craft"]);
 
 // ---------------------------------------------------------------- findings
 
@@ -627,6 +627,45 @@ for (const s of studies.values()) {
 for (const list of hashes.values()) {
   if (list.length < 2) continue;
   add(list[0].page, "INFO", "duplicate-image", null, null, `identical files: ${list.map((x) => x.file).join(" = ")}`);
+}
+
+// ---------------------------------------------------------------- design system (components)
+// CLAUDE.md: tokens only. Agents write most of the UI here, so this is the
+// guard that keeps them on the system. Each finding quotes its line.
+
+const G_DS = "Design system  (app/ components and styles)";
+const DS_RULES = [
+  { code: "token", re: /#[0-9a-fA-F]{3,8}\b/, msg: "raw hex color — use a color token" },
+  { code: "token", re: /\b(?:rgba?|hsla?|oklch)\(/, msg: "raw color function — use a color token" },
+  { code: "token", re: /\b(?:text|bg|border|ring|fill|stroke|p[xytrbl]?|m[xytrbl]?|gap(?:-[xy])?|space-[xy]|[wh]|min-[wh]|max-[wh]|top|left|right|bottom|inset|rounded(?:-[a-z]+)?|tracking|leading|font)-\[(?![^\]]*var\()[^\]]+\]/, msg: "arbitrary value — add a token instead of inlining it" },
+  { code: "token", re: /style=\{\{/, msg: "inline style object — style through tokens and classes" },
+  { code: "craft", re: /\btransition-all\b|transition:\s*all/, msg: "transition-all — name the properties that animate" },
+  { code: "craft", re: /\bbg-(?:linear|radial|conic|gradient)-|linear-gradient\(|radial-gradient\(/, msg: "gradient — not part of the system" },
+  { code: "craft", re: /\bshadow-(?:md|lg|xl|2xl)\b|drop-shadow-/, msg: "decorative shadow — not part of the system" },
+];
+function walk(dir, out = []) {
+  if (!isDir(dir)) return out;
+  for (const n of fs.readdirSync(dir)) {
+    const p = path.join(dir, n);
+    if (isDir(p)) walk(p, out);
+    else if (/\.(tsx|ts|css)$/.test(n)) out.push(p);
+  }
+  return out;
+}
+for (const file of walk(path.join(repo, "app"))) {
+  const lines = fs.readFileSync(file, "utf-8").split("\n");
+  let inTheme = false;
+  lines.forEach((line, i) => {
+    if (file.endsWith(".css")) {
+      if (/^@theme\b/.test(line)) inTheme = true;
+      else if (inTheme && /^\}/.test(line)) { inTheme = false; return; }
+      if (inTheme) return; // token definitions live here
+    }
+    const code = line.replace(/\/\*.*?\*\/|\/\/.*$/g, "");
+    for (const r of DS_RULES) {
+      if (r.re.test(code)) add(G_DS, "WARN", r.code, file, i + 1, `${r.msg}: ${clip(line.trim())}`);
+    }
+  });
 }
 
 // ---------------------------------------------------------------- report

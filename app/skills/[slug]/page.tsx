@@ -1,9 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllSkills, getClientBySlug, getProjectsBySkill, getSkillBySlug } from "@/lib/content";
 
 export function generateStaticParams() {
   return getAllSkills().map((skill) => ({ slug: skill.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const skill = getSkillBySlug((await params).slug);
+  return skill ? { title: `${skill.name} — Greg Frye`, description: skill.summary } : {};
 }
 
 export default async function SkillPage({
