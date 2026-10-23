@@ -1,9 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllRoles, getClientsByRole, getRoleBySlug } from "@/lib/content";
 
 export function generateStaticParams() {
   return getAllRoles().map((role) => ({ slug: role.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const role = getRoleBySlug((await params).slug);
+  return role
+    ? { title: `${role.title}, ${role.company} — Greg Frye`, description: role.description }
+    : {};
 }
 
 export default async function RolePage({

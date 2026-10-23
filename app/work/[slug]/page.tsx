@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ComponentPropsWithoutRef } from "react";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -14,6 +15,15 @@ import {
 
 export function generateStaticParams() {
   return getAllClients().map((client) => ({ slug: client.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const client = getClientBySlug((await params).slug);
+  return client ? { title: `${client.name} — Greg Frye`, description: client.summary } : {};
 }
 
 const mdxComponents = {

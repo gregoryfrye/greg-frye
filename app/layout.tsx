@@ -23,8 +23,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col">
+        <a
+          href="#content"
+          className="sr-only z-20 bg-canvas px-gutter py-nav text-body text-ink focus:not-sr-only focus:fixed focus:top-0 focus:left-0"
+        >
+          Skip to content
+        </a>
         <Nav />
-        {children}
+        <div id="content" tabIndex={-1} className="flex flex-1 flex-col">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>
