@@ -6,8 +6,11 @@ import { ImageBlock } from "@/app/components/image-block";
 import { ProjectSection } from "@/app/components/project-section";
 import { SpineSection } from "@/app/components/spine-section";
 import { preprocessFenceBlocks, splitClientContent } from "@/lib/content-blocks";
+import { FeaturedCard } from "@/app/components/featured-card";
 import {
   getAllClients,
+  getClientLeadImageUrl,
+  getFeaturedOnHome,
   getClientBySlug,
   getProjectsByClient,
   getRolesByClient,
@@ -22,8 +25,16 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const client = getClientBySlug((await params).slug);
-  return client ? { title: `${client.name} — Greg Frye`, description: client.summary } : {};
+  const { slug } = await params;
+  const client = getClientBySlug(slug);
+  if (!client) return {};
+  const title = `${client.name} — Greg Frye`;
+  const image = getClientLeadImageUrl(slug);
+  return {
+    title,
+    description: client.summary,
+    openGraph: { title, description: client.summary, ...(image ? { images: [image] } : {}) },
+  };
 }
 
 const mdxComponents = {
@@ -62,6 +73,10 @@ export default async function ClientPage({
   const eyebrow = [roleTitles, client.years].filter(Boolean).join(" · ");
   const { narrative, closing } = splitClientContent(client.content);
   const clientImages = `/content-images/clients/${slug}/images`;
+  // Recirculation: the homepage's featured case studies, minus this one.
+  const moreWork = getFeaturedOnHome()
+    .flatMap((item) => (item.kind === "client" ? [item.client] : []))
+    .filter((other) => other.slug !== slug);
 
   return (
     <main className="mx-auto w-full max-w-wide flex-1 px-gutter pt-40 pb-20">
@@ -117,6 +132,24 @@ export default async function ClientPage({
         <div className="mt-20">
           <MDXRemote source={preprocessFenceBlocks(closing, clientImages)} components={mdxComponents} />
         </div>
+      )}
+
+      {moreWork.length > 0 && (
+        <section aria-label="More work" className="mt-20 border-t border-border pt-16">
+          <h2 className="font-serif text-heading text-ink">More work</h2>
+          <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {moreWork.map((other) => (
+              <FeaturedCard
+                key={other.slug}
+                type="Client"
+                title={other.name}
+                summary={other.summary}
+                href={`/work/${other.slug}`}
+                imageSrc={getClientLeadImageUrl(other.slug)}
+              />
+            ))}
+          </div>
+        </section>
       )}
     </main>
   );
