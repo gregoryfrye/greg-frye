@@ -234,7 +234,12 @@ that's exactly the illegibility this rule exists to prevent.
 - `npm run qa` — content QA (broken refs, fence images, image size, drafting
   notes). Reports only; fine to push to `claude/preview` with warnings.
 - `npm run qa:public` — the gate before merging to `main`: brackets, stub
-  lines, and placeholder images become errors. No dependencies, so it runs
+  lines, placeholder images, and design-system findings become errors.
+- Design-system findings (both modes) scan `app/`: raw hex or color
+  functions outside the `@theme` block, arbitrary Tailwind values
+  (`text-[13px]`; aspect ratios are allowed), inline style objects, and
+  craft antipatterns (`transition-all`, gradients, decorative shadows). Fix
+  by adding or using a token, never by inlining. No dependencies, so it runs
   anywhere Node runs, including the cloud workspace.
 
 ## Drafts and the Notion tracker
