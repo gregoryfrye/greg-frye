@@ -16,7 +16,7 @@ export function FeaturedCard({ type, title, summary, href, imageSrc }: FeaturedC
       className="block border border-border no-underline transition-colors hover:border-ink"
     >
       {imageSrc && (
-        <div className="relative aspect-[4/3] overflow-hidden bg-border">
+        <div className="relative aspect-[4/3] overflow-hidden bg-placeholder">
           <Image
             src={imageSrc}
             alt={title}

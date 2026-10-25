@@ -18,11 +18,11 @@ function Media({ image, aspect }: { image: ImageBlockImage; aspect: string }) {
       // their real size, and natural aspect ratio matters more here than
       // next/image's fixed-box sizing.
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={image.src} alt={image.alt} loading="lazy" decoding="async" className="block h-auto w-full bg-border" />
+      <img src={image.src} alt={image.alt} loading="lazy" decoding="async" className="block h-auto w-full bg-placeholder" />
     );
   }
   return (
-    <div className={`relative ${aspect} overflow-hidden bg-border`}>
+    <div className={`relative ${aspect} overflow-hidden bg-placeholder`}>
       <div className="flex h-full w-full items-center justify-center p-4 text-center">
         <p className="text-caption text-muted">{image.alt}</p>
       </div>

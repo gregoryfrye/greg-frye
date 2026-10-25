@@ -211,8 +211,8 @@ function checkImagesFolder(page, dir, { referenced, exempt = new Set(), exemptWh
     const p = path.join(dir, e.name);
     if (e.isDirectory()) {
       const s = dirSize(p);
-      add(page, "WARN", "staging-folder", p, null,
-        `subfolder with ${s.files} files, ${mb(s.bytes)} — ignored by lib/content.ts but still publicly reachable via /content-images/${path.relative(CONTENT, p)}/…`);
+      add(page, "INFO", "staging-folder", p, null,
+        `subfolder with ${s.files} files, ${mb(s.bytes)} — source material, ignored by lib/content.ts and refused (404) by the image route`);
     } else if (!IMAGE_EXT.test(e.name) && e.name !== ".gitkeep") {
       add(page, "WARN", "stray-file", p, null, `non-image file in images/`);
     }

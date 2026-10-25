@@ -19,6 +19,8 @@
   --color-muted: rgb(0 0 0 / 0.6);
   --color-muted-home: rgb(0 0 0 / 0.85); /* 60% on the brown is 3.3:1; 85% clears WCAG AA at 4.7:1 */
   --color-border: #000000;
+  /* Image boxes while loading, and placeholder slots: a light wash, not a black block */
+  --color-placeholder: rgb(0 0 0 / 0.06);
 
   /* Type families */
   --font-serif: "Times New Roman", Times, serif;
