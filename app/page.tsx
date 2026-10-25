@@ -104,18 +104,18 @@ export default function Home() {
   return (
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
       <section className="flex flex-col gap-gutter sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-prose sm:flex-1">
+        <div className="max-w-hero sm:flex-1">
           <h1 className="text-left font-serif text-display tracking-tight text-ink">
             A whole-system creative director with 20 years channeling founder vision into a focused brand, product, and marketing function.
           </h1>
-          <p className="mt-6 text-body text-ink">
+          <p className="mt-6 max-w-prose text-body text-ink">
             Integrated creative director. Twenty years across brand, product,
             marketing, and production, starting at a print shop in southern New
             Hampshire, printing banners, cutting vinyl for shop windows, and
             learning to code.
           </p>
           {currentRole && (
-            <p className="mt-4 text-body text-muted">{currentRole.description}</p>
+            <p className="mt-4 max-w-prose text-body text-muted">{currentRole.description}</p>
           )}
         </div>
 

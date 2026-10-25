@@ -46,6 +46,7 @@
   /* Containers — layout (wide) vs. reading measure (prose). See CLAUDE.md. */
   --container-wide: 80rem; /* 1280px, the Figma frame */
   --container-prose: 42rem; /* 672px, the site's reading measure */
+  --container-hero: 48rem; /* 768px, the homepage headline in Figma (00_Index, 10/24) */
 }
 
 @layer base {

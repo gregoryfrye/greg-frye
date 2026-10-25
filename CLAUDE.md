@@ -202,7 +202,8 @@ newest frames on the right; nothing there is final):
 - Type scale: `text-display`, `text-heading`, `text-body`, `text-caption`
 - Spacing: `spacing-nav`, `spacing-gutter`
 - Containers: `container-wide` (`max-w-wide`, 1280px), `container-prose`
-  (`max-w-prose`, 672px)
+  (`max-w-prose`, 672px), `container-hero` (`max-w-hero`, 768px, homepage
+  headline only)
 
 **Two-container rule.** `max-w-wide` is for layout — anything with real
 horizontal structure: the hero, the featured strip, the roles index (its
