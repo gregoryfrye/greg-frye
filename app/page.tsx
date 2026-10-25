@@ -204,7 +204,7 @@ export default function Home() {
                     </>
                   )}
                 </span>
-                <p className="text-body text-ink sm:col-span-5">
+                <p className="text-body text-ink sm:col-span-4">
                   {role.description}
                   {clientCount > 0 && (
                     <span className="text-muted">
@@ -225,7 +225,7 @@ export default function Home() {
                   )}
                 </p>
                 {role.skills.length > 0 && (
-                  <ul aria-label="Skills" className="flex flex-col gap-1 sm:col-span-2">
+                  <ul aria-label="Skills" className="flex flex-col gap-1 sm:col-span-3">
                     {role.skills.map((skillSlug) => {
                       const skill = getSkillBySlug(skillSlug);
                       if (!skill) return null;
