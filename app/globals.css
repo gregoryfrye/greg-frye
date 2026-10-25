@@ -31,7 +31,7 @@
   --text-display--line-height: 1.125;
   --text-heading: clamp(1.375rem, 2.1vw, 1.6875rem);
   --text-heading--line-height: 1.2;
-  --text-body: clamp(1.0625rem, 1.65vw, 1.3125rem);
+  --text-body: clamp(1rem, 1.3vw, 1.125rem);
   --text-body--line-height: 1.35;
   --text-caption: 1.125rem;
   --text-caption--line-height: 1.3;
