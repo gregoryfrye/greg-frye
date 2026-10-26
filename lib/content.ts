@@ -243,9 +243,38 @@ export type ActiveClient = {
   name: string;
   summary: string;
   url?: string;
+  years?: string;
+  /** First image found in the client, then its projects, then their artifacts. */
+  imageSrc?: string;
   /** False when the case study is a draft hidden on this build: no link to /work/<slug>. */
   hasPage: boolean;
 };
+
+/** Image fallback for an Active card: client images → project images → artifact images. */
+function findActiveImage(slug: string): string | undefined {
+  const base = path.join(CLIENTS_DIR, slug);
+  const toUrl = (dir: string, file: string) =>
+    `/content-images/${path.relative(CONTENT_DIR, path.join(dir, file)).split(path.sep).join("/")}`;
+  const clientImages = listImageFiles(path.join(base, "images"));
+  if (clientImages[0]) return toUrl(path.join(base, "images"), clientImages[0]);
+  const projectsDir = path.join(base, "projects");
+  const projects = fs.existsSync(projectsDir) ? fs.readdirSync(projectsDir).sort() : [];
+  for (const project of projects) {
+    const dir = path.join(projectsDir, project, "images");
+    const files = listImageFiles(dir);
+    if (files[0]) return toUrl(dir, files[0]);
+  }
+  for (const project of projects) {
+    const artifactsDir = path.join(projectsDir, project, "artifacts");
+    if (!fs.existsSync(artifactsDir)) continue;
+    for (const artifact of fs.readdirSync(artifactsDir).sort()) {
+      const dir = path.join(artifactsDir, artifact, "images");
+      const files = listImageFiles(dir);
+      if (files[0]) return toUrl(dir, files[0]);
+    }
+  }
+  return undefined;
+}
 
 /**
  * Clients flagged `active: true`, including drafts: ongoing work earns a small
@@ -262,6 +291,8 @@ export function getActiveClients(): ActiveClient[] {
         name: data.name as string,
         summary: data.summary as string,
         url: data.url as string | undefined,
+        years: data.years as string | undefined,
+        imageSrc: findActiveImage(slug),
         hasPage: !data.draft || SHOW_DRAFTS,
       };
     })

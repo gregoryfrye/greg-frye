@@ -123,35 +123,53 @@ export default function Home() {
 
         {activeClients.length > 0 && (
           <section aria-labelledby="active-heading" className="lg:w-1/4 lg:shrink-0">
-            <h2 id="active-heading" className="text-caption tracking-tight text-muted uppercase">
-              Active
+            <h2 id="active-heading" className="sr-only">
+              Active projects
             </h2>
-            <ul className="mt-3 flex flex-col gap-6">
-              {activeClients.map((client) => (
-                <li key={client.slug} className="border-t border-border pt-3">
-                  <h3 className="text-body text-ink">
-                    {client.hasPage ? (
-                      <Link
-                        href={`/work/${client.slug}`}
-                        className="underline decoration-border underline-offset-4 hover:decoration-ink"
-                      >
-                        {client.name}
-                      </Link>
+            <ul className="flex flex-col gap-gutter">
+              {activeClients.map((client) => {
+                const body = (
+                  <>
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="border border-border px-4 py-1 text-body text-ink">Active</span>
+                      {client.years && (
+                        <span className="font-sans text-caption text-ink">{client.years}</span>
+                      )}
+                    </div>
+                    {client.imageSrc ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={client.imageSrc}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-square w-full object-contain"
+                      />
                     ) : (
-                      client.name
+                      <p className="text-caption text-muted">{client.summary}</p>
                     )}
-                  </h3>
-                  <p className="mt-1 text-caption text-muted">{client.summary}</p>
-                  {client.url && (
-                    <a
-                      href={client.url}
-                      className="mt-1 inline-block text-caption text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
-                    >
-                      {client.url.replace(/^https?:\/\//, "")} ↗
-                    </a>
-                  )}
-                </li>
-              ))}
+                    <span className="text-body text-ink underline decoration-transparent underline-offset-4 group-hover:decoration-ink">
+                      {client.name} →
+                    </span>
+                  </>
+                );
+                const cardClass = "group flex flex-col gap-4.5 border border-border p-4.5";
+                return (
+                  <li key={client.slug}>
+                    {client.hasPage ? (
+                      <Link href={`/work/${client.slug}`} className={cardClass}>
+                        {body}
+                      </Link>
+                    ) : client.url ? (
+                      <a href={client.url} className={cardClass}>
+                        {body}
+                      </a>
+                    ) : (
+                      <div className={cardClass}>{body}</div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </section>
         )}
