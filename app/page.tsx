@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FeaturedCard } from "@/app/components/featured-card";
 import {
+  getActiveClients,
   getAllRoles,
   getArtifactCardImage,
   getClientImages,
@@ -97,14 +98,15 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
 export default function Home() {
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
+  const activeClients = getActiveClients();
   const featuredCards = getFeaturedOnHome()
     .map(toCardData)
     .filter((card): card is FeaturedCardData => card !== null);
 
   return (
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
-      <section className="flex flex-col gap-gutter sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-hero sm:flex-1">
+      <section className="flex flex-col gap-gutter lg:flex-row lg:items-start lg:justify-between">
+        <div className="max-w-hero lg:flex-1">
           <h1 className="text-left font-serif text-display tracking-tight text-ink">
             A whole-system creative director with 20 years channeling founder vision into a focused brand, product, and marketing function.
           </h1>
@@ -118,6 +120,41 @@ export default function Home() {
             <p className="mt-4 max-w-prose text-body text-muted">{currentRole.description}</p>
           )}
         </div>
+
+        {activeClients.length > 0 && (
+          <section aria-labelledby="active-heading" className="lg:w-1/4 lg:shrink-0">
+            <h2 id="active-heading" className="text-caption tracking-tight text-muted uppercase">
+              Active
+            </h2>
+            <ul className="mt-3 flex flex-col gap-6">
+              {activeClients.map((client) => (
+                <li key={client.slug} className="border-t border-border pt-3">
+                  <h3 className="text-body text-ink">
+                    {client.hasPage ? (
+                      <Link
+                        href={`/work/${client.slug}`}
+                        className="underline decoration-border underline-offset-4 hover:decoration-ink"
+                      >
+                        {client.name}
+                      </Link>
+                    ) : (
+                      client.name
+                    )}
+                  </h3>
+                  <p className="mt-1 text-caption text-muted">{client.summary}</p>
+                  {client.url && (
+                    <a
+                      href={client.url}
+                      className="mt-1 inline-block text-caption text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
+                    >
+                      {client.url.replace(/^https?:\/\//, "")} ↗
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {currentRole && currentRole.skills.length > 0 && (
           <nav aria-label="Services" className="shrink-0">

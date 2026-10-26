@@ -62,6 +62,10 @@ export type Client = {
   projects?: string[];
   /** Visible on review builds only. See SHOW_DRAFTS. */
   draft?: boolean;
+  /** Ongoing work shown in the homepage's Active column, even while its case study is a draft. */
+  active?: boolean;
+  /** The project's own live site, linked from the Active column. */
+  url?: string;
 };
 
 /** A project is a chapter within a client's story — no beats, nested under its client. */
@@ -229,7 +233,39 @@ export function getClientBySlug(slug: string): Client | null {
     featuredOnHome: data.featuredOnHome as boolean | number | undefined,
     projects: data.projects as string[] | undefined,
     draft: data.draft === true,
+    active: data.active === true,
+    url: data.url as string | undefined,
   };
+}
+
+export type ActiveClient = {
+  slug: string;
+  name: string;
+  summary: string;
+  url?: string;
+  /** False when the case study is a draft hidden on this build: no link to /work/<slug>. */
+  hasPage: boolean;
+};
+
+/**
+ * Clients flagged `active: true`, including drafts: ongoing work earns a small
+ * homepage card before it earns a case study. Drafts show without a page link.
+ */
+export function getActiveClients(): ActiveClient[] {
+  return listFolderSlugs(CLIENTS_DIR)
+    .map((slug) => {
+      const parsed = readMdx(path.join(CLIENTS_DIR, slug, "index.mdx"));
+      if (!parsed || parsed.data.active !== true) return null;
+      const { data } = parsed;
+      return {
+        slug,
+        name: data.name as string,
+        summary: data.summary as string,
+        url: data.url as string | undefined,
+        hasPage: !data.draft || SHOW_DRAFTS,
+      };
+    })
+    .filter((client): client is ActiveClient => client !== null);
 }
 
 export function getClientImages(slug: string): string[] {
