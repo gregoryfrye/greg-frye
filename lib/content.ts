@@ -253,7 +253,7 @@ export type ActiveClient = {
  */
 export function getActiveClients(): ActiveClient[] {
   return listFolderSlugs(CLIENTS_DIR)
-    .map((slug) => {
+    .map((slug): ActiveClient | null => {
       const parsed = readMdx(path.join(CLIENTS_DIR, slug, "index.mdx"));
       if (!parsed || parsed.data.active !== true) return null;
       const { data } = parsed;
