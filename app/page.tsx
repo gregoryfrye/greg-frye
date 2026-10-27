@@ -126,7 +126,7 @@ export default function Home() {
             <h2 id="active-heading" className="sr-only">
               Active projects
             </h2>
-            <ul className="flex flex-col gap-gutter">
+            <ul className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:flex lg:flex-col">
               {activeClients.map((client) => {
                 const body = (
                   <>
@@ -141,9 +141,9 @@ export default function Home() {
                       <img
                         src={client.imageSrc}
                         alt=""
-                        loading="lazy"
+                        loading="eager"
                         decoding="async"
-                        className="aspect-square w-full object-contain"
+                        className="aspect-video w-full object-contain lg:aspect-square"
                       />
                     ) : (
                       <p className="text-caption text-muted">{client.summary}</p>
@@ -199,9 +199,12 @@ export default function Home() {
 
       {featuredCards.length > 0 && (
         <section
-          aria-label="Featured work"
+          aria-labelledby="work-heading"
           className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
+          <h2 id="work-heading" className="sr-only">
+            Selected work
+          </h2>
           {featuredCards.map((card) =>
             card.kind === "client" ? (
               <div key={card.key}>
