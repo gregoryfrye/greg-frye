@@ -66,7 +66,10 @@ reference from a study as ambiguous.
   every client has a defined era), `roles` (slugs), `summary`, `stats`,
   optional `featuredOnHome`, optional `projects` (short-form slugs, in
   **authored display order** — a project on disk but missing here, or vice
-  versa, is a `validateContentGraph` warning).
+  versa, is a `validateContentGraph` warning), optional `active` + `url`
+  (ongoing work: a small card in the homepage's Active column, linking to
+  the project's own live site — shown even while the case study is a draft,
+  without a link to the hidden page).
 - **Projects** — `/content/clients/<client>/projects/<slug>/index.mdx` +
   `/images` + `/artifacts`. **Projects are chapters**, not case studies: no
   spine, no duplicating the client's story — and since projects don't have

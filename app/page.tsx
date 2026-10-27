@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FeaturedCard } from "@/app/components/featured-card";
 import {
+  getActiveClients,
   getAllRoles,
   getArtifactCardImage,
   getClientImages,
@@ -97,14 +98,15 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
 export default function Home() {
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
+  const activeClients = getActiveClients();
   const featuredCards = getFeaturedOnHome()
     .map(toCardData)
     .filter((card): card is FeaturedCardData => card !== null);
 
   return (
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
-      <section className="flex flex-col gap-gutter sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-hero sm:flex-1">
+      <section className="flex flex-col gap-gutter lg:flex-row lg:items-start lg:justify-between">
+        <div className="max-w-hero lg:flex-1">
           <h1 className="text-left font-serif text-display tracking-tight text-ink">
             A whole-system creative director with 20 years channeling founder vision into a focused brand, product, and marketing function.
           </h1>
@@ -118,6 +120,59 @@ export default function Home() {
             <p className="mt-4 max-w-prose text-body text-muted">{currentRole.description}</p>
           )}
         </div>
+
+        {activeClients.length > 0 && (
+          <section aria-labelledby="active-heading" className="lg:w-1/4 lg:shrink-0">
+            <h2 id="active-heading" className="sr-only">
+              Active projects
+            </h2>
+            <ul className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:flex lg:flex-col">
+              {activeClients.map((client) => {
+                const body = (
+                  <>
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="border border-border px-4 py-1 text-body text-ink">Active</span>
+                      {client.years && (
+                        <span className="font-sans text-caption text-ink">{client.years}</span>
+                      )}
+                    </div>
+                    {client.imageSrc ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={client.imageSrc}
+                        alt=""
+                        loading="eager"
+                        decoding="async"
+                        className="aspect-video w-full object-contain lg:aspect-square"
+                      />
+                    ) : (
+                      <p className="text-caption text-muted">{client.summary}</p>
+                    )}
+                    <span className="text-body text-ink underline decoration-transparent underline-offset-4 group-hover:decoration-ink">
+                      {client.name} →
+                    </span>
+                  </>
+                );
+                const cardClass = "group flex flex-col gap-4.5 border border-border p-4.5";
+                return (
+                  <li key={client.slug}>
+                    {client.hasPage ? (
+                      <Link href={`/work/${client.slug}`} className={cardClass}>
+                        {body}
+                      </Link>
+                    ) : client.url ? (
+                      <a href={client.url} className={cardClass}>
+                        {body}
+                      </a>
+                    ) : (
+                      <div className={cardClass}>{body}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
 
         {currentRole && currentRole.skills.length > 0 && (
           <nav aria-label="Services" className="shrink-0">
@@ -144,9 +199,12 @@ export default function Home() {
 
       {featuredCards.length > 0 && (
         <section
-          aria-label="Featured work"
+          aria-labelledby="work-heading"
           className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
+          <h2 id="work-heading" className="sr-only">
+            Selected work
+          </h2>
           {featuredCards.map((card) =>
             card.kind === "client" ? (
               <div key={card.key}>
