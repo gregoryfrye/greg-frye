@@ -216,7 +216,8 @@ Font. Code is the source of truth for anything shipped; Figma is the record.
 `npm run tokens` prints the tokens resolved for Figma; `npm run tokens:check`
 compares them with `design/figma-variables.json` (an export of Figma's
 variables) and reports DRIFT, MISSING IN FIGMA, and FIGMA ONLY (an unshipped
-idea, not an error). Run it in the Friday sync.
+idea, not an error). Update Figma in the same session as a shipped change
+when possible; the Friday sync reconciles anything that slipped.
 
 **Two-container rule.** `max-w-wide` is for layout — anything with real
 horizontal structure: the hero, the featured strip, the roles index (its
