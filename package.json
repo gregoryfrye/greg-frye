@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "qa": "node scripts/check-content.mjs .",
-    "qa:public": "node scripts/check-content.mjs . --public"
+    "qa:public": "node scripts/check-content.mjs . --public",
+    "tokens": "node scripts/tokens.mjs",
+    "tokens:check": "node scripts/tokens.mjs --check"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.55.0",

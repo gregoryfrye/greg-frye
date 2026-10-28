@@ -208,6 +208,16 @@ newest frames on the right; nothing there is final):
   (`max-w-prose`, 672px), `container-hero` (`max-w-hero`, 768px, homepage
   headline only)
 
+**Figma variables mirror these tokens.** The Figma file has local
+collections named after them: Color (the code's color roles), Page (Home /
+Inner modes: `background`, `text-muted`, mirroring `data-canvas="home"`),
+Type (Desktop 1280 / Mobile 375 modes, since Figma can't do `clamp`), Space,
+Font. Code is the source of truth for anything shipped; Figma is the record.
+`npm run tokens` prints the tokens resolved for Figma; `npm run tokens:check`
+compares them with `design/figma-variables.json` (an export of Figma's
+variables) and reports DRIFT, MISSING IN FIGMA, and FIGMA ONLY (an unshipped
+idea, not an error). Run it in the Friday sync.
+
 **Two-container rule.** `max-w-wide` is for layout — anything with real
 horizontal structure: the hero, the featured strip, the roles index (its
 multi-column rows need the room), nav, footer. `max-w-prose` is for

@@ -1,0 +1,100 @@
+{
+    "color": {
+        "canvas": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+        },
+        "canvas-home": {
+            "r": 0.6,
+            "g": 0.502,
+            "b": 0.3765,
+            "a": 1
+        },
+        "ink": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+        },
+        "muted": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.6
+        },
+        "muted-home": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.85
+        },
+        "border": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+        },
+        "placeholder": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.06
+        }
+    },
+    "type": {
+        "display": {
+            "Desktop": {
+                "size": 72,
+                "lineHeight": 81
+            },
+            "Mobile": {
+                "size": 40,
+                "lineHeight": 45
+            }
+        },
+        "heading": {
+            "Desktop": {
+                "size": 26.88,
+                "lineHeight": 32.26
+            },
+            "Mobile": {
+                "size": 22,
+                "lineHeight": 26.4
+            }
+        },
+        "body": {
+            "Desktop": {
+                "size": 16.64,
+                "lineHeight": 22.46
+            },
+            "Mobile": {
+                "size": 16,
+                "lineHeight": 21.6
+            }
+        },
+        "caption": {
+            "Desktop": {
+                "size": 18,
+                "lineHeight": 23.4
+            },
+            "Mobile": {
+                "size": 18,
+                "lineHeight": 23.4
+            }
+        }
+    },
+    "space": {
+        "tracking-tight": -1,
+        "nav": 27,
+        "gutter": 27,
+        "container-wide": 1280,
+        "container-prose": 672,
+        "container-hero": 768
+    },
+    "font": {
+        "serif": "Times New Roman",
+        "sans": "Helvetica"
+    }
+}
