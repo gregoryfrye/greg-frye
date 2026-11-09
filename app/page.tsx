@@ -199,8 +199,9 @@ export default function Home() {
 
       {featuredCards.length > 0 && (
         <section
+          id="work"
           aria-labelledby="work-heading"
-          className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="scroll-mt-40 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           <h2 id="work-heading" className="sr-only">
             Selected work
@@ -230,7 +231,7 @@ export default function Home() {
         </section>
       )}
 
-      <section aria-labelledby="roles-heading">
+      <section id="info" aria-labelledby="roles-heading" className="scroll-mt-40">
         <h2
           id="roles-heading"
           className="mx-auto w-fit border border-border px-4 py-1 font-serif text-heading text-ink"
