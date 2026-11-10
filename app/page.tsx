@@ -133,7 +133,7 @@ export default function Home() {
                     <div className="flex items-start justify-between gap-4">
                       <span className="border border-border px-4 py-1 text-body text-ink">Active</span>
                       {client.years && (
-                        <span className="font-sans text-caption text-ink">{client.years}</span>
+                        <span className="font-sans text-meta text-ink">{client.years}</span>
                       )}
                     </div>
                     {client.imageSrc ? (
