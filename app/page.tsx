@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FeaturedCard } from "@/app/components/featured-card";
+import { SkillList } from "@/app/components/skill-list";
 import {
   getActiveClients,
   getAllRoles,
@@ -9,7 +10,6 @@ import {
   getCurrentRole,
   getFeaturedOnHome,
   getProjectCardImage,
-  getSkillBySlug,
   getSkillCardImage,
   type FeaturedEntity,
 } from "@/lib/content";
@@ -177,22 +177,7 @@ export default function Home() {
         {currentRole && currentRole.skills.length > 0 && (
           <nav aria-label="Services" className="shrink-0">
             <h2 className="text-caption tracking-tight text-muted uppercase">Services</h2>
-            <ul className="mt-3 flex flex-col gap-2">
-              {currentRole.skills.map((skillSlug) => {
-                const skill = getSkillBySlug(skillSlug);
-                if (!skill) return null;
-                return (
-                  <li key={skillSlug}>
-                    <Link
-                      href={`/skills/${skillSlug}`}
-                      className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
-                    >
-                      {skill.name}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <SkillList skills={currentRole.skills} label="Services" className="mt-3" />
           </nav>
         )}
       </section>
@@ -247,7 +232,7 @@ export default function Home() {
                 key={role.slug}
                 className="grid grid-cols-1 gap-2 border-b border-border py-6 sm:grid-cols-12 sm:gap-6"
               >
-                <span className="text-body text-ink sm:col-span-2">{role.years}</span>
+                <span className="font-sans text-meta text-ink sm:col-span-2">{role.years}</span>
                 <span className="text-body text-ink sm:col-span-3">
                   {role.title}
                   {role.company !== role.title && (
@@ -284,22 +269,7 @@ export default function Home() {
                   )}
                 </p>
                 {role.skills.length > 0 && (
-                  <ul aria-label="Skills" className="flex flex-col gap-1 sm:col-span-3">
-                    {role.skills.map((skillSlug) => {
-                      const skill = getSkillBySlug(skillSlug);
-                      if (!skill) return null;
-                      return (
-                        <li key={skillSlug} className="text-caption">
-                          <Link
-                            href={`/skills/${skillSlug}`}
-                            className="text-muted underline decoration-border underline-offset-4 hover:text-ink"
-                          >
-                            {skill.name}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <SkillList skills={role.skills} label="Skills" className="sm:col-span-3" />
                 )}
               </li>
             );
