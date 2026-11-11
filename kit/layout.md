@@ -12,8 +12,12 @@
 | `section` | 45 | Section padding, top and bottom |
 | `gutter` | 27 | Page gutter and column gap |
 | `nav` | 27 | Nav padding |
+| `marker` | 54 | Marker column in beat headers (the A / 04 before a label) |
+| `masthead` | 81 | Clearance under the fixed nav: sticky `top-masthead`, anchors `scroll-mt-masthead` |
 
 Use them as Tailwind classes: `gap-item`, `mt-block`, `py-section`, `px-gutter`. Tailwind's numeric scale (`gap-2`, `mt-6`) is legacy and moves onto these in the Visual Design Pass.
+
+**Grids.** Case study modules sit on a 3-column grid at `md` and up (`md:grid-cols-3 gap-x-gutter`), the Figma's 3 × 390. The case hero uses 4 columns with a 2-column center (index · title and image · stats).
 
 **Containers.** `max-w-wide` (1280) for layout, anything with horizontal structure. `max-w-prose` (672) for continuous text. `max-w-hero` (768) for the homepage headline only. Grids never go inside `max-w-prose` (see CLAUDE.md, two-container rule).
 

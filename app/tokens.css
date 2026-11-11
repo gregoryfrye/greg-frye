@@ -49,6 +49,8 @@
   --spacing-inline: 1.125rem; /* Between items in a row */
   --spacing-block: 1.6875rem; /* Between blocks inside a section */
   --spacing-section: 2.8125rem; /* Section padding top and bottom */
+  --spacing-marker: 3.375rem; /* Marker column in beat headers (the A / 04 before a label) */
+  --spacing-masthead: 5.0625rem; /* Clearance under the fixed nav, for sticky elements and anchor targets */
 
   /* Containers — layout (wide) vs. reading measure (prose) */
   --container-wide: 80rem; /* Layout: anything with horizontal structure */
