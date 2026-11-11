@@ -119,11 +119,12 @@
     "font": {
         "serif": "Times New Roman",
         "sans": "Helvetica",
-        "mono": "SF Mono"
+        "mono": "GT America Mono",
+        "display-alt": "ITC Clearface"
     },
     "role": {
         "title": {
-            "family": "Tinos",
+            "family": "Times New Roman",
             "style": "normal",
             "tracking": -1.5,
             "Expanded": {
@@ -136,7 +137,7 @@
             }
         },
         "display": {
-            "family": "Tinos",
+            "family": "Times New Roman",
             "style": "normal",
             "tracking": -1.5,
             "Expanded": {
@@ -149,7 +150,7 @@
             }
         },
         "stat": {
-            "family": "Tinos",
+            "family": "Times New Roman",
             "style": "normal",
             "tracking": -1,
             "Expanded": {
@@ -162,7 +163,7 @@
             }
         },
         "body": {
-            "family": "Tinos",
+            "family": "Times New Roman",
             "style": "normal",
             "tracking": -1,
             "Expanded": {
@@ -175,7 +176,7 @@
             }
         },
         "label": {
-            "family": "Tinos",
+            "family": "Times New Roman",
             "style": "normal",
             "tracking": -1,
             "Expanded": {
@@ -188,7 +189,7 @@
             }
         },
         "credit": {
-            "family": "Tinos",
+            "family": "Times New Roman",
             "style": "italic",
             "tracking": -1,
             "Expanded": {
@@ -201,7 +202,7 @@
             }
         },
         "meta": {
-            "family": "Arimo",
+            "family": "Helvetica",
             "style": "normal",
             "tracking": 0,
             "Expanded": {

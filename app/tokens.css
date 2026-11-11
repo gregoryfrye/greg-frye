@@ -27,7 +27,8 @@
   /* Families */
   --font-serif: "Times New Roman", Times, serif;
   --font-sans: Helvetica, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: "GT America Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display-alt: "ITC Clearface", "Times New Roman", Times, serif;
 
   /* Legacy type sizes — migrate components to type-* roles, then delete */
   --text-display: clamp(2.5rem, 5.625vw, 4.5rem);

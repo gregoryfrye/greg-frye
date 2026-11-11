@@ -49,7 +49,8 @@
     "fonts": {
       "serif": "\"Times New Roman\", Times, serif",
       "sans": "Helvetica, \"Helvetica Neue\", Arial, sans-serif",
-      "mono": "ui-monospace, \"SF Mono\", Menlo, Consolas, monospace"
+      "mono": "\"GT America Mono\", ui-monospace, \"SF Mono\", Menlo, monospace",
+      "display-alt": "\"ITC Clearface\", \"Times New Roman\", Times, serif"
     },
     "viewport": {
       "compact": 375,

@@ -4,9 +4,10 @@
 
 **Typefaces.** Established before the scale:
 
-- **Serif · Times New Roman** (`--font-serif`) — primary. Everything: titles, statements, reading text, labels, credits. ITC Clearface once it has a web licence.
+- **Serif · Times New Roman** (`--font-serif`) — primary. Everything: titles, statements, reading text, labels, credits.
+- **Alt header · ITC Clearface** (`--font-display-alt`) — kept as an alternate for titles and statements while the direction settles. Not applied; falls back to Times until it has a web licence.
 - **Sans · Helvetica** (`--font-sans`) — dates only (`type-meta`).
-- **Mono · SF Mono** (`--font-mono`) — set up, not in use. Whether labels go mono is an open look decision for Greg.
+- **Mono · GT America Mono** (`--font-mono`) — Greg's pick (11/11). Set up, not in use yet; falls back to the system mono until it has a web licence. Whether labels go mono is still open.
 
 **Where.** Use `type-<role>` on any text. Sizes scale fluidly from the compact viewport (375) to the expanded one (1280). Values come from the 2026 Figma, frame `01_Client_1280`.
 
