@@ -41,47 +41,63 @@
             "g": 0,
             "b": 0,
             "a": 0.06
+        },
+        "faint": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.25
         }
     },
     "type": {
         "display": {
-            "Desktop": {
+            "Expanded": {
                 "size": 72,
                 "lineHeight": 81
             },
-            "Mobile": {
+            "Compact": {
                 "size": 40,
                 "lineHeight": 45
             }
         },
         "heading": {
-            "Desktop": {
+            "Expanded": {
                 "size": 26.88,
                 "lineHeight": 32.26
             },
-            "Mobile": {
+            "Compact": {
                 "size": 22,
                 "lineHeight": 26.4
             }
         },
         "body": {
-            "Desktop": {
+            "Expanded": {
                 "size": 16.64,
                 "lineHeight": 22.46
             },
-            "Mobile": {
+            "Compact": {
                 "size": 16,
                 "lineHeight": 21.6
             }
         },
         "caption": {
-            "Desktop": {
+            "Expanded": {
                 "size": 18,
                 "lineHeight": 23.4
             },
-            "Mobile": {
+            "Compact": {
                 "size": 18,
                 "lineHeight": 23.4
+            }
+        },
+        "meta": {
+            "Expanded": {
+                "size": 15,
+                "lineHeight": 18
+            },
+            "Compact": {
+                "size": 15,
+                "lineHeight": 18
             }
         }
     },
@@ -91,10 +107,124 @@
         "gutter": 27,
         "container-wide": 1280,
         "container-prose": 672,
-        "container-hero": 768
+        "container-hero": 768,
+        "item": 9,
+        "inline": 18,
+        "block": 27,
+        "section": 45,
+        "marker": 54,
+        "masthead": 81,
+        "line-weight": 1
     },
     "font": {
         "serif": "Times New Roman",
-        "sans": "Helvetica"
+        "sans": "Helvetica",
+        "mono": "SF Mono"
+    },
+    "role": {
+        "title": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1.5,
+            "Expanded": {
+                "size": 108,
+                "lineHeight": 97.2
+            },
+            "Compact": {
+                "size": 54,
+                "lineHeight": 48.6
+            }
+        },
+        "display": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1.5,
+            "Expanded": {
+                "size": 72,
+                "lineHeight": 64.8
+            },
+            "Compact": {
+                "size": 36,
+                "lineHeight": 32.4
+            }
+        },
+        "stat": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1,
+            "Expanded": {
+                "size": 72,
+                "lineHeight": 68.4
+            },
+            "Compact": {
+                "size": 45,
+                "lineHeight": 42.75
+            }
+        },
+        "body": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1,
+            "Expanded": {
+                "size": 27,
+                "lineHeight": 31.05
+            },
+            "Compact": {
+                "size": 18,
+                "lineHeight": 20.7
+            }
+        },
+        "label": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1,
+            "Expanded": {
+                "size": 21,
+                "lineHeight": 24.15
+            },
+            "Compact": {
+                "size": 15,
+                "lineHeight": 17.25
+            }
+        },
+        "credit": {
+            "family": "Tinos",
+            "style": "italic",
+            "tracking": -1,
+            "Expanded": {
+                "size": 27,
+                "lineHeight": 29.16
+            },
+            "Compact": {
+                "size": 18,
+                "lineHeight": 19.44
+            }
+        },
+        "meta": {
+            "family": "Arimo",
+            "style": "normal",
+            "tracking": 0,
+            "Expanded": {
+                "size": 15,
+                "lineHeight": 18
+            },
+            "Compact": {
+                "size": 15,
+                "lineHeight": 18
+            }
+        }
+    },
+    "motion": {
+        "duration-fast": 120,
+        "duration-normal": 240,
+        "duration-slow": 800
+    },
+    "breakpoint": {
+        "xs": 320,
+        "sm": 640,
+        "md": 960,
+        "lg": 1280,
+        "xl": 1600,
+        "2xl": 1920
     }
 }

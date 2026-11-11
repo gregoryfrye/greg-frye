@@ -214,10 +214,14 @@ reusable treatment (one date style, one tag style) over a token for one element.
   `motion-fast|normal|slow`; reduced motion is honored globally
   (`kit/motion.md`).
 
-**Figma variables mirror the JSON.** File `19deN2JJWs7hvt12Z0neT4`.
+**Figma variables mirror the JSON.** File `19deN2JJWs7hvt12Z0neT4`:
+collections Primitives (hidden) · Semantic (color by job, aliased to
+primitives) · Page (Home / Inner) · Layout (Expanded / Compact: type role and
+legacy sizes) · Space; text styles `Role/<role>` bound to Layout; components
+on the Components page. Every variable's WEB code syntax is its CSS variable.
 Code is the source of truth for anything shipped; Figma is the record.
-`npm run tokens` prints the tokens resolved for Figma (Desktop 1280 / Mobile
-375, since Figma can't do `clamp`); `npm run tokens:check` compares them with
+`npm run tokens` prints the tokens resolved for Figma (Expanded 1280 /
+Compact 375, since Figma can't do `clamp`); `npm run tokens:check` compares them with
 `design/figma-variables.json` (an export of Figma's variables) and reports
 DRIFT, MISSING IN FIGMA, and FIGMA ONLY (an unshipped idea, not an error).
 Update Figma in the same session as a shipped change when possible; the

@@ -7,7 +7,7 @@
 //   node scripts/tokens.mjs --check <figma.json> compare a Figma variables export to code
 //
 // Figma can't do fluid type (clamp), so sizes resolve at two widths, matching
-// Figma frame sizes: Desktop = 1280px, Mobile = 375px. The Friday sync exports
+// Figma Layout modes: Expanded = 1280px, Compact = 375px. The Friday sync exports
 // Figma's variables to design/figma-variables.json and runs --check; any
 // mismatch means Figma is behind the live site (or holds an unshipped idea).
 // No dependencies, so it runs anywhere Node runs.
@@ -18,7 +18,7 @@ import path from "node:path";
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const KIT = JSON.parse(fs.readFileSync(path.join(ROOT, "kit/visual-system.json"), "utf8"));
 const OUT = path.join(ROOT, "app/tokens.css");
-const WIDTHS = { Desktop: 1280, Mobile: 375 };
+const WIDTHS = { Expanded: 1280, Compact: 375 };
 const REM = 16;
 
 const round = (n) => Math.round(n * 100) / 100;
@@ -155,7 +155,8 @@ function color(value) {
 export function resolveTokens() {
   const out = { color: {}, type: {}, space: {}, font: {}, role: {}, motion: {}, breakpoint: {} };
   for (const [k, v] of entries(KIT.semantic.color)) out.color[k] = color(colorOf(v.value));
-  for (const [k, v] of entries(P.fonts)) out.font[k] = v.split(",")[0].replace(/"/g, "").trim();
+  // First named family, skipping CSS generics like ui-monospace (Figma can't hold those)
+  for (const [k, v] of entries(P.fonts)) out.font[k] = v.split(",").map((f) => f.replace(/"/g, "").trim()).find((f) => !f.startsWith("ui-"));
   for (const [k, v] of entries(KIT.type.legacy)) {
     if (typeof v === "string") continue;
     for (const [mode, w] of Object.entries(WIDTHS)) {
@@ -164,7 +165,7 @@ export function resolveTokens() {
       out.type[k][mode] = { size, lineHeight: round(size * v.lineHeight) };
     }
   }
-  out.space["tracking-tight"] = px(KIT.type.legacy["tracking-tight"], WIDTHS.Desktop);
+  out.space["tracking-tight"] = px(KIT.type.legacy["tracking-tight"], WIDTHS.Expanded);
   for (const [k, v] of entries(KIT.layout.spacing)) out.space[k] = val(v);
   for (const [k, v] of entries(KIT.layout.containers)) out.space[`container-${k}`] = val(v);
   for (const [k, r] of entries(KIT.type.roles)) {
@@ -172,9 +173,9 @@ export function resolveTokens() {
     out.role[k] = {
       family: out.font[r.family],
       style: r.style ?? "normal",
-      tracking: px(r.tracking === "0" ? "0em" : r.tracking, WIDTHS.Desktop),
-      Desktop: { size: desktop, lineHeight: round(desktop * r.lineHeight) },
-      Mobile: { size: mobile, lineHeight: round(mobile * r.lineHeight) },
+      tracking: px(r.tracking === "0" ? "0em" : r.tracking, WIDTHS.Expanded),
+      Expanded: { size: desktop, lineHeight: round(desktop * r.lineHeight) },
+      Compact: { size: mobile, lineHeight: round(mobile * r.lineHeight) },
     };
   }
   for (const [k, v] of entries(KIT.motion.duration)) out.motion[`duration-${k}`] = v.value;
