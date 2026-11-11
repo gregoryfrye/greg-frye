@@ -14,6 +14,10 @@ The single source of truth for how the site looks and behaves. People browse it 
 | `motion.md` | Easing and duration, reduced motion |
 | `../CLAUDE.md` | Repo conventions, content model, copy tone (the voice file) |
 
+## Creative input
+
+References live on Greg's private Are.na channel **Frye** (link on the Frye Creative™ page in Notion). Borrow systems from references, not looks: the first pin, Infinite Garden, informed the role-based type and the purpose-named motion here.
+
 ## Read first, by job
 
 - **Copy or a new case study** → `../CLAUDE.md` (Content, Copy tone) → `type.md`
