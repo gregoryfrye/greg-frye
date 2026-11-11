@@ -2,6 +2,12 @@
 
 **Why roles.** Each role bundles family, weight, style, size, line height and tracking, so one class (`type-body`) carries the whole decision and a change lands everywhere that role appears. Roles are named by job, not size.
 
+**Typefaces.** Established before the scale:
+
+- **Serif · Times New Roman** (`--font-serif`) — primary. Everything: titles, statements, reading text, labels, credits. ITC Clearface once it has a web licence.
+- **Sans · Helvetica** (`--font-sans`) — dates only (`type-meta`).
+- **Mono · SF Mono** (`--font-mono`) — set up, not in use. Whether labels go mono is an open look decision for Greg.
+
 **Where.** Use `type-<role>` on any text. Sizes scale fluidly from the compact viewport (375) to the expanded one (1280). Values come from the 2026 Figma, frame `01_Client_1280`.
 
 | Role | Expanded / compact | Job |
@@ -15,8 +21,6 @@
 | `type-meta` | 15, sans, 1.2 | Dates (cards, roles): the standard date treatment |
 
 **Scale.** Sizes sit on Greg's scale: 6 9 12 15 18 21 27 36 45 54 72 90 108. (21 is the label step the Figma uses.) Compact sizes are provisional until the Visual Design Pass.
-
-**Families.** Serif (Times until ITC Clearface has a web licence) carries everything. Sans is for dates only. Mono is defined but unused: the Figma labels are serif, so whether labels go mono is a look decision for Greg.
 
 **Legacy.** `text-display`, `text-heading`, `text-body`, `text-caption` and `text-meta` are the pre-kit sizes still used by current components. The Visual Design Pass moves each component onto a role, then the legacy sizes are deleted. Don't use them in new work.
 
