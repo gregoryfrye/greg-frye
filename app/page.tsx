@@ -105,8 +105,8 @@ export default function Home() {
 
   return (
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
-      <section className="flex flex-col gap-gutter lg:flex-row lg:items-start lg:justify-between">
-        <div className="max-w-hero lg:flex-1">
+      <section className="flex flex-col gap-gutter md:flex-row md:items-start md:justify-between">
+        <div className="max-w-hero md:flex-1">
           <h1 className="text-left font-serif text-display tracking-tight text-ink">
             A whole-system creative director with 20 years channeling founder vision into a focused brand, product, and marketing function.
           </h1>
@@ -122,11 +122,11 @@ export default function Home() {
         </div>
 
         {activeClients.length > 0 && (
-          <section aria-labelledby="active-heading" className="lg:w-1/4 lg:shrink-0">
+          <section aria-labelledby="active-heading" className="md:w-1/4 md:shrink-0">
             <h2 id="active-heading" className="sr-only">
               Active projects
             </h2>
-            <ul className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:flex lg:flex-col">
+            <ul className="grid grid-cols-1 gap-gutter sm:grid-cols-2 md:flex md:flex-col">
               {activeClients.map((client) => {
                 const body = (
                   <>
@@ -143,7 +143,7 @@ export default function Home() {
                         alt=""
                         loading="eager"
                         decoding="async"
-                        className="aspect-video w-full object-contain lg:aspect-square"
+                        className="aspect-video w-full object-contain md:aspect-square"
                       />
                     ) : (
                       <p className="text-caption text-muted">{client.summary}</p>
@@ -186,7 +186,7 @@ export default function Home() {
         <section
           id="work"
           aria-labelledby="work-heading"
-          className="scroll-mt-40 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="scroll-mt-40 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-3"
         >
           <h2 id="work-heading" className="sr-only">
             Selected work

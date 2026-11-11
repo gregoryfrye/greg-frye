@@ -190,34 +190,38 @@ its whole body as spine, no closing section.
 
 ## Styling
 
-Tailwind design tokens only — type scale, spacing, color roles — defined in
-the `@theme` block in `app/globals.css`. Never hardcode a color, font size, or
-spacing value in a component. If a value doesn't have a token yet, add the
-token, don't inline the value.
+**Read `kit/readme.md` first.** Tokens live in `kit/visual-system.json`
+(primitives, color by job, layout, type roles, motion, line) and are generated
+into `app/tokens.css` by `npm run tokens:build`, which also runs before `dev`
+and `build`. Never hand-edit `tokens.css`, and never hardcode a color, size,
+spacing or duration in a component: add the token to the JSON with its `job`,
+regenerate, and explain it in the matching `kit/*.md` why-file. Prefer one
+reusable treatment (one date style, one tag style) over a token for one element.
 
-Current tokens (seeded from Greg's 2026 Figma, file `19deN2JJWs7hvt12Z0neT4`,
-newest frames on the right; nothing there is final):
+- Type: `type-<role>` bundles family, size, line height and tracking —
+  `title`, `display`, `stat`, `body`, `label`, `credit`, `meta` (`kit/type.md`).
+  The older `text-display` / `text-heading` / `text-body` / `text-caption` /
+  `text-meta` sizes are legacy: the Visual Design Pass moves components onto
+  roles, then deletes them.
+- Color: `canvas`, `canvas-home` (applied when the page's
+  `<main data-canvas="home">`), `ink`, `muted`, `faint`, `border`,
+  `placeholder` (`kit/color.md`).
+- Layout: Greg's breakpoints (`sm` 640, `md` 960, `lg` 1280 …; Tailwind's
+  defaults are replaced), 9px-rhythm spacing by job (`item`, `inline`,
+  `block`, `section`, `gutter`, `nav`), containers `max-w-wide` (1280),
+  `max-w-prose` (672), `max-w-hero` (768) (`kit/layout.md`).
+- Motion: `ease-standard|enter|exit|editorial` with
+  `motion-fast|normal|slow`; reduced motion is honored globally
+  (`kit/motion.md`).
 
-- Colors: `canvas` (white, inner pages), `canvas-home` (the homepage's brown
-  field, applied when the page's `<main data-canvas="home">`), `ink`, `muted`,
-  `border`
-- Fonts: `font-serif` (primary), `font-sans` (secondary)
-- Type scale: `text-display`, `text-heading`, `text-body`, `text-caption`
-- Spacing: `spacing-nav`, `spacing-gutter`
-- Containers: `container-wide` (`max-w-wide`, 1280px), `container-prose`
-  (`max-w-prose`, 672px), `container-hero` (`max-w-hero`, 768px, homepage
-  headline only)
-
-**Figma variables mirror these tokens.** The Figma file has local
-collections named after them: Color (the code's color roles), Page (Home /
-Inner modes: `background`, `text-muted`, mirroring `data-canvas="home"`),
-Type (Desktop 1280 / Mobile 375 modes, since Figma can't do `clamp`), Space,
-Font. Code is the source of truth for anything shipped; Figma is the record.
-`npm run tokens` prints the tokens resolved for Figma; `npm run tokens:check`
-compares them with `design/figma-variables.json` (an export of Figma's
-variables) and reports DRIFT, MISSING IN FIGMA, and FIGMA ONLY (an unshipped
-idea, not an error). Update Figma in the same session as a shipped change
-when possible; the Friday sync reconciles anything that slipped.
+**Figma variables mirror the JSON.** File `19deN2JJWs7hvt12Z0neT4`.
+Code is the source of truth for anything shipped; Figma is the record.
+`npm run tokens` prints the tokens resolved for Figma (Desktop 1280 / Mobile
+375, since Figma can't do `clamp`); `npm run tokens:check` compares them with
+`design/figma-variables.json` (an export of Figma's variables) and reports
+DRIFT, MISSING IN FIGMA, and FIGMA ONLY (an unshipped idea, not an error).
+Update Figma in the same session as a shipped change when possible; the
+Friday sync reconciles anything that slipped.
 
 **Two-container rule.** `max-w-wide` is for layout — anything with real
 horizontal structure: the hero, the featured strip, the roles index (its

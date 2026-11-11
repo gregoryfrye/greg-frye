@@ -138,7 +138,7 @@ export default async function ClientPage({
       {moreWork.length > 0 && (
         <section aria-label="More work" className="mt-20 border-t border-border pt-16">
           <h2 className="font-serif text-heading text-ink">More work</h2>
-          <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-4">
             {moreWork.map((other) => (
               <FeaturedCard
                 key={other.slug}
