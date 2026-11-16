@@ -27,7 +27,7 @@
 
 **Variants.** `type-<role>-<variant>` inherits its role and overrides only what differs (here: `body-lede`, `caption-credit`). Add a variant for a project-specific job before adding a role.
 
-**Scale.** Sizes sit on Greg's scale: 6 9 12 15 18 21 27 36 45 54 72 90 108. (21 is the label step the Figma uses.) Compact sizes are provisional until the Visual Design Pass.
+**Scale.** Type sizes step in 3s: 6 9 12 15 18 21 27 36 45 54 72 90 108. Multiples of 9 carry most of the system, and the in-between steps (6, 12, 15, 21) are just as valid for small text and labels. Spacing stays on the 9px rhythm (`kit/layout.md`). Compact sizes are provisional until the Visual Design Pass.
 
 **Legacy.** `text-display`, `text-heading`, `text-body`, `text-caption` and `text-meta` are the pre-kit sizes still used by current components. The Visual Design Pass moves each component onto a role, then the legacy sizes are deleted. Don't use them in new work.
 
