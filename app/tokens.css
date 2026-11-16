@@ -89,9 +89,6 @@
   --type-label-size: 0.9375rem;
   --type-label-line-height: 1.15;
   --type-label-tracking: -0.01em;
-  --type-label-action-size: 1.125rem;
-  --type-label-action-line-height: 1.15;
-  --type-label-action-tracking: -0.01em;
   --type-caption-size: 0.9375rem;
   --type-caption-line-height: 1.2;
   --type-caption-tracking: 0;
@@ -175,14 +172,6 @@
   font-size: var(--type-label-size);
   line-height: var(--type-label-line-height);
   letter-spacing: var(--type-label-tracking);
-  font-weight: 400;
-  font-style: normal;
-}
-@utility type-label-action {
-  font-family: var(--font-serif);
-  font-size: var(--type-label-action-size);
-  line-height: var(--type-label-action-line-height);
-  letter-spacing: var(--type-label-action-tracking);
   font-weight: 400;
   font-style: normal;
 }
