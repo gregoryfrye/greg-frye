@@ -90,6 +90,16 @@
                 "lineHeight": 23.4
             }
         },
+        "stat": {
+            "Expanded": {
+                "size": 72,
+                "lineHeight": 68.4
+            },
+            "Compact": {
+                "size": 45,
+                "lineHeight": 42.75
+            }
+        },
         "meta": {
             "Expanded": {
                 "size": 15,
@@ -124,7 +134,7 @@
         "display-alt": "ITC Clearface Std"
     },
     "role": {
-        "title": {
+        "display": {
             "family": "Times New Roman",
             "style": "normal",
             "tracking": -1.5,
@@ -137,7 +147,7 @@
                 "lineHeight": 48.6
             }
         },
-        "display": {
+        "headline": {
             "family": "Times New Roman",
             "style": "normal",
             "tracking": -1.5,
@@ -148,19 +158,6 @@
             "Compact": {
                 "size": 36,
                 "lineHeight": 32.4
-            }
-        },
-        "stat": {
-            "family": "Times New Roman",
-            "style": "normal",
-            "tracking": -1,
-            "Expanded": {
-                "size": 72,
-                "lineHeight": 68.4
-            },
-            "Compact": {
-                "size": 45,
-                "lineHeight": 42.75
             }
         },
         "body": {
@@ -189,20 +186,20 @@
                 "lineHeight": 17.25
             }
         },
-        "credit": {
+        "caption-credit": {
             "family": "Times New Roman",
             "style": "italic",
             "tracking": -1,
             "Expanded": {
-                "size": 27,
-                "lineHeight": 29.16
+                "size": 18,
+                "lineHeight": null
             },
             "Compact": {
                 "size": 18,
-                "lineHeight": 19.44
+                "lineHeight": null
             }
         },
-        "meta": {
+        "caption": {
             "family": "Helvetica",
             "style": "normal",
             "tracking": 0,
@@ -213,6 +210,45 @@
             "Compact": {
                 "size": 15,
                 "lineHeight": 18
+            }
+        },
+        "title": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1,
+            "Expanded": {
+                "size": 45,
+                "lineHeight": 47.25
+            },
+            "Compact": {
+                "size": 27,
+                "lineHeight": 28.35
+            }
+        },
+        "deck": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1,
+            "Expanded": {
+                "size": 36,
+                "lineHeight": 43.2
+            },
+            "Compact": {
+                "size": 21,
+                "lineHeight": 25.2
+            }
+        },
+        "body-lede": {
+            "family": "Tinos",
+            "style": "normal",
+            "tracking": -1,
+            "Expanded": {
+                "size": 36,
+                "lineHeight": 43.2
+            },
+            "Compact": {
+                "size": 21,
+                "lineHeight": 25.2
             }
         }
     },
