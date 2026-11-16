@@ -52,6 +52,7 @@
   --spacing-section: 2.8125rem; /* Section padding top and bottom */
   --spacing-marker: 3.375rem; /* Marker column in beat headers (the A / 04 before a label) */
   --spacing-masthead: 5.0625rem; /* Clearance under the fixed nav, for sticky elements and anchor targets */
+  --spacing-index: 6.1875rem; /* Marker column in numbered index lists (homepage services) */
 
   /* Containers — layout (wide) vs. reading measure (prose) */
   --container-wide: 80rem; /* Layout: anything with horizontal structure */

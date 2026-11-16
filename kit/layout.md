@@ -13,6 +13,7 @@
 | `gutter` | 27 | Page gutter and column gap |
 | `nav` | 27 | Nav padding |
 | `marker` | 54 | Marker column in beat headers (the A / 04 before a label) |
+| `index` | 99 | Marker column in numbered index lists (homepage services, Figma 00_Index) |
 | `masthead` | 81 | Clearance under the fixed nav: sticky `top-masthead`, anchors `scroll-mt-masthead` |
 
 Use them as Tailwind classes: `gap-item`, `mt-block`, `py-section`, `px-gutter`. Tailwind's numeric scale (`gap-2`, `mt-6`) is legacy and moves onto these in the Visual Design Pass.

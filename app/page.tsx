@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { FeaturedCard } from "@/app/components/featured-card";
+import { CollectionCard, type CollectionCardData } from "@/app/components/ui/collection-card";
+import { NumberedList } from "@/app/components/ui/numbered-list";
+import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import {
   COLLECTION_LABEL,
@@ -11,42 +13,32 @@ import {
   getCurrentRole,
   getFeaturedOnHome,
   getProjectCardImage,
+  getSkillBySlug,
   getSkillCardImage,
   type FeaturedEntity,
 } from "@/lib/content";
 
-type FeaturedCardData = {
-  key: string;
-  kind: FeaturedEntity["kind"];
-  type: string;
-  title: string;
-  summary: string;
-  href: string;
-  imageSrc?: string;
-};
-
-function toCardData(item: FeaturedEntity): FeaturedCardData | null {
+function toCardData(item: FeaturedEntity): CollectionCardData | null {
   switch (item.kind) {
-    case "client":
+    case "client": {
+      const image = getClientImages(item.client.slug)[0];
       return {
-        key: `client-${item.client.slug}`,
-        kind: item.kind,
-        type: "Client",
+        key: `client:${item.client.slug}`,
+        label: COLLECTION_LABEL.client,
+        years: item.client.years,
         title: item.client.name,
         summary: item.client.summary,
         href: `/work/${item.client.slug}`,
-        imageSrc: (() => {
-          const image = getClientImages(item.client.slug)[0];
-          return image ? `/content-images/clients/${item.client.slug}/images/${image}` : undefined;
-        })(),
+        imageSrc: image ? `/content-images/clients/${item.client.slug}/images/${image}` : undefined,
       };
+    }
     case "project": {
       if (!item.client) return null;
       const image = getProjectCardImage(item.project);
       return {
-        key: `project-${item.project.slug}`,
-        kind: item.kind,
-        type: "Project",
+        key: `project:${item.client.slug}/${item.project.slug}`,
+        label: COLLECTION_LABEL.project,
+        years: item.project.year,
         title: item.project.title,
         summary: item.project.summary,
         href: `/work/${item.client.slug}`,
@@ -58,9 +50,8 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
     case "skill": {
       const image = getSkillCardImage(item.skill);
       return {
-        key: `skill-${item.skill.slug}`,
-        kind: item.kind,
-        type: "Skill",
+        key: `skill:${item.skill.slug}`,
+        label: COLLECTION_LABEL.skill,
         title: item.skill.name,
         summary: item.skill.summary,
         href: `/skills/${item.skill.slug}`,
@@ -71,12 +62,13 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
       if (!item.client) return null;
       const image = getArtifactCardImage(item.artifact);
       return {
-        key: `artifact-${item.artifact.slug}`,
-        kind: item.kind,
-        type: "Artifact",
+        key: `artifact:${item.artifact.fullSlug}`,
+        label: COLLECTION_LABEL.artifact,
+        years: item.artifact.year,
         title: item.artifact.title,
         summary: item.artifact.summary,
-        href: `/work/${item.client.slug}`,
+        href: item.artifact.url ?? `/work/${item.client.slug}`,
+        external: Boolean(item.artifact.url),
         imageSrc: image
           ? `/content-images/clients/${item.artifact.client}/projects/${item.artifact.project}/artifacts/${item.artifact.slug}/images/${image}`
           : undefined,
@@ -85,9 +77,8 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
     case "study": {
       if (!item.client) return null;
       return {
-        key: `study-${item.study.slug}`,
-        kind: item.kind,
-        type: "Study",
+        key: `study:${item.study.slug}`,
+        label: COLLECTION_LABEL.study,
         title: item.study.title,
         summary: item.study.summary,
         href: `/work/${item.client.slug}`,
@@ -99,110 +90,56 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
 export default function Home() {
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
-  const activeItems = getActiveItems();
-  const featuredCards = getFeaturedOnHome()
+
+  // One row of work: the latest (Active) first, then the featured picks.
+  const latest: CollectionCardData[] = getActiveItems().map((item) => ({
+    key: item.key,
+    label: COLLECTION_LABEL[item.kind],
+    years: item.years,
+    title: item.title,
+    summary: item.summary,
+    imageSrc: item.imageSrc,
+    href: item.href,
+    external: item.external,
+  }));
+  const featured = getFeaturedOnHome()
     .map(toCardData)
-    .filter((card): card is FeaturedCardData => card !== null);
+    .filter((card): card is CollectionCardData => card !== null);
+  const seen = new Set<string>();
+  const cards = [...latest, ...featured].filter((card) => !seen.has(card.key) && seen.add(card.key));
+
+  const services = (currentRole?.skills ?? [])
+    .map((slug) => getSkillBySlug(slug))
+    .filter((skill): skill is NonNullable<typeof skill> => skill !== null)
+    .map((skill) => ({ label: skill.name, href: `/skills/${skill.slug}` }));
 
   return (
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
-      <section className="flex flex-col gap-gutter md:flex-row md:items-start md:justify-between">
-        <div className="max-w-hero md:flex-1">
-          <h1 className="text-left font-serif text-display tracking-tight text-ink">
-            A whole-system creative director with 20 years channeling founder vision into a focused brand, product, and marketing function.
+      <section className="grid grid-cols-1 items-start gap-gutter md:grid-cols-3">
+        <div className="md:col-span-2">
+          <h1 className="font-display-alt text-display tracking-tight text-ink">
+            A whole-system creative director with 20 years channeling founder vision into focused teams, brands,
+            products, and functions.
           </h1>
-          <p className="mt-6 max-w-prose text-body text-ink">
-            Twenty years across brand, product, marketing and production,
-            starting at a print shop in New Hampshire. Now one practice, backed
-            by my own agent workflows: a creative partner for founders and small
-            teams.
-          </p>
+          <div className="mt-block">
+            <TextLink href="/#info">More Information</TextLink>
+          </div>
         </div>
-
-        {activeItems.length > 0 && (
-          <section aria-labelledby="active-heading" className="md:w-1/4 md:shrink-0">
-            <h2 id="active-heading" className="sr-only">
-              Active work
-            </h2>
-            <ul className="grid grid-cols-1 gap-gutter sm:grid-cols-2 md:flex md:flex-col">
-              {activeItems.map((item) => {
-                const body = (
-                  <>
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="border border-border px-4 py-1 text-body text-ink">{COLLECTION_LABEL[item.kind]}</span>
-                      {item.years && <span className="font-sans text-meta text-ink">{item.years}</span>}
-                    </div>
-                    {item.imageSrc ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.imageSrc} alt="" loading="eager" decoding="async" className="h-auto w-full" />
-                    ) : (
-                      <p className="text-caption text-muted">{item.summary}</p>
-                    )}
-                    <span className="text-body text-ink underline decoration-transparent underline-offset-4 group-hover:decoration-ink">
-                      {item.title} →
-                    </span>
-                  </>
-                );
-                const cardClass = "group flex flex-col gap-4.5 border border-border p-4.5";
-                return (
-                  <li key={item.key}>
-                    {item.href && item.external ? (
-                      <a href={item.href} className={cardClass}>
-                        {body}
-                      </a>
-                    ) : item.href ? (
-                      <Link href={item.href} className={cardClass}>
-                        {body}
-                      </Link>
-                    ) : (
-                      <div className={cardClass}>{body}</div>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        )}
-
-        {currentRole && currentRole.skills.length > 0 && (
-          <nav aria-label="Services" className="shrink-0">
-            <h2 className="text-caption tracking-tight text-muted uppercase">Services</h2>
-            <SkillList skills={currentRole.skills} label="Services" className="mt-3" />
-          </nav>
-        )}
+        {services.length > 0 && <NumberedList items={services} label="Services" />}
       </section>
 
-      {featuredCards.length > 0 && (
+      {cards.length > 0 && (
         <section
           id="work"
           aria-labelledby="work-heading"
-          className="scroll-mt-40 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-3"
+          className="scroll-mt-40 grid grid-cols-1 items-start gap-gutter sm:grid-cols-2 md:grid-cols-3"
         >
           <h2 id="work-heading" className="sr-only">
             Selected work
           </h2>
-          {featuredCards.map((card) =>
-            card.kind === "client" ? (
-              <div key={card.key}>
-                <FeaturedCard
-                  type={card.type}
-                  title={card.title}
-                  summary={card.summary}
-                  href={card.href}
-                  imageSrc={card.imageSrc}
-                />
-              </div>
-            ) : (
-              <div key={card.key}>
-                <Link
-                  href={card.href}
-                  className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
-                >
-                  {card.title}
-                </Link>
-              </div>
-            ),
-          )}
+          {cards.map((card) => (
+            <CollectionCard key={card.key} {...card} />
+          ))}
         </section>
       )}
 

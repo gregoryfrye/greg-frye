@@ -126,6 +126,10 @@
       "masthead": {
         "value": 81,
         "job": "Clearance under the fixed nav, for sticky elements and anchor targets"
+      },
+      "index": {
+        "value": 99,
+        "job": "Marker column in numbered index lists (homepage services)"
       }
     },
     "containers": {

@@ -67,7 +67,7 @@ reference from a study as ambiguous.
   optional `featuredOnHome`, optional `projects` (short-form slugs, in
   **authored display order** — a project on disk but missing here, or vice
   versa, is a `validateContentGraph` warning), optional `active` + `url`
-  (ongoing work: a small card in the homepage's Active column, linking to
+  (latest work: a card at the front of the homepage's work row, linking to
   the project's own live site — shown even while the case study is a draft,
   without a link to the hidden page).
 - **Projects** — `/content/clients/<client>/projects/<slug>/index.mdx` +
@@ -89,13 +89,16 @@ reference from a study as ambiguous.
   `/content/clients/<client>/projects/<project>/artifacts/<slug>/index.mdx`
   + `/images`. Frontmatter: `title`, `type`, `summary`, optional
   `featuredImage`, optional `featuredOnHome`, optional `active` + `year` +
-  `url` (a card in the homepage's Active column, linking to `url`, or to its
+  `url` (a card at the front of the homepage's work row, linking to `url`, or to its
   client's case study when there's no `url`).
 
-**Homepage Active column.** `getActiveItems()` gathers clients and artifacts
-flagged `active: true`, clients first. Each card's boxed label names its
+**Homepage work row.** One row of `CollectionCard`s: the latest first
+(`getActiveItems()`: clients and artifacts flagged `active: true`), then the
+`featuredOnHome` picks, deduplicated. Each card's boxed label names its
 collection from `COLLECTION_LABEL` in `lib/content.ts` (Clients, Artifacts …,
 mirroring the `/content` folder names); the date top right carries recency.
+The hero above it is the headline (alt header face) plus the current role's
+services as a numbered index.
 
 Image filenames are prefixed `01-`, `02-`, etc. — prefix order is display
 order; `lib/content.ts` sorts each `/images` folder by filename. Clients,
