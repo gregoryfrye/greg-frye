@@ -50,7 +50,7 @@
       "serif": "\"Times New Roman\", Times, serif",
       "sans": "Helvetica, \"Helvetica Neue\", Arial, sans-serif",
       "mono": "\"GT America Mono\", ui-monospace, \"SF Mono\", Menlo, monospace",
-      "display-alt": "\"ITC Clearface\", \"Times New Roman\", Times, serif"
+      "display-alt": "\"ITC Clearface Std\", \"ITC Clearface\", \"Times New Roman\", Times, serif"
     },
     "viewport": {
       "compact": 375,
