@@ -38,7 +38,7 @@ export function Beat({
   const heading = (
     <>
       <BeatHeader marker={marker} label={label} />
-      <h2 className="mt-block type-display text-ink">{statement}</h2>
+      <h2 className="mt-block type-headline text-ink">{statement}</h2>
     </>
   );
   const body = children ? <div className="type-body text-ink [&>*+*]:mt-block">{children}</div> : null;

@@ -23,7 +23,7 @@ export function CaseHero({
   return (
     <header className="grid grid-cols-1 gap-x-gutter gap-y-section md:grid-cols-4">
       <div className="md:col-span-2 md:col-start-2">
-        <h1 className="text-center type-title text-ink">{title}</h1>
+        <h1 className="text-center type-display text-ink">{title}</h1>
         {image && <Figure {...image} className="mt-block" />}
         {lede && <p className="mx-auto mt-block max-w-prose text-center type-body text-ink">{lede}</p>}
       </div>

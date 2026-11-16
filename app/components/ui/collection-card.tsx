@@ -22,7 +22,7 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
     <>
       <div className="flex items-start justify-between gap-inline">
         <span className="border border-border px-inline py-item type-label text-ink">{label}</span>
-        {years && <span className="text-right type-meta text-ink">{years}</span>}
+        {years && <span className="text-right type-caption text-ink">{years}</span>}
       </div>
       {imageSrc ? (
         // Plain <img>: natural aspect ratio, served at size by the content-images route.

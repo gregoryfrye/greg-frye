@@ -31,6 +31,12 @@ const entries = (o) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
 const P = KIT.primitives;
 const colorOf = (name) => P.color[name] ?? P.alpha[name] ?? (() => { throw new Error(`Unknown color primitive: ${name}`); })();
 
+/** Roles plus their variants, flattened: [name, resolved role]. A variant inherits everything it doesn't override. */
+const ROLES = entries(KIT.type.roles).flatMap(([k, r]) => [
+  [k, r],
+  ...Object.entries(r.variants ?? {}).map(([v, o]) => [`${k}-${v}`, { ...r, ...o, variants: undefined }]),
+]);
+
 /** Compact sizes apply below this breakpoint, expanded at and above it (Greg's grid switch). */
 const SWITCH = P.breakpoints.md;
 
@@ -76,7 +82,7 @@ function css() {
   t("");
   t(":root {");
   t(`  /* Type roles: compact sizes, stepping to expanded at ${SWITCH}px (kit/type.md) */`);
-  for (const [k, r] of entries(KIT.type.roles)) {
+  for (const [k, r] of ROLES) {
     t(`  --type-${k}-size: ${rem(r.size[0])};`);
     t(`  --type-${k}-line-height: ${r.lineHeight};`);
     t(`  --type-${k}-tracking: ${r.tracking};`);
@@ -91,12 +97,12 @@ function css() {
   t(`/* Expanded: type steps up at the ${SWITCH}px switch (Figma Layout mode "Expanded") */`);
   t(`@media (min-width: ${rem(SWITCH)}) {`);
   t("  :root {");
-  for (const [k, r] of entries(KIT.type.roles)) if (r.size[0] !== r.size[1]) t(`    --type-${k}-size: ${rem(r.size[1])};`);
+  for (const [k, r] of ROLES) if (r.size[0] !== r.size[1]) t(`    --type-${k}-size: ${rem(r.size[1])};`);
   t("  }");
   t("}");
   t("");
   t("/* type-<role>: the whole bundle in one class */");
-  for (const [k, r] of entries(KIT.type.roles)) {
+  for (const [k, r] of ROLES) {
     t(`@utility type-${k} {`);
     t(`  font-family: var(--font-${r.family});`);
     t(`  font-size: var(--type-${k}-size);`);
@@ -169,7 +175,7 @@ export function resolveTokens() {
   out.space["tracking-tight"] = px(KIT.type.legacy["tracking-tight"], WIDTHS.Expanded);
   for (const [k, v] of entries(KIT.layout.spacing)) out.space[k] = val(v);
   for (const [k, v] of entries(KIT.layout.containers)) out.space[`container-${k}`] = val(v);
-  for (const [k, r] of entries(KIT.type.roles)) {
+  for (const [k, r] of ROLES) {
     const [mobile, desktop] = r.size;
     out.role[k] = {
       family: out.font[r.family],

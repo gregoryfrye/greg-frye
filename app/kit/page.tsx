@@ -31,13 +31,15 @@ const COLOR_CLASS: Record<string, string> = {
   placeholder: "bg-placeholder",
 };
 const TYPE_CLASS: Record<string, string> = {
-  title: "type-title",
   display: "type-display",
-  stat: "type-stat",
+  headline: "type-headline",
+  title: "type-title",
+  deck: "type-deck",
   body: "type-body",
+  "body-lede": "type-body-lede",
   label: "type-label",
-  credit: "type-credit",
-  meta: "type-meta",
+  caption: "type-caption",
+  "caption-credit": "type-caption-credit",
 };
 const SPACE_CLASS: Record<string, string> = {
   item: "w-item",
@@ -61,6 +63,22 @@ const DURATION_CLASS: Record<string, string> = {
   slow: "motion-slow",
 };
 
+const SAMPLE: Record<string, string> = {
+  display: "Hudson Hemp",
+  headline: "17 SKUs, $500k a month",
+  title: "Prophetic Branding",
+  deck: "Zero-to-one brand vision for a regenerative farm entering a new market.",
+  "body-lede": "New York legalized adult-use cannabis before the category had a language.",
+  label: "Complication",
+  caption: "2022–2025",
+  "caption-credit": "© Adam Whyte, 2023",
+};
+type RoleSpec = { family: string; size: number[]; lineHeight: number; job: string; variants?: Record<string, Partial<RoleSpec>> };
+const typeRows: [string, RoleSpec][] = Object.entries(kit.type.roles as Record<string, RoleSpec>).flatMap(([k, r]) => [
+  [k, r] as [string, RoleSpec],
+  ...Object.entries(r.variants ?? {}).map(([v, o]) => [`${k}-${v}`, { ...r, ...o } as RoleSpec] as [string, RoleSpec]),
+]);
+
 const img = (file: string) => `/content-images/clients/hudson-cannabis/images/${file}`;
 const rows = <T,>(o: Record<string, T>) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
 
@@ -79,7 +97,7 @@ export default function KitPage() {
   return (
     <main className="mx-auto flex w-full max-w-wide flex-col gap-section px-gutter pt-masthead pb-section">
       <header className="pt-section">
-        <h1 className="type-display text-ink">Kit</h1>
+        <h1 className="type-headline text-ink">Kit</h1>
         <p className="mt-block max-w-prose type-body text-muted">
           Every token and component, read from kit/visual-system.json. Hidden on gregfrye.us. Start at kit/readme.md.
         </p>
@@ -91,7 +109,7 @@ export default function KitPage() {
             <li key={name}>
               <div className={`aspect-square border border-border ${COLOR_CLASS[name] ?? ""}`} />
               <p className="mt-item type-label text-ink">{name}</p>
-              <p className="type-meta text-muted">{c.job}</p>
+              <p className="type-caption text-muted">{c.job}</p>
             </li>
           ))}
         </ul>
@@ -99,17 +117,17 @@ export default function KitPage() {
 
       <KitSection title="Type — roles">
         <ul className="flex flex-col gap-block">
-          {rows(kit.type.roles).map(([name, r]) => (
+          {typeRows.map(([name, r]) => (
             <li key={name} className="grid grid-cols-1 gap-x-gutter gap-y-item border-b border-border pb-block md:grid-cols-4">
               <div>
                 <p className="type-label text-ink">type-{name}</p>
-                <p className="type-meta text-muted">
+                <p className="type-caption text-muted">
                   {r.size[1]} / {r.size[0]} · {r.family} · {r.lineHeight}
                 </p>
-                <p className="type-meta text-muted">{r.job}</p>
+                <p className="type-caption text-muted">{r.job}</p>
               </div>
               <p className={`md:col-span-3 text-ink ${TYPE_CLASS[name] ?? ""}`}>
-                {name === "meta" ? "2022–2025" : name === "credit" ? "© Adam Whyte, 2023" : name === "stat" ? "$500k" : "A farm entering a market with no rules."}
+                {SAMPLE[name] ?? "A farm entering a market with no rules."}
               </p>
             </li>
           ))}
@@ -124,7 +142,7 @@ export default function KitPage() {
               <span className="type-label text-ink">
                 {name} · {s.value}
               </span>
-              <span className="type-meta text-muted">{s.job}</span>
+              <span className="type-caption text-muted">{s.job}</span>
             </li>
           ))}
         </ul>
@@ -141,7 +159,7 @@ export default function KitPage() {
                 <span className="ml-masthead type-label text-ink">
                   ease-{name} · motion-{dur}
                 </span>
-                <span className="type-meta text-muted">{e.job}</span>
+                <span className="type-caption text-muted">{e.job}</span>
               </li>
             )),
           )}
@@ -150,7 +168,7 @@ export default function KitPage() {
 
       <KitSection title="Line">
         <div className="rule" />
-        <p className="mt-item type-meta text-muted">{kit.line.weight.job}</p>
+        <p className="mt-item type-caption text-muted">{kit.line.weight.job}</p>
       </KitSection>
 
       <KitSection title="Components">
@@ -163,7 +181,7 @@ export default function KitPage() {
           <div className="flex flex-col gap-block">
             <Stat value="17" label="SKUs to market" />
             <TextLink href="/work/hudson-cannabis">More Information</TextLink>
-            <p className="type-meta text-ink">2022–2025</p>
+            <p className="type-caption text-ink">2022–2025</p>
             <SkillList skills={["narrative-strategy", "brand-identity", "product-development"]} label="Skills" />
           </div>
           <div className="flex flex-col gap-block">

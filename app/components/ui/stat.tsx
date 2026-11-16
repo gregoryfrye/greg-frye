@@ -2,7 +2,7 @@
 export function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center">
-      <p className="type-stat text-ink">{value}</p>
+      <p className="type-headline text-ink">{value}</p>
       <p className="mt-item type-label text-ink">{label}</p>
     </div>
   );

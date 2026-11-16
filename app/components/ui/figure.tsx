@@ -26,7 +26,7 @@ export function Figure({
           <p className="type-label text-muted">{alt}</p>
         </div>
       )}
-      {credit && <figcaption className="mt-item type-credit text-ink">{credit}</figcaption>}
+      {credit && <figcaption className="mt-item type-caption-credit text-ink">{credit}</figcaption>}
     </figure>
   );
 }

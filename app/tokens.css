@@ -68,27 +68,33 @@
 
 :root {
   /* Type roles: compact sizes, stepping to expanded at 960px (kit/type.md) */
-  --type-title-size: 3.375rem;
-  --type-title-line-height: 0.9;
-  --type-title-tracking: -0.015em;
-  --type-display-size: 2.25rem;
+  --type-display-size: 3.375rem;
   --type-display-line-height: 0.9;
   --type-display-tracking: -0.015em;
-  --type-stat-size: 2.8125rem;
-  --type-stat-line-height: 0.95;
-  --type-stat-tracking: -0.01em;
+  --type-headline-size: 2.25rem;
+  --type-headline-line-height: 0.9;
+  --type-headline-tracking: -0.015em;
+  --type-title-size: 1.6875rem;
+  --type-title-line-height: 1.05;
+  --type-title-tracking: -0.01em;
+  --type-deck-size: 1.3125rem;
+  --type-deck-line-height: 1.2;
+  --type-deck-tracking: -0.01em;
   --type-body-size: 1.125rem;
   --type-body-line-height: 1.15;
   --type-body-tracking: -0.01em;
+  --type-body-lede-size: 1.3125rem;
+  --type-body-lede-line-height: 1.2;
+  --type-body-lede-tracking: -0.01em;
   --type-label-size: 0.9375rem;
   --type-label-line-height: 1.15;
   --type-label-tracking: -0.01em;
-  --type-credit-size: 1.125rem;
-  --type-credit-line-height: 1.08;
-  --type-credit-tracking: -0.01em;
-  --type-meta-size: 0.9375rem;
-  --type-meta-line-height: 1.2;
-  --type-meta-tracking: 0;
+  --type-caption-size: 0.9375rem;
+  --type-caption-line-height: 1.2;
+  --type-caption-tracking: 0;
+  --type-caption-credit-size: 1.125rem;
+  --type-caption-credit-line-height: 1.08;
+  --type-caption-credit-tracking: -0.01em;
 
   /* Durations */
   --duration-fast: 120ms; /* Hover, focus, small UI */
@@ -101,24 +107,18 @@
 /* Expanded: type steps up at the 960px switch (Figma Layout mode "Expanded") */
 @media (min-width: 60rem) {
   :root {
-    --type-title-size: 6.75rem;
-    --type-display-size: 4.5rem;
-    --type-stat-size: 4.5rem;
+    --type-display-size: 6.75rem;
+    --type-headline-size: 4.5rem;
+    --type-title-size: 2.8125rem;
+    --type-deck-size: 2.25rem;
     --type-body-size: 1.6875rem;
+    --type-body-lede-size: 2.25rem;
     --type-label-size: 1.3125rem;
-    --type-credit-size: 1.6875rem;
+    --type-caption-credit-size: 1.6875rem;
   }
 }
 
 /* type-<role>: the whole bundle in one class */
-@utility type-title {
-  font-family: var(--font-serif);
-  font-size: var(--type-title-size);
-  line-height: var(--type-title-line-height);
-  letter-spacing: var(--type-title-tracking);
-  font-weight: 400;
-  font-style: normal;
-}
 @utility type-display {
   font-family: var(--font-serif);
   font-size: var(--type-display-size);
@@ -127,11 +127,27 @@
   font-weight: 400;
   font-style: normal;
 }
-@utility type-stat {
+@utility type-headline {
   font-family: var(--font-serif);
-  font-size: var(--type-stat-size);
-  line-height: var(--type-stat-line-height);
-  letter-spacing: var(--type-stat-tracking);
+  font-size: var(--type-headline-size);
+  line-height: var(--type-headline-line-height);
+  letter-spacing: var(--type-headline-tracking);
+  font-weight: 400;
+  font-style: normal;
+}
+@utility type-title {
+  font-family: var(--font-serif);
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-line-height);
+  letter-spacing: var(--type-title-tracking);
+  font-weight: 400;
+  font-style: normal;
+}
+@utility type-deck {
+  font-family: var(--font-serif);
+  font-size: var(--type-deck-size);
+  line-height: var(--type-deck-line-height);
+  letter-spacing: var(--type-deck-tracking);
   font-weight: 400;
   font-style: normal;
 }
@@ -143,6 +159,14 @@
   font-weight: 400;
   font-style: normal;
 }
+@utility type-body-lede {
+  font-family: var(--font-serif);
+  font-size: var(--type-body-lede-size);
+  line-height: var(--type-body-lede-line-height);
+  letter-spacing: var(--type-body-lede-tracking);
+  font-weight: 400;
+  font-style: normal;
+}
 @utility type-label {
   font-family: var(--font-serif);
   font-size: var(--type-label-size);
@@ -151,21 +175,21 @@
   font-weight: 400;
   font-style: normal;
 }
-@utility type-credit {
-  font-family: var(--font-serif);
-  font-size: var(--type-credit-size);
-  line-height: var(--type-credit-line-height);
-  letter-spacing: var(--type-credit-tracking);
-  font-weight: 400;
-  font-style: italic;
-}
-@utility type-meta {
+@utility type-caption {
   font-family: var(--font-sans);
-  font-size: var(--type-meta-size);
-  line-height: var(--type-meta-line-height);
-  letter-spacing: var(--type-meta-tracking);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line-height);
+  letter-spacing: var(--type-caption-tracking);
   font-weight: 400;
   font-style: normal;
+}
+@utility type-caption-credit {
+  font-family: var(--font-serif);
+  font-size: var(--type-caption-credit-size);
+  line-height: var(--type-caption-credit-line-height);
+  letter-spacing: var(--type-caption-credit-tracking);
+  font-weight: 400;
+  font-style: italic;
 }
 
 /* motion-<duration>: pair with ease-<purpose> and transition-<property> */

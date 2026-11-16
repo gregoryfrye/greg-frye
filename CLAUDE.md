@@ -208,8 +208,11 @@ spacing or duration in a component: add the token to the JSON with its `job`,
 regenerate, and explain it in the matching `kit/*.md` why-file. Prefer one
 reusable treatment (one date style, one tag style) over a token for one element.
 
-- Type: `type-<role>` bundles family, size, line height and tracking —
-  `title`, `display`, `stat`, `body`, `label`, `credit`, `meta` (`kit/type.md`).
+- Type: `type-<role>` bundles family, size, line height and tracking. Core
+  roles shared across Greg's projects: `display`, `headline`, `title`,
+  `deck`, `body`, `label`, `caption`, plus variants (`body-lede`,
+  `caption-credit`). Named by tier and job, never by HTML heading level
+  (`kit/type.md`).
   The older `text-display` / `text-heading` / `text-body` / `text-caption` /
   `text-meta` sizes are legacy: the Visual Design Pass moves components onto
   roles, then deletes them.

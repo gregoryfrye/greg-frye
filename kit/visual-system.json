@@ -148,9 +148,9 @@
     }
   },
   "type": {
-    "$about": "Roles bundle family, weight, style, size, line height and tracking. Sizes are px [compact, expanded]: compact below md (960), stepping to expanded at md and up, matching Figma's Layout modes. Compact sizes are provisional until the Visual Design Pass.",
+    "$about": "Core roles shared across Greg's projects (site-design-pipeline): display, headline, title, deck, body, label, caption. Each bundles family, weight, style, size, line height and tracking. Sizes are px [compact, expanded]: compact below md (960), expanded at md and up, matching Figma's Layout modes. Variants (type-<role>-<variant>) override only what differs. Compact sizes are provisional until the Visual Design Pass.",
     "roles": {
-      "title": {
+      "display": {
         "family": "serif",
         "size": [
           54,
@@ -158,9 +158,9 @@
         ],
         "lineHeight": 0.9,
         "tracking": "-0.015em",
-        "job": "Case study name"
+        "job": "The biggest, about one per page: case study name, hero"
       },
-      "display": {
+      "headline": {
         "family": "serif",
         "size": [
           36,
@@ -168,17 +168,27 @@
         ],
         "lineHeight": 0.9,
         "tracking": "-0.015em",
-        "job": "Big statements in the spine"
+        "job": "Big statements and section openers; stat figures"
       },
-      "stat": {
+      "title": {
         "family": "serif",
         "size": [
-          45,
-          72
+          27,
+          45
         ],
-        "lineHeight": 0.95,
+        "lineHeight": 1.05,
         "tracking": "-0.01em",
-        "job": "Stat figures"
+        "job": "Card and block titles"
+      },
+      "deck": {
+        "family": "serif",
+        "size": [
+          21,
+          36
+        ],
+        "lineHeight": 1.2,
+        "tracking": "-0.01em",
+        "job": "Summary line under a title"
       },
       "body": {
         "family": "serif",
@@ -188,7 +198,17 @@
         ],
         "lineHeight": 1.15,
         "tracking": "-0.01em",
-        "job": "Reading text and ledes"
+        "job": "Reading text",
+        "variants": {
+          "lede": {
+            "size": [
+              21,
+              36
+            ],
+            "lineHeight": 1.2,
+            "job": "A larger first paragraph, when a piece opens without a deck"
+          }
+        }
       },
       "label": {
         "family": "serif",
@@ -198,20 +218,9 @@
         ],
         "lineHeight": 1.15,
         "tracking": "-0.01em",
-        "job": "Nav, chapter index, beat labels, stat captions"
+        "job": "Nav, index, markers, buttons, stat captions"
       },
-      "credit": {
-        "family": "serif",
-        "style": "italic",
-        "size": [
-          18,
-          27
-        ],
-        "lineHeight": 1.08,
-        "tracking": "-0.01em",
-        "job": "Photo and project credits"
-      },
-      "meta": {
+      "caption": {
         "family": "sans",
         "size": [
           15,
@@ -219,7 +228,20 @@
         ],
         "lineHeight": 1.2,
         "tracking": "0",
-        "job": "Dates (cards, roles)"
+        "job": "Dates and small notes: the standard date treatment",
+        "variants": {
+          "credit": {
+            "family": "serif",
+            "style": "italic",
+            "size": [
+              18,
+              27
+            ],
+            "lineHeight": 1.08,
+            "tracking": "-0.01em",
+            "job": "Photo and project credits"
+          }
+        }
       }
     },
     "legacy": {
