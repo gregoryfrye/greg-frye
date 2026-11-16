@@ -88,7 +88,14 @@ reference from a study as ambiguous.
 - **Artifacts** (outputs) —
   `/content/clients/<client>/projects/<project>/artifacts/<slug>/index.mdx`
   + `/images`. Frontmatter: `title`, `type`, `summary`, optional
-  `featuredImage`, optional `featuredOnHome`.
+  `featuredImage`, optional `featuredOnHome`, optional `active` + `year` +
+  `url` (a card in the homepage's Active column, linking to `url`, or to its
+  client's case study when there's no `url`).
+
+**Homepage Active column.** `getActiveItems()` gathers clients and artifacts
+flagged `active: true`, clients first. Each card's boxed label names its
+collection from `COLLECTION_LABEL` in `lib/content.ts` (Clients, Artifacts …,
+mirroring the `/content` folder names); the date top right carries recency.
 
 Image filenames are prefixed `01-`, `02-`, etc. — prefix order is display
 order; `lib/content.ts` sorts each `/images` folder by filename. Clients,

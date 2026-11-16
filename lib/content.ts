@@ -128,9 +128,14 @@ export type Artifact = {
   /** Filename within this artifact's /images folder. */
   featuredImage?: string;
   featuredOnHome?: boolean;
+  /** Shown in the homepage's Active column, even while its client's case study is a draft. */
+  active?: boolean;
+  /** Year (or range) shown on its card. */
+  year?: string;
+  /** Where its card links when set (e.g. the live thing). */
+  url?: string;
 };
 
-/** One entry in the homepage's featuredOnHome strip, normalized across types. */
 /**
  * Front-end name for each level of the content model, mirroring the
  * /content collection names. Cards label what they pull in with these, so a
@@ -146,6 +151,7 @@ export const COLLECTION_LABEL = {
 } as const;
 export type CollectionKind = keyof typeof COLLECTION_LABEL;
 
+/** One entry in the homepage's featuredOnHome strip, normalized across types. */
 export type FeaturedEntity =
   | { kind: "client"; client: Client }
   | { kind: "project"; project: Project; client: Client | null }
@@ -314,6 +320,61 @@ export function getActiveClients(): ActiveClient[] {
     .filter((client): client is ActiveClient => client !== null);
 }
 
+/** One card in the homepage's Active column, from any collection that can be active. */
+export type ActiveItem = {
+  key: string;
+  kind: CollectionKind;
+  title: string;
+  summary: string;
+  years?: string;
+  imageSrc?: string;
+  href?: string;
+  external: boolean;
+};
+
+/**
+ * The Active column: clients and artifacts flagged `active: true`, clients
+ * first. Walks the folders directly so an active item still shows while its
+ * client's case study is a draft. Links: a visible case study page → the
+ * item's `url` (external) → no link.
+ */
+export function getActiveItems(): ActiveItem[] {
+  const items: ActiveItem[] = getActiveClients().map((c) => ({
+    key: `client:${c.slug}`,
+    kind: "client",
+    title: c.name,
+    summary: c.summary,
+    years: c.years,
+    imageSrc: c.imageSrc,
+    href: c.hasPage ? `/work/${c.slug}` : c.url,
+    external: !c.hasPage && Boolean(c.url),
+  }));
+  for (const clientSlug of listFolderSlugs(CLIENTS_DIR)) {
+    const clientData = readMdx(path.join(CLIENTS_DIR, clientSlug, "index.mdx"))?.data;
+    const clientHasPage = Boolean(clientData) && (!clientData?.draft || SHOW_DRAFTS);
+    for (const projectSlug of listFolderSlugs(projectsDirFor(clientSlug))) {
+      for (const artifactSlug of listFolderSlugs(artifactsDirFor(clientSlug, projectSlug))) {
+        const a = readArtifact(clientSlug, projectSlug, artifactSlug);
+        if (!a?.active) continue;
+        const image = getArtifactCardImage(a);
+        items.push({
+          key: `artifact:${a.fullSlug}`,
+          kind: "artifact",
+          title: a.title,
+          summary: a.summary,
+          years: a.year,
+          imageSrc: image
+            ? `/content-images/clients/${clientSlug}/projects/${projectSlug}/artifacts/${artifactSlug}/images/${image}`
+            : undefined,
+          href: a.url ?? (clientHasPage ? `/work/${clientSlug}` : undefined),
+          external: Boolean(a.url),
+        });
+      }
+    }
+  }
+  return items;
+}
+
 export function getClientImages(slug: string): string[] {
   return listImageFiles(path.join(CLIENTS_DIR, slug, "images"));
 }
@@ -449,6 +510,9 @@ function readArtifact(clientSlug: string, projectSlug: string, artifactSlug: str
     summary: data.summary as string,
     featuredImage: data.featuredImage as string | undefined,
     featuredOnHome: data.featuredOnHome as boolean | undefined,
+    active: data.active as boolean | undefined,
+    year: data.year as string | undefined,
+    url: data.url as string | undefined,
   };
 }
 

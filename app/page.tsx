@@ -3,7 +3,7 @@ import { FeaturedCard } from "@/app/components/featured-card";
 import { SkillList } from "@/app/components/skill-list";
 import {
   COLLECTION_LABEL,
-  getActiveClients,
+  getActiveItems,
   getAllRoles,
   getArtifactCardImage,
   getClientImages,
@@ -99,7 +99,7 @@ function toCardData(item: FeaturedEntity): FeaturedCardData | null {
 export default function Home() {
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
-  const activeClients = getActiveClients();
+  const activeItems = getActiveItems();
   const featuredCards = getFeaturedOnHome()
     .map(toCardData)
     .filter((card): card is FeaturedCardData => card !== null);
@@ -119,49 +119,41 @@ export default function Home() {
           </p>
         </div>
 
-        {activeClients.length > 0 && (
+        {activeItems.length > 0 && (
           <section aria-labelledby="active-heading" className="md:w-1/4 md:shrink-0">
             <h2 id="active-heading" className="sr-only">
-              Active projects
+              Active work
             </h2>
             <ul className="grid grid-cols-1 gap-gutter sm:grid-cols-2 md:flex md:flex-col">
-              {activeClients.map((client) => {
+              {activeItems.map((item) => {
                 const body = (
                   <>
                     <div className="flex items-start justify-between gap-4">
-                      <span className="border border-border px-4 py-1 text-body text-ink">{COLLECTION_LABEL.client}</span>
-                      {client.years && (
-                        <span className="font-sans text-meta text-ink">{client.years}</span>
-                      )}
+                      <span className="border border-border px-4 py-1 text-body text-ink">{COLLECTION_LABEL[item.kind]}</span>
+                      {item.years && <span className="font-sans text-meta text-ink">{item.years}</span>}
                     </div>
-                    {client.imageSrc ? (
+                    {item.imageSrc ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={client.imageSrc}
-                        alt=""
-                        loading="eager"
-                        decoding="async"
-                        className="h-auto w-full"
-                      />
+                      <img src={item.imageSrc} alt="" loading="eager" decoding="async" className="h-auto w-full" />
                     ) : (
-                      <p className="text-caption text-muted">{client.summary}</p>
+                      <p className="text-caption text-muted">{item.summary}</p>
                     )}
                     <span className="text-body text-ink underline decoration-transparent underline-offset-4 group-hover:decoration-ink">
-                      {client.name} →
+                      {item.title} →
                     </span>
                   </>
                 );
                 const cardClass = "group flex flex-col gap-4.5 border border-border p-4.5";
                 return (
-                  <li key={client.slug}>
-                    {client.hasPage ? (
-                      <Link href={`/work/${client.slug}`} className={cardClass}>
-                        {body}
-                      </Link>
-                    ) : client.url ? (
-                      <a href={client.url} className={cardClass}>
+                  <li key={item.key}>
+                    {item.href && item.external ? (
+                      <a href={item.href} className={cardClass}>
                         {body}
                       </a>
+                    ) : item.href ? (
+                      <Link href={item.href} className={cardClass}>
+                        {body}
+                      </Link>
                     ) : (
                       <div className={cardClass}>{body}</div>
                     )}
