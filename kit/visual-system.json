@@ -25,7 +25,9 @@
       54,
       72,
       90,
-      108
+      108,
+      144,
+      180
     ],
     "space": [
       9,
@@ -56,7 +58,7 @@
       "compact": 375,
       "expanded": 1280
     },
-    "$typeScale": "Type sizes step in 3s; multiples of 9 carry most of the system, and 6, 12, 15, 21 are valid in-between steps. Spacing stays on 9."
+    "$typeScale": "Type sizes step in 3s; multiples of 9 carry most of the system, and 6, 12, 15, 21 are valid in-between steps; 144 and 180 are poster sizes for one-off display moments. Spacing stays on 9."
   },
   "semantic": {
     "color": {
