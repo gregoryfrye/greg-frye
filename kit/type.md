@@ -9,7 +9,7 @@
 - **Sans · Helvetica** (`--font-sans`) — dates only (`type-meta`).
 - **Mono · GT America Mono** (`--font-mono`) — Greg's pick (11/11). Set up, not in use yet; falls back to the system mono until it has a web licence. Whether labels go mono is still open.
 
-**Where.** Use `type-<role>` on any text. Sizes scale fluidly from the compact viewport (375) to the expanded one (1280). Values come from the 2026 Figma, frame `01_Client_1280`.
+**Where.** Use `type-<role>` on any text. Sizes **step**: compact below `md` (960), expanded at `md` and up, exactly like Figma's Layout modes (Compact / Expanded). Stepped, not fluid, so breakpoints and grids stay in Greg's hands. The legacy `text-*` sizes are still fluid until they're deleted. Values come from the 2026 Figma, frame `01_Client_1280`.
 
 | Role | Expanded / compact | Job |
 |---|---|---|

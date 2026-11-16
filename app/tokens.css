@@ -67,23 +67,23 @@
 }
 
 :root {
-  /* Type roles: size fluid from 375 to 1280 (kit/type.md) */
-  --type-title-size: clamp(3.375rem, 1.9765rem + 5.9669vw, 6.75rem);
+  /* Type roles: compact sizes, stepping to expanded at 960px (kit/type.md) */
+  --type-title-size: 3.375rem;
   --type-title-line-height: 0.9;
   --type-title-tracking: -0.015em;
-  --type-display-size: clamp(2.25rem, 1.3177rem + 3.9779vw, 4.5rem);
+  --type-display-size: 2.25rem;
   --type-display-line-height: 0.9;
   --type-display-tracking: -0.015em;
-  --type-stat-size: clamp(2.8125rem, 2.1133rem + 2.9834vw, 4.5rem);
+  --type-stat-size: 2.8125rem;
   --type-stat-line-height: 0.95;
   --type-stat-tracking: -0.01em;
-  --type-body-size: clamp(1.125rem, 0.8919rem + 0.9945vw, 1.6875rem);
+  --type-body-size: 1.125rem;
   --type-body-line-height: 1.15;
   --type-body-tracking: -0.01em;
-  --type-label-size: clamp(0.9375rem, 0.7821rem + 0.663vw, 1.3125rem);
+  --type-label-size: 0.9375rem;
   --type-label-line-height: 1.15;
   --type-label-tracking: -0.01em;
-  --type-credit-size: clamp(1.125rem, 0.8919rem + 0.9945vw, 1.6875rem);
+  --type-credit-size: 1.125rem;
   --type-credit-line-height: 1.08;
   --type-credit-tracking: -0.01em;
   --type-meta-size: 0.9375rem;
@@ -96,6 +96,18 @@
   --duration-slow: 800ms; /* Reveals */
 
   --line-weight: 1px; /* Rules, dividers, outlines and line drawings (the globe) */
+}
+
+/* Expanded: type steps up at the 960px switch (Figma Layout mode "Expanded") */
+@media (min-width: 60rem) {
+  :root {
+    --type-title-size: 6.75rem;
+    --type-display-size: 4.5rem;
+    --type-stat-size: 4.5rem;
+    --type-body-size: 1.6875rem;
+    --type-label-size: 1.3125rem;
+    --type-credit-size: 1.6875rem;
+  }
 }
 
 /* type-<role>: the whole bundle in one class */

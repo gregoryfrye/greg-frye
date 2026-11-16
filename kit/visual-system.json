@@ -148,7 +148,7 @@
     }
   },
   "type": {
-    "$about": "Roles bundle family, weight, style, size, line height and tracking. Sizes are px at the compact (375) and expanded (1280) viewports and scale fluidly between. Compact sizes are provisional until the Visual Design Pass.",
+    "$about": "Roles bundle family, weight, style, size, line height and tracking. Sizes are px [compact, expanded]: compact below md (960), stepping to expanded at md and up, matching Figma's Layout modes. Compact sizes are provisional until the Visual Design Pass.",
     "roles": {
       "title": {
         "family": "serif",

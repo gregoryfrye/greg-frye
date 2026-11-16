@@ -114,7 +114,8 @@
         "section": 45,
         "marker": 54,
         "masthead": 81,
-        "line-weight": 1
+        "line-weight": 1,
+        "index": 99
     },
     "font": {
         "serif": "Times New Roman",

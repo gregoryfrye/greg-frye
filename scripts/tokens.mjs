@@ -31,14 +31,8 @@ const entries = (o) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
 const P = KIT.primitives;
 const colorOf = (name) => P.color[name] ?? P.alpha[name] ?? (() => { throw new Error(`Unknown color primitive: ${name}`); })();
 
-/** Fluid size between the compact and expanded viewports. */
-function fluid([lo, hi]) {
-  if (lo === hi) return rem(lo);
-  const { compact, expanded } = P.viewport;
-  const slope = (hi - lo) / (expanded - compact);
-  const intercept = lo - slope * compact;
-  return `clamp(${rem(lo)}, ${rem(intercept)} + ${round4(slope * 100)}vw, ${rem(hi)})`;
-}
+/** Compact sizes apply below this breakpoint, expanded at and above it (Greg's grid switch). */
+const SWITCH = P.breakpoints.md;
 
 // ---------------------------------------------------------------- generate CSS
 
@@ -81,9 +75,9 @@ function css() {
   t("}");
   t("");
   t(":root {");
-  t("  /* Type roles: size fluid from 375 to 1280 (kit/type.md) */");
+  t(`  /* Type roles: compact sizes, stepping to expanded at ${SWITCH}px (kit/type.md) */`);
   for (const [k, r] of entries(KIT.type.roles)) {
-    t(`  --type-${k}-size: ${fluid(r.size)};`);
+    t(`  --type-${k}-size: ${rem(r.size[0])};`);
     t(`  --type-${k}-line-height: ${r.lineHeight};`);
     t(`  --type-${k}-tracking: ${r.tracking};`);
   }
@@ -92,6 +86,13 @@ function css() {
   for (const [k, v] of entries(KIT.motion.duration)) t(`  --duration-${k}: ${v.value}ms; /* ${v.job} */`);
   t("");
   t(`  --line-weight: ${KIT.line.weight.value}px; /* ${KIT.line.weight.job} */`);
+  t("}");
+  t("");
+  t(`/* Expanded: type steps up at the ${SWITCH}px switch (Figma Layout mode "Expanded") */`);
+  t(`@media (min-width: ${rem(SWITCH)}) {`);
+  t("  :root {");
+  for (const [k, r] of entries(KIT.type.roles)) if (r.size[0] !== r.size[1]) t(`    --type-${k}-size: ${rem(r.size[1])};`);
+  t("  }");
   t("}");
   t("");
   t("/* type-<role>: the whole bundle in one class */");
