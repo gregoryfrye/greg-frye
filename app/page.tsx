@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FeaturedCard } from "@/app/components/featured-card";
 import { SkillList } from "@/app/components/skill-list";
 import {
+  COLLECTION_LABEL,
   getActiveClients,
   getAllRoles,
   getArtifactCardImage,
@@ -128,7 +129,7 @@ export default function Home() {
                 const body = (
                   <>
                     <div className="flex items-start justify-between gap-4">
-                      <span className="border border-border px-4 py-1 text-body text-ink">Active</span>
+                      <span className="border border-border px-4 py-1 text-body text-ink">{COLLECTION_LABEL.client}</span>
                       {client.years && (
                         <span className="font-sans text-meta text-ink">{client.years}</span>
                       )}

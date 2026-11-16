@@ -131,6 +131,21 @@ export type Artifact = {
 };
 
 /** One entry in the homepage's featuredOnHome strip, normalized across types. */
+/**
+ * Front-end name for each level of the content model, mirroring the
+ * /content collection names. Cards label what they pull in with these, so a
+ * reader can tell a client from a project from an artifact at a glance.
+ */
+export const COLLECTION_LABEL = {
+  role: "Roles",
+  client: "Clients",
+  project: "Projects",
+  artifact: "Artifacts",
+  skill: "Skills",
+  study: "Studies",
+} as const;
+export type CollectionKind = keyof typeof COLLECTION_LABEL;
+
 export type FeaturedEntity =
   | { kind: "client"; client: Client }
   | { kind: "project"; project: Project; client: Client | null }
