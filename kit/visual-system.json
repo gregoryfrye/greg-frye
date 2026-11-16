@@ -221,7 +221,17 @@
         ],
         "lineHeight": 1.15,
         "tracking": "-0.01em",
-        "job": "Nav, index, markers, buttons, stat captions"
+        "job": "Index, markers, tags, stat captions, card titles",
+        "variants": {
+          "action": {
+            "size": [
+              18,
+              18
+            ],
+            "lineHeight": 1.15,
+            "job": "Nav and CTAs: interactive text holds one size at every breakpoint, so controls never shift as the layout steps"
+          }
+        }
       },
       "caption": {
         "family": "sans",
