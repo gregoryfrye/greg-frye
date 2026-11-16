@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export function Nav() {
   return (
-    <nav className="fixed inset-x-0 top-0 z-10 bg-canvas/85 px-gutter py-nav backdrop-blur-sm">
-      <div className="mx-auto grid max-w-wide grid-cols-3 items-center gap-gutter">
+    <nav className="fixed inset-x-0 top-0 z-10 bg-canvas/85 py-nav backdrop-blur-sm">
+      <div className="mx-auto grid max-w-wide grid-cols-3 px-gutter items-center gap-gutter">
         <Link
           href="/#work"
           className="col-start-1 justify-self-start text-body text-muted no-underline hover:text-ink"

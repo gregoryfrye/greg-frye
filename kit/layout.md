@@ -18,6 +18,8 @@
 
 Use them as Tailwind classes: `gap-item`, `mt-block`, `py-section`, `px-gutter`. Tailwind's numeric scale (`gap-2`, `mt-6`) is legacy and moves onto these in the Visual Design Pass.
 
+**Page frame.** Every full-width band (nav, main, footer) is `mx-auto max-w-wide px-gutter` on one element: the gutter sits inside the 1280 container, so all content shares one left and right edge (1226 wide at most, 27 from the window edge below that). Never pad outside the container and cap inside it.
+
 **Grids.** Case study modules sit on a 3-column grid at `md` and up (`md:grid-cols-3 gap-x-gutter`), the Figma's 3 × 390. The case hero uses 4 columns with a 2-column center (index · title and image · stats).
 
 **Containers.** `max-w-wide` (1280) for layout, anything with horizontal structure. `max-w-prose` (672) for continuous text. `max-w-hero` (768) for the homepage headline only. Grids never go inside `max-w-prose` (see CLAUDE.md, two-container rule).
