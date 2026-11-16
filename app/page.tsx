@@ -111,14 +111,11 @@ export default function Home() {
             A whole-system creative director with 20 years channeling founder vision into a focused brand, product, and marketing function.
           </h1>
           <p className="mt-6 max-w-prose text-body text-ink">
-            Integrated creative director. Twenty years across brand, product,
-            marketing, and production, starting at a print shop in southern New
-            Hampshire, printing banners, cutting vinyl for shop windows, and
-            learning to code.
+            Twenty years across brand, product, marketing and production,
+            starting at a print shop in New Hampshire. Now one practice, backed
+            by my own agent workflows: a creative partner for founders and small
+            teams.
           </p>
-          {currentRole && (
-            <p className="mt-4 max-w-prose text-body text-muted">{currentRole.description}</p>
-          )}
         </div>
 
         {activeClients.length > 0 && (
@@ -143,7 +140,7 @@ export default function Home() {
                         alt=""
                         loading="eager"
                         decoding="async"
-                        className="aspect-video w-full object-contain md:aspect-square"
+                        className="h-auto w-full"
                       />
                     ) : (
                       <p className="text-caption text-muted">{client.summary}</p>
