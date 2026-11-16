@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Tag } from "./components/ui/tag";
 import { CollectionCard, type CollectionCardData } from "@/app/components/ui/collection-card";
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
@@ -146,12 +147,9 @@ export default function Home() {
       )}
 
       <section id="info" aria-labelledby="roles-heading" className="scroll-mt-40">
-        <h2
-          id="roles-heading"
-          className="mx-auto w-fit border border-border px-4 py-1 font-serif text-heading text-ink"
-        >
-          Roles
-        </h2>
+        <Tag as="h2" id="roles-heading" className="mx-auto">
+          {COLLECTION_LABEL.role}
+        </Tag>
         <ul className="mt-6 flex flex-col border-t border-border">
           {roles.map((role) => {
             const clients = getClientsByRole(role.slug);

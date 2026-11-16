@@ -1,3 +1,4 @@
+import { Tag } from "./tag";
 import Link from "next/link";
 
 export type CollectionCardData = {
@@ -21,7 +22,7 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
   const body = (
     <>
       <div className="flex items-start justify-between gap-inline">
-        <span className="border border-border px-inline py-item type-label text-ink">{label}</span>
+        <Tag>{label}</Tag>
         {years && <span className="text-right type-caption text-ink">{years}</span>}
       </div>
       {imageSrc ? (
