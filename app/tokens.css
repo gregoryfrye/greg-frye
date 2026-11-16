@@ -86,7 +86,7 @@
   --type-body-lede-size: 1.3125rem;
   --type-body-lede-line-height: 1.2;
   --type-body-lede-tracking: -0.01em;
-  --type-label-size: 0.9375rem;
+  --type-label-size: 1.125rem;
   --type-label-line-height: 1.15;
   --type-label-tracking: -0.01em;
   --type-caption-size: 0.9375rem;
@@ -113,7 +113,6 @@
     --type-deck-size: 2.25rem;
     --type-body-size: 1.6875rem;
     --type-body-lede-size: 2.25rem;
-    --type-label-size: 1.3125rem;
     --type-caption-credit-size: 1.6875rem;
   }
 }
