@@ -17,7 +17,7 @@ export type CollectionCardData = {
  * content model: boxed collection label, date top right (recency), image at
  * its natural height, title with an arrow. Hugs its content.
  */
-export function CollectionCard({ label, years, title, summary, imageSrc, href, external }: CollectionCardData) {
+export function CollectionCard({ label, years, title, summary, imageSrc, href, external }: Omit<CollectionCardData, "key">) {
   const body = (
     <>
       <div className="flex items-start justify-between gap-inline">

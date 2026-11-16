@@ -87,6 +87,8 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
   }
 }
 
+const withoutKey = ({ key: _key, ...card }: CollectionCardData) => card;
+
 export default function Home() {
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
@@ -138,7 +140,7 @@ export default function Home() {
             Selected work
           </h2>
           {cards.map((card) => (
-            <CollectionCard key={card.key} {...card} />
+            <CollectionCard key={card.key} {...withoutKey(card)} />
           ))}
         </section>
       )}
