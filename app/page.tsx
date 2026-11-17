@@ -199,13 +199,32 @@ export default function Home() {
                                 {client.name}
                               </Link>
                             ) : (
-                              <span className="text-ink">{client.name}</span>
+                              <span>{client.name}</span>
                             )}
                             {(i < clients.length - 1 || role.names.length > 0) && ", "}
                           </span>
                         );
                       })}
-                      {role.names.join(", ")}.
+                      {role.names.map((name, i) => {
+                        const url = role.nameUrls[name];
+                        return (
+                          <span key={name}>
+                            {url ? (
+                              <a
+                                href={url}
+                                className="text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
+                              >
+                                {name}
+                                &nbsp;<Arrow external />
+                              </a>
+                            ) : (
+                              <span>{name}</span>
+                            )}
+                            {i < role.names.length - 1 && ", "}
+                          </span>
+                        );
+                      })}
+                      .
                     </span>
                   )}
                 </p>

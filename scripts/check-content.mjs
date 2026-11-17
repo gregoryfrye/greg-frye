@@ -479,7 +479,7 @@ for (const r of roles.values()) {
   }
   for (const s of r.skills) if (!skills.has(s)) add(G_ROLES, "ERROR", "ref-skill", r.file, r.p.keyLines.skills, `role "${r.slug}" → missing skill "${s}"`);
   for (const n of arr(r.p.data.names)) {
-    const slugish = String(n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const slugish = String(n).split(" | ")[0].toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     if (clients.has(slugish)) add(G_ROLES, "WARN", "names-entity", r.file, r.p.keyLines.names, `names[] has "${n}" but client entity "${slugish}" exists — move it to clients[]`);
   }
   if (body(r.p)) add(G_ROLES, "WARN", "role-body", r.file, r.p.bodyStart, "role body is never rendered");

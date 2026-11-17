@@ -163,7 +163,8 @@ order (client, project, skill, artifact, study). Don't hardcode the picks in
 a page component; add the flag to the content instead.
 
 **Role rows link out, for now.** A client in a role's `clients[]` links to
-its own live site (`url`), or is plain text when it has none. No dead ends.
+its own live site (`url`), or is plain text when it has none. Entries in a
+role's `names[]` link out the same way when written `"Name | https://url"`. No dead ends.
 As case studies fill out, these links move to `/work/<slug>`.
 
 **Arrows.** A link that leaves the site ends in ↗; a link to another page

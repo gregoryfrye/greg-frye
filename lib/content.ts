@@ -29,8 +29,10 @@ export type Role = {
   location: string;
   /** Slugs into /content/clients, where an entity exists. */
   clients: string[];
-  /** Plain-text clients with no entity. */
+  /** Clients with no entity: plain names (`"Name | https://url"` in frontmatter adds a link). */
   names: string[];
+  /** Live sites for entries in names[], keyed by name. */
+  nameUrls: Record<string, string>;
   description: string;
   /** Slugs into /content/skills. */
   skills: string[];
@@ -218,7 +220,7 @@ export function getRoleBySlug(slug: string): Role | null {
     years: data.years as string,
     location: data.location as string,
     clients: (data.clients as string[] | undefined) ?? [],
-    names: (data.names as string[] | undefined) ?? [],
+    ...parseNames((data.names as string[] | undefined) ?? []),
     description: data.description as string,
     skills: (data.skills as string[] | undefined) ?? [],
     current: data.current as boolean | undefined,
@@ -741,4 +743,16 @@ export function validateContentGraph(): string[] {
   }
 
   return warnings;
+}
+
+/** Split role names[] entries of the form "Name | https://url" into names and their urls. */
+function parseNames(raw: string[]): { names: string[]; nameUrls: Record<string, string> } {
+  const names: string[] = [];
+  const nameUrls: Record<string, string> = {};
+  for (const entry of raw) {
+    const [name, url] = String(entry).split(" | ").map((part) => part.trim());
+    names.push(name);
+    if (url) nameUrls[name] = url;
+  }
+  return { names, nameUrls };
 }
