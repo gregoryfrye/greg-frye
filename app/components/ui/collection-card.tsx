@@ -25,12 +25,12 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
       <div className="flex items-start justify-between gap-inline">
         <Tag>{label}</Tag>
         {years && (
-          // A range breaks after the dash, start over end, as in the Figma.
+          // A range breaks before the dash: start year, then "–end" below it.
           <span className="text-right type-caption text-ink">
-            {years.split("–").map((part, i, parts) => (
+            {years.split("–").map((part, i) => (
               <span key={part} className="block">
+                {i > 0 && "–"}
                 {part}
-                {i < parts.length - 1 && "–"}
               </span>
             ))}
           </span>
