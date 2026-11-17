@@ -176,7 +176,13 @@
         ],
         "lineHeight": 0.9,
         "tracking": "-0.015em",
-        "job": "Big statements and section openers; stat figures"
+        "job": "Big statements and section openers; stat figures",
+        "variants": {
+          "alt": {
+            "family": "display-alt",
+            "job": "Section headlines on the homepage, in the hero's alt face (Clearface)"
+          }
+        }
       },
       "title": {
         "family": "serif",

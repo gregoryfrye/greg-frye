@@ -75,6 +75,9 @@
   --type-headline-size: 2.25rem;
   --type-headline-line-height: 0.9;
   --type-headline-tracking: -0.015em;
+  --type-headline-alt-size: 2.25rem;
+  --type-headline-alt-line-height: 0.9;
+  --type-headline-alt-tracking: -0.015em;
   --type-title-size: 1.6875rem;
   --type-title-line-height: 1.05;
   --type-title-tracking: -0.01em;
@@ -113,6 +116,7 @@
   :root {
     --type-display-size: 6.75rem;
     --type-headline-size: 4.5rem;
+    --type-headline-alt-size: 4.5rem;
     --type-title-size: 2.8125rem;
     --type-deck-size: 2.25rem;
     --type-body-size: 1.6875rem;
@@ -135,6 +139,14 @@
   font-size: var(--type-headline-size);
   line-height: var(--type-headline-line-height);
   letter-spacing: var(--type-headline-tracking);
+  font-weight: 400;
+  font-style: normal;
+}
+@utility type-headline-alt {
+  font-family: var(--font-display-alt);
+  font-size: var(--type-headline-alt-size);
+  line-height: var(--type-headline-alt-line-height);
+  letter-spacing: var(--type-headline-alt-tracking);
   font-weight: 400;
   font-style: normal;
 }

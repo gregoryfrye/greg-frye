@@ -15,6 +15,7 @@
 |---|---|---|
 | `type-display` | 108 / 54, serif, 0.9 | The biggest, about one per page: case study name, hero |
 | `type-headline` | 72 / 36, serif, 0.9 | Big statements and section openers; stat figures |
+| `type-headline-alt` | 72 / 36, Clearface (alt face), 0.9 | Variant: homepage section headlines (Roles, Contact), matching the hero's face |
 | `type-title` | 45 / 27, serif, 1.05 | Card and block titles |
 | `type-deck` | 36 / 21, serif, 1.2 | Summary line under a title |
 | `type-body` | 27 / 18, serif, 1.15 | Reading text |
