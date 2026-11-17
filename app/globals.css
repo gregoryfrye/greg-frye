@@ -12,8 +12,11 @@
     @apply bg-canvas font-serif text-ink antialiased;
   }
 
-  /* Underlines match rules and outlines: one line weight everywhere */
-  a {
+  /* Underlines match rules and outlines: one line weight everywhere, on any
+     element that draws one (links, and card titles underlined on hover) */
+  *,
+  ::before,
+  ::after {
     text-decoration-thickness: var(--line-weight);
   }
 
