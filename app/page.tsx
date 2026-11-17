@@ -121,8 +121,8 @@ export default function Home() {
       <section className="grid grid-cols-1 items-start gap-gutter md:grid-cols-3">
         <div className="md:col-span-2">
           <h1 className="font-display-alt text-display tracking-tight text-ink">
-            A whole-system creative director with 20 years turning visions, goals, and needs into brand
-            experiences, product ecosystems, and marketing functions.
+            A world-building creative director with 20 years turning vision into brand experiences, product
+            ecosystems, and marketing functions.
           </h1>
           <div className="mt-block">
             <TextLink href="/#info">More Information</TextLink>
