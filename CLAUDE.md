@@ -317,6 +317,9 @@ interleave on the client page.
 
 Still open:
 
+- Copy tone: revisit the mood-language rule after the 1.1 push. Greg wants
+  words like *shepherding* and *world-building* available when they describe
+  how he actually works; the rule should target empty filler, not those.
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
   grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
