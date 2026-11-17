@@ -191,7 +191,10 @@ export default function Home() {
                 <p className="type-body-small text-ink md:col-span-4">
                   {role.description}
                 </p>
-                <p className="type-body-small text-ink md:col-span-2">
+                {role.skills.length > 0 && (
+                  <SkillList skills={role.skills} label="Skills" className="md:col-span-2 md:col-start-9" />
+                )}
+                <p className="type-body-small text-ink md:col-span-2 md:col-start-11">
                   {clientCount > 0 && (
                     <span>
                       {clients.map((client, i) => {
@@ -237,9 +240,6 @@ export default function Home() {
                     </span>
                   )}
                 </p>
-                {role.skills.length > 0 && (
-                  <SkillList skills={role.skills} label="Skills" className="md:col-span-2 md:col-start-11" />
-                )}
               </li>
             );
           })}
