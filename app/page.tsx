@@ -4,8 +4,8 @@ import { CollectionCard, type CollectionCardData } from "@/app/components/ui/col
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
-import {
 import { Arrow } from "@/app/components/ui/arrow";
+import {
   COLLECTION_LABEL,
   getActiveItems,
   getAllRoles,
