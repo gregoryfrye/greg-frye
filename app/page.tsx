@@ -135,10 +135,10 @@ export default function Home() {
 
       {cards.length > 0 && (
         <section id="work" aria-labelledby="work-heading" className="scroll-mt-40">
-          <h2 id="work-heading" className="type-headline-alt text-ink">
+          <h2 id="work-heading" className="sr-only">
             Work
           </h2>
-          <div className="mt-block grid grid-cols-1 items-start gap-gutter sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid grid-cols-1 items-start gap-gutter sm:grid-cols-2 md:grid-cols-3">
             {cards.map((card) => (
               <CollectionCard key={card.key} {...withoutKey(card)} />
             ))}
@@ -147,10 +147,10 @@ export default function Home() {
       )}
 
       <section id="info" aria-labelledby="info-heading" className="scroll-mt-40">
-        <h2 id="info-heading" className="type-headline-alt text-ink">
+        <h2 id="info-heading" className="sr-only">
           Info
         </h2>
-        <ul aria-label="Roles" className="mt-block flex flex-col border-t border-border">
+        <ul aria-label="Roles" className="flex flex-col border-t border-border">
           {roles.map((role) => {
             const clients = getClientsByRole(role.slug);
             const clientCount = clients.length + role.names.length;
@@ -243,17 +243,7 @@ export default function Home() {
       </section>
 
       <section id="contact" aria-label="Contact" className="scroll-mt-40">
-        <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
-          <div className="flex flex-col gap-item">
-            <p className="type-body-small text-ink">
-              Founders, artists, and teams: say hello about a project, a role, or an idea.
-            </p>
-            <TextLink href={`mailto:${contactEmail}`}>{contactEmail}</TextLink>
-          </div>
-          <div className="md:col-span-2">
-            <ContactField email={contactEmail} />
-          </div>
-        </div>
+        <ContactField email={contactEmail} />
       </section>
     </main>
   );

@@ -30,7 +30,7 @@ export function ContactField({ email }: { email: string }) {
         rows={8}
         value={message}
         onChange={(event) => setMessage(event.target.value)}
-        placeholder="Start a conversation"
+        placeholder="Say hello: a project, a role, an idea…"
         className="block w-full resize-y bg-transparent p-gutter type-body text-ink placeholder:text-muted"
       />
       <div className="flex justify-end px-gutter pb-gutter">
