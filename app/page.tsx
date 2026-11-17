@@ -138,11 +138,11 @@ export default function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
+        <Globe className="hidden w-1/2 justify-self-end lg:col-span-2 lg:col-start-9 lg:block" />
         {services.length > 0 && (
-          // Beside the headline from sm up, 50/50 over the 2-up cards, 8/4 over the 3-up; column 5 at lg, over the role rows' services; the globe takes column 6
-          <NumberedList items={services} label="Services" numbered={false} className="sm:col-span-6 md:col-span-4 lg:col-span-2" />
+          // Beside the headline from sm up, 50/50 over the 2-up cards, 8/4 over the 3-up; column 6 at lg; the globe takes column 5
+          <NumberedList items={services} label="Services" numbered={false} className="sm:col-span-6 md:col-span-4 lg:col-span-2 lg:col-start-11" />
         )}
-        <Globe className="hidden w-1/2 justify-self-end lg:col-span-2 lg:block" />
       </section>
 
       {cards.length > 0 && (
