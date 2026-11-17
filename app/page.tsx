@@ -138,7 +138,7 @@ export default function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
-        <Globe className="hidden w-1/2 justify-self-end lg:col-span-2 lg:col-start-9 lg:block" />
+        <Globe className="hidden w-1/2 justify-self-start lg:col-span-2 lg:col-start-9 lg:block" />
         {services.length > 0 && (
           // Beside the headline from sm up, 50/50 over the 2-up cards, 8/4 over the 3-up; column 6 at lg; the globe takes column 5
           <NumberedList items={services} label="Services" numbered={false} className="sm:col-span-6 md:col-span-4 lg:col-span-2 lg:col-start-11" />
@@ -169,8 +169,10 @@ export default function Home() {
             return (
               <li
                 key={role.slug}
-                className="grid grid-cols-1 gap-x-gutter gap-y-item border-b border-border py-block md:grid-cols-12"
+                className="grid grid-cols-1 gap-x-gutter gap-y-item border-b border-border py-block sm:grid-cols-2 md:grid-cols-12"
               >
+                {/* Two columns from sm (matching the 2-up cards): who/when left, what right. At md the wrappers dissolve into the 12-column row. */}
+                <div className="flex flex-col gap-item md:contents">
                 <span className="type-caption text-ink md:col-span-2">{role.years}</span>
                 <span className="type-body-small text-ink md:col-span-2">
                   {role.title}
@@ -196,6 +198,8 @@ export default function Home() {
                     </>
                   )}
                 </span>
+                </div>
+                <div className="flex flex-col gap-block md:contents">
                 <p className="type-body-small text-ink md:col-span-4">
                   {role.description}
                 </p>
@@ -224,6 +228,7 @@ export default function Home() {
                     ))}
                   </ul>
                 )}
+                </div>
               </li>
             );
           })}
