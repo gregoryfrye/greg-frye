@@ -118,13 +118,20 @@
   :root {
     --type-display-size: 6.75rem;
     --type-headline-size: 4.5rem;
-    --type-headline-alt-size: 4.5rem;
+    --type-headline-alt-size: 3.375rem;
     --type-headline-alt-line-height: 0.9;
     --type-title-size: 2.8125rem;
     --type-deck-size: 2.25rem;
     --type-body-size: 1.6875rem;
     --type-body-lede-size: 2.25rem;
     --type-caption-credit-size: 1.6875rem;
+  }
+}
+
+/* Wide: a role with a third size steps up once more at 1280px */
+@media (min-width: 80rem) {
+  :root {
+    --type-headline-alt-size: 4.5rem;
   }
 }
 

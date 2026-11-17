@@ -122,7 +122,7 @@ export default function KitPage() {
               <div>
                 <p className="type-label text-ink">type-{name}</p>
                 <p className="type-caption text-muted">
-                  {r.size[1]} / {r.size[0]} · {r.family} ·{" "}
+                  {[...r.size].reverse().join(" / ")} · {r.family} ·{" "}
                   {Array.isArray(r.lineHeight) ? `${r.lineHeight[1]} / ${r.lineHeight[0]}` : r.lineHeight}
                 </p>
                 <p className="type-caption text-muted">{r.job}</p>

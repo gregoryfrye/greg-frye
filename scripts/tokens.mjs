@@ -107,6 +107,13 @@ function css() {
   t("  }");
   t("}");
   t("");
+  t(`/* Wide: a role with a third size steps up once more at ${P.breakpoints.lg}px */`);
+  t(`@media (min-width: ${rem(P.breakpoints.lg)}) {`);
+  t("  :root {");
+  for (const [k, r] of ROLES) if (r.size.length > 2) t(`    --type-${k}-size: ${rem(r.size[2])};`);
+  t("  }");
+  t("}");
+  t("");
   t("/* type-<role>: the whole bundle in one class */");
   for (const [k, r] of ROLES) {
     t(`@utility type-${k} {`);
@@ -182,7 +189,8 @@ export function resolveTokens() {
   for (const [k, v] of entries(KIT.layout.spacing)) out.space[k] = val(v);
   for (const [k, v] of entries(KIT.layout.containers)) out.space[`container-${k}`] = val(v);
   for (const [k, r] of ROLES) {
-    const [mobile, desktop] = r.size;
+    const [mobile] = r.size;
+    const desktop = r.size[r.size.length - 1];
     out.role[k] = {
       family: out.font[r.family],
       style: r.style ?? "normal",

@@ -15,7 +15,7 @@
 |---|---|---|
 | `type-display` | 108 / 54, serif, 0.9 | The biggest, about one per page: case study name, hero |
 | `type-headline` | 72 / 36, serif, 0.9 | Big statements and section openers; stat figures |
-| `type-headline-alt` | 72 / 36, Clearface (alt face), 0.9 / 1.05 | Variant: the homepage headline and the contact field's text, in the alt face (Clearface) |
+| `type-headline-alt` | 72 / 54 / 36, Clearface (alt face), 0.9 / 1.05 | Variant: the homepage headline and the contact field's text, in the alt face (Clearface) |
 | `type-title` | 45 / 27, serif, 1.05 | Card and block titles |
 | `type-deck` | 36 / 21, serif, 1.2 | Summary line under a title |
 | `type-body` | 27 / 18, serif, 1.15 | Reading text |
@@ -36,3 +36,5 @@
 **When the kit is silent.** Pick the role whose job matches, not the one whose size looks right. If no job matches, propose a role (name it by job) rather than inlining a size.
 
 **Line height can step too.** A role's `lineHeight` takes one number or a [compact, expanded] pair, like `size`. Tight display leading (0.9) collides descenders and ascenders once a headline wraps to many short lines on a phone, so `headline-alt` opens to 1.05 below 960.
+
+**A third step.** A role's `size` can take three values, [compact, medium, wide]: compact below 960, medium from 960, wide from 1280. `headline-alt` uses it (36 / 54 / 72) so the hero doesn't jump straight from 36 to 72 at the 960 switch.
