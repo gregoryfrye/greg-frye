@@ -4,7 +4,7 @@ import { Arrow } from "./arrow";
 
 /** A label-sized link with a trailing arrow ("More Information →"). */
 export function TextLink({ href, children }: { href: string; children: ReactNode }) {
-  const external = /^https?:\/\//.test(href);
+  const external = /^(https?:\/\/|mailto:)/.test(href);
   const className =
     "type-label text-ink underline decoration-transparent underline-offset-4 transition-colors motion-fast ease-standard hover:decoration-ink";
   const body = (

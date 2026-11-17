@@ -5,6 +5,8 @@ import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
+import { ContactField } from "@/app/components/modules/contact-field";
+import { contactEmail } from "@/lib/site";
 import {
   COLLECTION_LABEL,
   getActiveItems,
@@ -241,6 +243,23 @@ export default function Home() {
             );
           })}
         </ul>
+      </section>
+
+      <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-40">
+        <Tag as="h2" id="contact-heading" className="mx-auto">
+          Contact
+        </Tag>
+        <div className="mx-auto mt-section grid max-w-wide grid-cols-1 gap-gutter md:grid-cols-3">
+          <div className="flex flex-col gap-item">
+            <p className="type-body-small text-ink">
+              Founders, artists, and teams: say hello about a project, a role, or an idea.
+            </p>
+            <TextLink href={`mailto:${contactEmail}`}>{contactEmail}</TextLink>
+          </div>
+          <div className="md:col-span-2">
+            <ContactField email={contactEmail} />
+          </div>
+        </div>
       </section>
     </main>
   );

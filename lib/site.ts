@@ -9,3 +9,6 @@ export const publicHosts = ["gregfrye.us", "www.gregfrye.us"];
 export function isPublicHost(host: string | null | undefined): boolean {
   return publicHosts.includes((host ?? "").split(":")[0].toLowerCase());
 }
+
+/** Where the site's contact links and message field send to. */
+export const contactEmail = "gregoryfrye@gmail.com";
