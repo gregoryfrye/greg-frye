@@ -129,7 +129,8 @@ export default function Home() {
   return (
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
       <section className="grid grid-cols-1 items-start gap-gutter md:grid-cols-12">
-        <div className="md:col-span-8">
+        <Globe className="hidden w-full lg:col-span-2 lg:col-start-1 lg:block" />
+        <div className="md:col-span-8 lg:col-start-3">
           <h1 className="type-headline-alt text-ink">
             A world-building creative director with 20 years channeling resonance through brand experiences,
             product ecosystems, and marketing functions.
@@ -138,7 +139,6 @@ export default function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
-        <Globe className="hidden w-full lg:col-span-2 lg:col-start-9 lg:block" />
         {services.length > 0 && (
           // Its own column at lg, in line with the role rows' last column (the 6th of 6)
           <NumberedList items={services} label="Services" numbered={false} className="md:col-span-4 lg:col-span-2 lg:col-start-11" />
