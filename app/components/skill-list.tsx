@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { getSkillBySlug } from "@/lib/content";
+import { NumberedList } from "@/app/components/ui/numbered-list";
 
-/** Skill tags — one style everywhere skills are listed (Services, roles). */
+/** Skills by slug, in the one index-list style (ruled rows, no numbers). */
 export function SkillList({
   skills,
   label,
@@ -11,22 +11,9 @@ export function SkillList({
   label: string;
   className?: string;
 }) {
-  return (
-    <ul aria-label={label} className={`flex flex-col gap-2 ${className}`}>
-      {skills.map((skillSlug) => {
-        const skill = getSkillBySlug(skillSlug);
-        if (!skill) return null;
-        return (
-          <li key={skillSlug}>
-            <Link
-              href={`/skills/${skillSlug}`}
-              className="text-body text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
-            >
-              {skill.name}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-  );
+  const items = skills
+    .map((slug) => getSkillBySlug(slug))
+    .filter((skill): skill is NonNullable<typeof skill> => skill !== null)
+    .map((skill) => ({ label: skill.name, href: `/skills/${skill.slug}` }));
+  return <NumberedList items={items} label={label} numbered={false} className={className} />;
 }
