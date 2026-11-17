@@ -25,7 +25,7 @@ export function NumberedList({
             href={item.href}
             className="flex type-body-small text-ink no-underline transition-colors motion-fast ease-standard hover:text-muted"
           >
-            {numbered && <span className="w-index shrink-0 lg:w-marker">{String(i).padStart(2, "0")}</span>}
+            {numbered && <span className="w-index shrink-0">{String(i).padStart(2, "0")}</span>}
             <span>{item.label}</span>
           </Link>
         </li>

@@ -139,7 +139,7 @@ export default function Home() {
         </div>
         {services.length > 0 && (
           // Its own column at lg, in line with the role rows' last column (the 6th of 6)
-          <NumberedList items={services} label="Services" className="md:col-span-4 lg:col-span-2 lg:col-start-11" />
+          <NumberedList items={services} label="Services" numbered={false} className="md:col-span-4 lg:col-span-2 lg:col-start-11" />
         )}
       </section>
 
