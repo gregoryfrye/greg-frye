@@ -139,8 +139,8 @@ export default function Home() {
           </div>
         </div>
         {services.length > 0 && (
-          // Column 5 at lg, over the role rows' services; the globe takes column 6
-          <NumberedList items={services} label="Services" numbered={false} className="md:col-span-4 lg:col-span-2" />
+          // Two columns between sm and md; column 5 at lg, over the role rows' services; the globe takes column 6
+          <NumberedList items={services} label="Services" numbered={false} className="sm:block sm:columns-2 sm:gap-gutter md:flex md:columns-1 md:col-span-4 lg:col-span-2" />
         )}
         <Globe className="hidden w-1/2 justify-self-end lg:col-span-2 lg:block" />
       </section>

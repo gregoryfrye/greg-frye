@@ -18,9 +18,9 @@ export function NumberedList({
   className?: string;
 }) {
   return (
-    <ol aria-label={label} className={`flex flex-col gap-item border-b border-border pb-item ${className}`}>
+    <ol aria-label={label} className={`flex flex-col border-b border-border ${className}`}>
       {items.map((item, i) => (
-        <li key={item.href} className="rule pt-item">
+        <li key={item.href} className="rule break-inside-avoid py-item">
           <Link
             href={item.href}
             className="flex type-body-small text-ink no-underline transition-colors motion-fast ease-standard hover:text-muted"
