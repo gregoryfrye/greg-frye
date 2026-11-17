@@ -150,7 +150,7 @@ export default async function Home() {
             own row: stacked on phones, two halves from sm (lining up with the 2-up cards). */}
         <div className="order-last col-span-full grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col">
           <div className="grid grid-cols-4 items-center gap-gutter lg:flex lg:flex-col lg:items-start">
-            <Globe className="w-full lg:w-1/2" />
+            <Globe className="w-full" />
             <p className="col-span-3 type-caption text-ink">
               Kingston, NY
               {weather && (

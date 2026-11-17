@@ -3,15 +3,20 @@
 import { useEffect, useState } from "react";
 
 /**
- * The globe mark, turning with the day. Three meridians, 60° apart, are drawn as ellipses whose width
+ * The globe mark, turning with the day. Six meridians, 30° apart, are drawn as ellipses whose width
  * follows the globe's rotation, so it reads as a sphere spinning. Its angle is the time of day in
  * Kingston (one turn per 24 hours): on load it spins up from rest to that angle (the slow reveal), then
  * keeps drifting. With reduced motion it simply shows the angle for now.
  *
- * Before mount it renders the static favicon pose (the same mark as /icon.svg), so server and client
- * agree. Ink lines at the line weight, however large it's drawn.
+ * Parallels every 30° (the equator and ±30°, ±60°) stay put. Before mount it renders angle 0, so server
+ * and client agree. Ink lines at the line weight, however large it's drawn.
  */
-const MERIDIANS = [0, 60, 120];
+const MERIDIANS = [0, 30, 60, 90, 120, 150];
+// Seen side-on, a parallel at latitude φ is a straight chord at height sin φ, half as wide as cos φ.
+const PARALLELS = [-60, -30, 0, 30, 60].map((degrees) => {
+  const radians = (degrees * Math.PI) / 180;
+  return { y: 16 - 15 * Math.sin(radians), half: 15 * Math.cos(radians) };
+});
 const DRIFT_DEGREES_PER_SECOND = 3; // one visible turn every two minutes; the day angle sets where it starts
 
 function kingstonDayAngle(): number {
@@ -33,7 +38,7 @@ function durationMs(token: string, fallback: number): number {
 }
 
 export function Globe({ className = "" }: { className?: string }) {
-  const [angle, setAngle] = useState<number | null>(null);
+  const [angle, setAngle] = useState(0);
 
   useEffect(() => {
     const target = kingstonDayAngle();
@@ -64,18 +69,13 @@ export function Globe({ className = "" }: { className?: string }) {
     <svg viewBox="0 0 32 32" aria-hidden="true" className={`fill-none stroke-current stroke-1 text-ink ${className}`}>
       <g strokeLinecap="round">
         <circle cx="16" cy="16" r="15" vectorEffect="non-scaling-stroke" />
-        {angle === null ? (
-          <>
-            <ellipse cx="16" cy="16" rx="7.5" ry="15" vectorEffect="non-scaling-stroke" />
-            <line x1="16" y1="1" x2="16" y2="31" vectorEffect="non-scaling-stroke" />
-          </>
-        ) : (
-          MERIDIANS.map((offset) => {
-            const rx = 15 * Math.abs(Math.sin(((angle + offset) * Math.PI) / 180));
-            return <ellipse key={offset} cx="16" cy="16" rx={rx} ry="15" vectorEffect="non-scaling-stroke" />;
-          })
-        )}
-        <line x1="1" y1="16" x2="31" y2="16" vectorEffect="non-scaling-stroke" />
+        {MERIDIANS.map((offset) => {
+          const rx = 15 * Math.abs(Math.sin(((angle + offset) * Math.PI) / 180));
+          return <ellipse key={offset} cx="16" cy="16" rx={rx} ry="15" vectorEffect="non-scaling-stroke" />;
+        })}
+        {PARALLELS.map(({ y, half }) => (
+          <line key={y} x1={16 - half} y1={y} x2={16 + half} y2={y} vectorEffect="non-scaling-stroke" />
+        ))}
       </g>
     </svg>
   );
