@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { getSkillBySlug } from "@/lib/content";
+import { getCurrentRole, getSkillBySlug } from "@/lib/content";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
 
 /** Skills by slug as one comma-separated line of links (role rows). */
@@ -13,7 +13,12 @@ export function SkillList({
   label: string;
   className?: string;
 }) {
-  const items = skills
+  // Services always read in the house order: the current role's list is the
+  // canonical process order (leadership → story → build → launch → scale).
+  const order = getCurrentRole()?.skills ?? [];
+  const rank = (slug: string) => (order.includes(slug) ? order.indexOf(slug) : order.length);
+  const items = [...skills]
+    .sort((a, b) => rank(a) - rank(b))
     .map((slug) => getSkillBySlug(slug))
     .filter((skill): skill is NonNullable<typeof skill> => skill !== null);
   return (
