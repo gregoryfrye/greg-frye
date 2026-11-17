@@ -4,7 +4,7 @@ import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
 import { Arrow } from "@/app/components/ui/arrow";
-import Image from "next/image";
+import { FilmFrame } from "@/app/components/ui/film-frame";
 import { Globe } from "@/app/components/ui/globe";
 import { caseStudiesLive } from "@/lib/site";
 import {
@@ -139,10 +139,10 @@ export default function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
-        {/* Column 5: the globe placeholder over a film study (design/film holds the rest of the roll). */}
+        {/* Column 5: the globe placeholder over a random frame from the film roll, new on each load. */}
         <div className="hidden flex-col gap-gutter lg:col-span-2 lg:col-start-9 lg:flex">
           <Globe className="w-1/2" />
-          <Image src="/images/hero-film.jpg" alt="Golf flagstick in the cup, its shadow stretching across the green" width={1545} height={1024} className="h-auto w-full" />
+          <FilmFrame />
         </div>
         {services.length > 0 && (
           // Beside the headline from sm up, 50/50 over the 2-up cards, 8/4 over the 3-up; column 6 at lg; the globe takes column 5

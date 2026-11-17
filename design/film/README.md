@@ -1,12 +1,5 @@
 # Film
 
-Greg's 35mm frames, kept as texture, depth and film-study reference. Not published content:
-nothing here is served. To use one on the site, copy a web-ready version (JPEG, long edge ≤ 2400px)
-into the entity's `/images` folder in `/content`, or `public/images/` for site chrome.
+Greg's 35mm frames live in `public/images/film/` (web-ready, ≤ 2400px), kept as texture, depth and film-study reference.
 
-In use: `000154570026.jpg` (flagstick and shadow) → `public/images/hero-film.jpg`, hero column 5.
-
-Roll notes: flat color fields (000154570001, 000405230024, 000622640004), sand and stone
-textures (000154570026's roll, 000622630031), Siena roofs, olive trees, marble yard, cemetery,
-golf greens, granite, feet on leaves and moss, river bed, horses, hen and chicks, lawn with
-iguana, two people on the green.
+In use: the hero's column 5 shows one at random on each load (`app/components/ui/film-frame.tsx`, which lists each frame with its alt text). Add a frame there to put it in rotation.
