@@ -12,7 +12,7 @@ File: `19deN2JJWs7hvt12Z0neT4`
 ## Type slides
 - [ ] Rename old role rows to the core roles: Role/stat → headline, Role/credit → caption-credit, Role/meta → caption (title, display, body, label stay)
 - [ ] Role/label row: spec line "21 / 15" → "18"; use line → "Nav, CTAs, index, markers, tags, stat captions, card titles"
-- [ ] Add rows for deck, body-lede and body-small (18 · serif · 1.35 · role rows) if they're not on the slides yet
+- [ ] Add rows for deck, body-lede, body-small, body-medium (21 · serif · 1.15 · hero services) and headline-alt (72/36 · Clearface · hero, contact) (18 · serif · 1.35 · role rows) if they're not on the slides yet
 - [ ] Role/label row: use line drops "role rows"; it's body-small now
 
 ## Styles
@@ -21,3 +21,6 @@ File: `19deN2JJWs7hvt12Z0neT4`
 
 ## Scale
 - [ ] Wherever the type scale is listed: add 21, 144, 180 (6 9 12 15 18 21 27 36 45 54 72 90 108 144 180)
+
+## Color
+- [ ] Semantic `input` (black 10%, the contact band) and primitive `black-10`; `link` and `black-90` are in already
