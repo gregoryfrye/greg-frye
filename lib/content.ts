@@ -24,13 +24,17 @@ export type Stat = {
 export type Role = {
   slug: string;
   company: string;
+  /** The company's own site, from `company: "Name | https://url"`. */
+  companyUrl?: string;
   title: string;
   years: string;
   location: string;
   /** Slugs into /content/clients, where an entity exists. */
   clients: string[];
-  /** Plain-text clients with no entity. */
+  /** Clients with no entity: plain names (`"Name | https://url"` in frontmatter adds a link). */
   names: string[];
+  /** Live sites for entries in names[], keyed by name. */
+  nameUrls: Record<string, string>;
   description: string;
   /** Slugs into /content/skills. */
   skills: string[];
@@ -87,7 +91,7 @@ export type Project = {
   content: string;
   /** Filename within this project's /images folder. */
   featuredImage?: string;
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
   /** Visible on review builds only. See SHOW_DRAFTS. */
   draft?: boolean;
 };
@@ -98,7 +102,7 @@ export type Skill = {
   summary: string;
   /** Filename within this skill's /images folder. */
   featuredImage?: string;
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
 };
 
 /** Inputs. Peers to clients, not children. */
@@ -109,7 +113,7 @@ export type Study = {
   /** Full-form (`client/project`) references — required, since a study has no containing client. */
   projects?: string[];
   clients?: string[];
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
 };
 
 /** Outputs, nested under their owning project. */
@@ -127,8 +131,29 @@ export type Artifact = {
   summary: string;
   /** Filename within this artifact's /images folder. */
   featuredImage?: string;
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
+  /** Shown in the homepage's Active column, even while its client's case study is a draft. */
+  active?: boolean;
+  /** Year (or range) shown on its card. */
+  year?: string;
+  /** Where its card links when set (e.g. the live thing). */
+  url?: string;
 };
+
+/**
+ * Front-end name for each level of the content model, mirroring the
+ * /content collection names. Cards label what they pull in with these, so a
+ * reader can tell a client from a project from an artifact at a glance.
+ */
+export const COLLECTION_LABEL = {
+  role: "Role",
+  client: "Client",
+  project: "Project",
+  artifact: "Artifact",
+  skill: "Skill",
+  study: "Study",
+} as const;
+export type CollectionKind = keyof typeof COLLECTION_LABEL;
 
 /** One entry in the homepage's featuredOnHome strip, normalized across types. */
 export type FeaturedEntity =
@@ -192,12 +217,13 @@ export function getRoleBySlug(slug: string): Role | null {
   const { data } = parsed;
   return {
     slug,
-    company: data.company as string,
+    company: String(data.company).split(" | ")[0].trim(),
+    companyUrl: String(data.company).split(" | ")[1]?.trim() || undefined,
     title: data.title as string,
     years: data.years as string,
     location: data.location as string,
     clients: (data.clients as string[] | undefined) ?? [],
-    names: (data.names as string[] | undefined) ?? [],
+    ...parseNames((data.names as string[] | undefined) ?? []),
     description: data.description as string,
     skills: (data.skills as string[] | undefined) ?? [],
     current: data.current as boolean | undefined,
@@ -299,6 +325,61 @@ export function getActiveClients(): ActiveClient[] {
     .filter((client): client is ActiveClient => client !== null);
 }
 
+/** One card in the homepage's Active column, from any collection that can be active. */
+export type ActiveItem = {
+  key: string;
+  kind: CollectionKind;
+  title: string;
+  summary: string;
+  years?: string;
+  imageSrc?: string;
+  href?: string;
+  external: boolean;
+};
+
+/**
+ * The Active column: clients and artifacts flagged `active: true`, clients
+ * first. Walks the folders directly so an active item still shows while its
+ * client's case study is a draft. Links: a visible case study page → the
+ * item's `url` (external) → no link.
+ */
+export function getActiveItems(): ActiveItem[] {
+  const items: ActiveItem[] = getActiveClients().map((c) => ({
+    key: `client:${c.slug}`,
+    kind: "client",
+    title: c.name,
+    summary: c.summary,
+    years: c.years,
+    imageSrc: c.imageSrc,
+    href: c.hasPage ? `/work/${c.slug}` : c.url,
+    external: !c.hasPage && Boolean(c.url),
+  }));
+  for (const clientSlug of listFolderSlugs(CLIENTS_DIR)) {
+    const clientData = readMdx(path.join(CLIENTS_DIR, clientSlug, "index.mdx"))?.data;
+    const clientHasPage = Boolean(clientData) && (!clientData?.draft || SHOW_DRAFTS);
+    for (const projectSlug of listFolderSlugs(projectsDirFor(clientSlug))) {
+      for (const artifactSlug of listFolderSlugs(artifactsDirFor(clientSlug, projectSlug))) {
+        const a = readArtifact(clientSlug, projectSlug, artifactSlug);
+        if (!a?.active) continue;
+        const image = getArtifactCardImage(a);
+        items.push({
+          key: `artifact:${a.fullSlug}`,
+          kind: "artifact",
+          title: a.title,
+          summary: a.summary,
+          years: a.year,
+          imageSrc: image
+            ? `/content-images/clients/${clientSlug}/projects/${projectSlug}/artifacts/${artifactSlug}/images/${image}`
+            : undefined,
+          href: a.url ?? (clientHasPage ? `/work/${clientSlug}` : undefined),
+          external: Boolean(a.url),
+        });
+      }
+    }
+  }
+  return items;
+}
+
 export function getClientImages(slug: string): string[] {
   return listImageFiles(path.join(CLIENTS_DIR, slug, "images"));
 }
@@ -350,7 +431,7 @@ function readProject(clientSlug: string, projectSlug: string): Project | null {
     summary: data.summary as string,
     content,
     featuredImage: data.featuredImage as string | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
     draft: data.draft === true,
   };
 }
@@ -433,7 +514,10 @@ function readArtifact(clientSlug: string, projectSlug: string, artifactSlug: str
     type: data.type as string,
     summary: data.summary as string,
     featuredImage: data.featuredImage as string | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
+    active: data.active as boolean | undefined,
+    year: data.year as string | undefined,
+    url: data.url as string | undefined,
   };
 }
 
@@ -480,7 +564,7 @@ export function getSkillBySlug(slug: string): Skill | null {
     name: data.name as string,
     summary: data.summary as string,
     featuredImage: data.featuredImage as string | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
   };
 }
 
@@ -511,7 +595,7 @@ export function getStudyBySlug(slug: string): Study | null {
     summary: data.summary as string,
     projects: data.projects as string[] | undefined,
     clients: data.clients as string[] | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
   };
 }
 
@@ -539,32 +623,35 @@ export function getRolesByClient(clientSlug: string): Role[] {
  * appear, don't hardcode the picks here.
  */
 export function getFeaturedOnHome(): FeaturedEntity[] {
-  const items: FeaturedEntity[] = [];
+  const items: { item: FeaturedEntity; order: boolean | number | undefined }[] = [];
 
-  const homeOrder = (client: Client) =>
-    typeof client.featuredOnHome === "number" ? client.featuredOnHome : Infinity;
-  const featuredClients = getAllClients()
-    .filter((client) => client.featuredOnHome)
-    .sort((a, b) => homeOrder(a) - homeOrder(b));
-  for (const client of featuredClients) items.push({ kind: "client", client });
+  for (const client of getAllClients()) {
+    if (client.featuredOnHome) items.push({ item: { kind: "client", client }, order: client.featuredOnHome });
+  }
 
   for (const project of getAllProjects()) {
     if (project.featuredOnHome) {
-      items.push({ kind: "project", project, client: getClientBySlug(project.client) });
+      items.push({
+        item: { kind: "project", project, client: getClientBySlug(project.client) },
+        order: project.featuredOnHome,
+      });
     }
   }
 
   for (const skill of getAllSkills()) {
-    if (skill.featuredOnHome) items.push({ kind: "skill", skill });
+    if (skill.featuredOnHome) items.push({ item: { kind: "skill", skill }, order: skill.featuredOnHome });
   }
 
   for (const artifact of getAllArtifacts()) {
     if (artifact.featuredOnHome) {
       items.push({
-        kind: "artifact",
-        artifact,
-        project: getProjectBySlug(`${artifact.client}/${artifact.project}`),
-        client: getClientBySlug(artifact.client),
+        item: {
+          kind: "artifact",
+          artifact,
+          project: getProjectBySlug(`${artifact.client}/${artifact.project}`),
+          client: getClientBySlug(artifact.client),
+        },
+        order: artifact.featuredOnHome,
       });
     }
   }
@@ -573,11 +660,14 @@ export function getFeaturedOnHome(): FeaturedEntity[] {
     if (study.featuredOnHome) {
       const clientSlug = study.clients?.[0];
       const client = clientSlug ? getClientBySlug(clientSlug) : null;
-      items.push({ kind: "study", study, client });
+      items.push({ item: { kind: "study", study, client }, order: study.featuredOnHome });
     }
   }
 
-  return items;
+  // A number sets the place in the strip (1 first), across every collection;
+  // `true` sorts after the numbered picks, in collection order. Sort is stable.
+  const rank = (order: boolean | number | undefined) => (typeof order === "number" ? order : Infinity);
+  return items.sort((a, b) => rank(a.order) - rank(b.order)).map(({ item }) => item);
 }
 
 // --- build-time validation ---
@@ -662,4 +752,16 @@ export function validateContentGraph(): string[] {
   }
 
   return warnings;
+}
+
+/** Split role names[] entries of the form "Name | https://url" into names and their urls. */
+function parseNames(raw: string[]): { names: string[]; nameUrls: Record<string, string> } {
+  const names: string[] = [];
+  const nameUrls: Record<string, string> = {};
+  for (const entry of raw) {
+    const [name, url] = String(entry).split(" | ").map((part) => part.trim());
+    names.push(name);
+    if (url) nameUrls[name] = url;
+  }
+  return { names, nameUrls };
 }

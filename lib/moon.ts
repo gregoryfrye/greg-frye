@@ -85,6 +85,11 @@ function moonZodiacSign(date: Date): string {
   return ZODIAC_SIGNS[index];
 }
 
+/** e.g. "Full Moon" */
+export function getMoonPhaseName(date: Date = new Date()): string {
+  return moonPhaseName(date);
+}
+
 /** e.g. "Full Moon in Aquarius ☾" */
 export function getMoonPhaseLabel(date: Date = new Date()): string {
   return `${moonPhaseName(date)} in ${moonZodiacSign(date)} ☾`;

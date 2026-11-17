@@ -1,0 +1,328 @@
+{
+  "$about": "Source of truth for gregfrye.us tokens. Edit here, then run `npm run tokens:build` to regenerate app/tokens.css (never hand-edit that file). Why-files beside this one explain each area. Values seeded from the 2026 Figma (file 19deN2JJWs7hvt12Z0neT4): 00_Index_1280 for the homepage, 01_Client_1280 for case studies.",
+  "primitives": {
+    "color": {
+      "white": "#ffffff",
+      "black": "#000000",
+      "field": "#998060"
+    },
+    "alpha": {
+      "black-90": "rgb(0 0 0 / 0.9)",
+      "black-85": "rgb(0 0 0 / 0.85)",
+      "black-60": "rgb(0 0 0 / 0.6)",
+      "black-25": "rgb(0 0 0 / 0.25)",
+      "black-06": "rgb(0 0 0 / 0.06)"
+    },
+    "typeScale": [
+      6,
+      9,
+      12,
+      15,
+      18,
+      21,
+      27,
+      36,
+      45,
+      54,
+      72,
+      90,
+      108,
+      144,
+      180
+    ],
+    "space": [
+      9,
+      18,
+      27,
+      36,
+      45,
+      54,
+      72,
+      90,
+      108
+    ],
+    "breakpoints": {
+      "xs": 320,
+      "sm": 640,
+      "md": 960,
+      "lg": 1280,
+      "xl": 1600,
+      "2xl": 1920
+    },
+    "fonts": {
+      "serif": "\"Times New Roman\", Times, serif",
+      "sans": "Helvetica, \"Helvetica Neue\", Arial, sans-serif",
+      "mono": "\"GT America Mono\", ui-monospace, \"SF Mono\", Menlo, monospace",
+      "display-alt": "\"ITC Clearface Std\", \"ITC Clearface\", \"Times New Roman\", Times, serif"
+    },
+    "viewport": {
+      "compact": 375,
+      "expanded": 1280
+    },
+    "$typeScale": "Type sizes step in 3s; multiples of 9 carry most of the system, and 6, 12, 15, 21 are valid in-between steps; 144 and 180 are poster sizes for one-off display moments. Spacing stays on 9."
+  },
+  "semantic": {
+    "color": {
+      "canvas": {
+        "value": "white",
+        "job": "Case studies and inner pages"
+      },
+      "canvas-home": {
+        "value": "field",
+        "job": "Homepage field"
+      },
+      "ink": {
+        "value": "black",
+        "job": "Primary text, rules, focus"
+      },
+      "link": {
+        "value": "black-90",
+        "job": "Inline links at rest: 90% ink hints a link; full ink + underline on hover"
+      },
+      "muted": {
+        "value": "black-60",
+        "job": "Secondary text on canvas"
+      },
+      "muted-home": {
+        "value": "black-85",
+        "job": "Secondary text on the field (60% is 3.3:1 there; 85% clears AA at 4.7:1)"
+      },
+      "faint": {
+        "value": "black-25",
+        "job": "Inactive index items, as in Figma. Fails AA for text (about 1.9:1): decide in the Visual Design Pass"
+      },
+      "border": {
+        "value": "black",
+        "job": "Rules and outlines"
+      },
+      "placeholder": {
+        "value": "black-06",
+        "job": "Image boxes while loading and placeholder slots"
+      }
+    }
+  },
+  "layout": {
+    "spacing": {
+      "nav": {
+        "value": 27,
+        "job": "Nav padding"
+      },
+      "gutter": {
+        "value": 27,
+        "job": "Page gutter and column gap"
+      },
+      "item": {
+        "value": 9,
+        "job": "Between lines in a list or index"
+      },
+      "inline": {
+        "value": 18,
+        "job": "Between items in a row"
+      },
+      "block": {
+        "value": 27,
+        "job": "Between blocks inside a section"
+      },
+      "section": {
+        "value": 45,
+        "job": "Section padding top and bottom"
+      },
+      "marker": {
+        "value": 54,
+        "job": "Marker column in beat headers (the A / 04 before a label)"
+      },
+      "masthead": {
+        "value": 81,
+        "job": "Clearance under the fixed nav, for sticky elements and anchor targets"
+      },
+      "index": {
+        "value": 99,
+        "job": "Marker column in numbered index lists (homepage services)"
+      }
+    },
+    "containers": {
+      "wide": {
+        "value": 1280,
+        "job": "Layout: anything with horizontal structure"
+      },
+      "prose": {
+        "value": 672,
+        "job": "Reading measure for continuous text"
+      },
+      "hero": {
+        "value": 768,
+        "job": "Homepage headline only"
+      }
+    }
+  },
+  "type": {
+    "$about": "Core roles shared across Greg's projects (site-design-pipeline): display, headline, title, deck, body, label, caption. Each bundles family, weight, style, size, line height and tracking. Sizes are px [compact, expanded]: compact below md (960), expanded at md and up, matching Figma's Layout modes. Variants (type-<role>-<variant>) override only what differs. Compact sizes are provisional until the Visual Design Pass.",
+    "roles": {
+      "display": {
+        "family": "serif",
+        "size": [
+          54,
+          108
+        ],
+        "lineHeight": 0.9,
+        "tracking": "-0.015em",
+        "job": "The biggest, about one per page: case study name, hero"
+      },
+      "headline": {
+        "family": "serif",
+        "size": [
+          36,
+          72
+        ],
+        "lineHeight": 0.9,
+        "tracking": "-0.015em",
+        "job": "Big statements and section openers; stat figures"
+      },
+      "title": {
+        "family": "serif",
+        "size": [
+          27,
+          45
+        ],
+        "lineHeight": 1.05,
+        "tracking": "-0.01em",
+        "job": "Card and block titles"
+      },
+      "deck": {
+        "family": "serif",
+        "size": [
+          21,
+          36
+        ],
+        "lineHeight": 1.2,
+        "tracking": "-0.01em",
+        "job": "Summary line under a title"
+      },
+      "body": {
+        "family": "serif",
+        "size": [
+          18,
+          27
+        ],
+        "lineHeight": 1.15,
+        "tracking": "-0.01em",
+        "job": "Reading text",
+        "variants": {
+          "lede": {
+            "size": [
+              21,
+              36
+            ],
+            "lineHeight": 1.2,
+            "job": "A larger first paragraph, when a piece opens without a deck"
+          },
+          "small": {
+            "size": [
+              18,
+              18
+            ],
+            "lineHeight": 1.35,
+            "job": "Small reading text that wraps (role rows): label size with reading line height"
+          }
+        }
+      },
+      "label": {
+        "family": "serif",
+        "size": [
+          18,
+          18
+        ],
+        "lineHeight": 1.15,
+        "tracking": "-0.01em",
+        "job": "Nav, CTAs, index, markers, tags, stat captions, card titles"
+      },
+      "caption": {
+        "family": "sans",
+        "size": [
+          15,
+          15
+        ],
+        "lineHeight": 1.2,
+        "tracking": "0",
+        "job": "Dates and small notes: the standard date treatment",
+        "variants": {
+          "credit": {
+            "family": "serif",
+            "style": "italic",
+            "size": [
+              18,
+              27
+            ],
+            "lineHeight": 1.08,
+            "tracking": "-0.01em",
+            "job": "Photo and project credits"
+          }
+        }
+      }
+    },
+    "legacy": {
+      "$about": "Pre-kit sizes still used by current components. The Visual Design Pass moves components onto roles, then these are deleted.",
+      "display": {
+        "size": "clamp(2.5rem, 5.625vw, 4.5rem)",
+        "lineHeight": 1.125
+      },
+      "heading": {
+        "size": "clamp(1.375rem, 2.1vw, 1.6875rem)",
+        "lineHeight": 1.2
+      },
+      "body": {
+        "size": "clamp(1rem, 1.3vw, 1.125rem)",
+        "lineHeight": 1.35
+      },
+      "caption": {
+        "size": "1.125rem",
+        "lineHeight": 1.3
+      },
+      "meta": {
+        "size": "0.9375rem",
+        "lineHeight": 1.2
+      },
+      "tracking-tight": "-0.01em"
+    }
+  },
+  "motion": {
+    "ease": {
+      "standard": {
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "job": "Default for state changes"
+      },
+      "enter": {
+        "value": "cubic-bezier(0, 0, 0.2, 1)",
+        "job": "Things arriving"
+      },
+      "exit": {
+        "value": "cubic-bezier(0.4, 0, 1, 1)",
+        "job": "Things leaving"
+      },
+      "editorial": {
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "job": "Image and text reveals"
+      }
+    },
+    "duration": {
+      "fast": {
+        "value": 120,
+        "job": "Hover, focus, small UI"
+      },
+      "normal": {
+        "value": 240,
+        "job": "Menus, index highlight, leaving"
+      },
+      "slow": {
+        "value": 800,
+        "job": "Reveals"
+      }
+    }
+  },
+  "line": {
+    "weight": {
+      "value": 1,
+      "job": "Rules, dividers, outlines and line drawings (the globe)"
+    }
+  }
+}

@@ -67,7 +67,7 @@ reference from a study as ambiguous.
   optional `featuredOnHome`, optional `projects` (short-form slugs, in
   **authored display order** — a project on disk but missing here, or vice
   versa, is a `validateContentGraph` warning), optional `active` + `url`
-  (ongoing work: a small card in the homepage's Active column, linking to
+  (latest work: a card at the front of the homepage's work row, linking to
   the project's own live site — shown even while the case study is a draft,
   without a link to the hidden page).
 - **Projects** — `/content/clients/<client>/projects/<slug>/index.mdx` +
@@ -88,7 +88,17 @@ reference from a study as ambiguous.
 - **Artifacts** (outputs) —
   `/content/clients/<client>/projects/<project>/artifacts/<slug>/index.mdx`
   + `/images`. Frontmatter: `title`, `type`, `summary`, optional
-  `featuredImage`, optional `featuredOnHome`.
+  `featuredImage`, optional `featuredOnHome`, optional `active` + `year` +
+  `url` (a card at the front of the homepage's work row, linking to `url`, or to its
+  client's case study when there's no `url`).
+
+**Homepage work row.** One row of `CollectionCard`s: the latest first
+(`getActiveItems()`: clients and artifacts flagged `active: true`), then the
+`featuredOnHome` picks, deduplicated. Each card's boxed label names its
+collection from `COLLECTION_LABEL` in `lib/content.ts`, singular (Client,
+Project, Artifact …, one per `/content` folder); the date top right carries recency.
+The hero above it is the headline (alt header face) plus the current role's
+services as a numbered index.
 
 Image filenames are prefixed `01-`, `02-`, etc. — prefix order is display
 order; `lib/content.ts` sorts each `/images` folder by filename. Clients,
@@ -148,9 +158,23 @@ migration — the fence syntax and props don't change.
 
 **Homepage featured strip.** Set `featuredOnHome: true` on any client,
 project, skill, artifact, or study to put it in the homepage strip —
-`getFeaturedOnHome()` scans all five collections and returns them in that
-order (client, project, skill, artifact, study). Don't hardcode the picks in
+`getFeaturedOnHome()` scans all five collections. A number sets the card's
+place in the strip across every collection (`featuredOnHome: 1` first);
+`true` sorts after the numbered picks, in collection order (client, project,
+skill, artifact, study). Feature at the level the work is: a role-scale case
+study as its Client, a client build as its main Project, a single piece as
+an Artifact. A project card's title is the client name plus the project's. Don't hardcode the picks in
 a page component; add the flag to the content instead.
+
+**Role rows link out, for now.** A client in a role's `clients[]` links to
+its own live site (`url`), or is plain text when it has none. Entries in a
+role's `names[]` link out the same way when written `"Name | https://url"`. No dead ends.
+As case studies fill out, these links move to `/work/<slug>`.
+
+**Arrows.** Cards and `TextLink` end in ↗ when they leave the site and →
+when they go to another page here. Inline links in running text and the
+role rows carry no arrow: they're underlined by default instead. A role's
+`company` links out the same way as `names[]` (`"Name | https://url"`).
 
 **Entities are earned by content.** Create an entity file only when there's a
 real case study, project, study, or artifact behind it. A name with nothing
@@ -190,23 +214,45 @@ its whole body as spine, no closing section.
 
 ## Styling
 
-Tailwind design tokens only — type scale, spacing, color roles — defined in
-the `@theme` block in `app/globals.css`. Never hardcode a color, font size, or
-spacing value in a component. If a value doesn't have a token yet, add the
-token, don't inline the value.
+**Read `kit/readme.md` first.** Tokens live in `kit/visual-system.json`
+(primitives, color by job, layout, type roles, motion, line) and are generated
+into `app/tokens.css` by `npm run tokens:build`, which also runs before `dev`
+and `build`. Never hand-edit `tokens.css`, and never hardcode a color, size,
+spacing or duration in a component: add the token to the JSON with its `job`,
+regenerate, and explain it in the matching `kit/*.md` why-file. Prefer one
+reusable treatment (one date style, one tag style) over a token for one element.
 
-Current tokens (seeded from Greg's 2026 Figma, file `19deN2JJWs7hvt12Z0neT4`,
-newest frames on the right; nothing there is final):
+- Type: `type-<role>` bundles family, size, line height and tracking. Core
+  roles shared across Greg's projects: `display`, `headline`, `title`,
+  `deck`, `body`, `label`, `caption`, plus variants (`body-lede`,
+  `caption-credit`). Named by tier and job, never by HTML heading level
+  (`kit/type.md`).
+  The older `text-display` / `text-heading` / `text-body` / `text-caption` /
+  `text-meta` sizes are legacy: the Visual Design Pass moves components onto
+  roles, then deletes them.
+- Color: `canvas`, `canvas-home` (applied when the page's
+  `<main data-canvas="home">`), `ink`, `muted`, `faint`, `border`,
+  `placeholder` (`kit/color.md`).
+- Layout: Greg's breakpoints (`sm` 640, `md` 960, `lg` 1280 …; Tailwind's
+  defaults are replaced), 9px-rhythm spacing by job (`item`, `inline`,
+  `block`, `section`, `gutter`, `nav`), containers `max-w-wide` (1280),
+  `max-w-prose` (672), `max-w-hero` (768) (`kit/layout.md`).
+- Motion: `ease-standard|enter|exit|editorial` with
+  `motion-fast|normal|slow`; reduced motion is honored globally
+  (`kit/motion.md`).
 
-- Colors: `canvas` (white, inner pages), `canvas-home` (the homepage's brown
-  field, applied when the page's `<main data-canvas="home">`), `ink`, `muted`,
-  `border`
-- Fonts: `font-serif` (primary), `font-sans` (secondary)
-- Type scale: `text-display`, `text-heading`, `text-body`, `text-caption`
-- Spacing: `spacing-nav`, `spacing-gutter`
-- Containers: `container-wide` (`max-w-wide`, 1280px), `container-prose`
-  (`max-w-prose`, 672px), `container-hero` (`max-w-hero`, 768px, homepage
-  headline only)
+**Figma variables mirror the JSON.** File `19deN2JJWs7hvt12Z0neT4`:
+collections Primitives (hidden) · Semantic (color by job, aliased to
+primitives) · Page (Home / Inner) · Layout (Expanded / Compact: type role and
+legacy sizes) · Space; text styles `Role/<role>` bound to Layout; components
+on the Components page. Every variable's WEB code syntax is its CSS variable.
+Code is the source of truth for anything shipped; Figma is the record.
+`npm run tokens` prints the tokens resolved for Figma (Expanded 1280 /
+Compact 375, since Figma can't do `clamp`); `npm run tokens:check` compares them with
+`design/figma-variables.json` (an export of Figma's variables) and reports
+DRIFT, MISSING IN FIGMA, and FIGMA ONLY (an unshipped idea, not an error).
+Update Figma in the same session as a shipped change when possible; the
+Friday sync reconciles anything that slipped.
 
 **Two-container rule.** `max-w-wide` is for layout — anything with real
 horizontal structure: the hero, the featured strip, the roles index (its
@@ -285,13 +331,13 @@ interleave on the client page.
 
 Still open:
 
+- Copy tone: revisit the mood-language rule after the 1.1 push. Greg wants
+  words like *shepherding* and *world-building* available when they describe
+  how he actually works; the rule should target empty filler, not those.
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
   grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
   evaluate them against, not before.
-- Homepage featured-strip ordering for non-client cards. Clients take an
-  authored order (`featuredOnHome: 1`, `2`, …; `true` sorts after numbered);
-  projects, skills, artifacts, and studies still follow collection order.
 - Hudson, HealHaus, Beni, Sustain Natural, and Lalo fence blocks are wired
   to images pulled from the 2026 folio PDF and the `_/` batch. App and
   ecommerce images are full folio slides (device comps on a colored field),

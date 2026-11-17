@@ -76,7 +76,7 @@ function InsetBlock({ images, caption }: { images: ImageBlockImage[]; caption?: 
  */
 function StackBlock({ images, caption }: { images: ImageBlockImage[]; caption?: string }) {
   const columns =
-    images.length >= 3 ? "sm:grid-cols-2 lg:grid-cols-3" : images.length === 2 ? "sm:grid-cols-2" : "";
+    images.length >= 3 ? "sm:grid-cols-2 md:grid-cols-3" : images.length === 2 ? "sm:grid-cols-2" : "";
   return (
     <figure className="my-16">
       <div className={`grid grid-cols-1 items-start gap-6 ${columns}`}>
