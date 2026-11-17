@@ -40,8 +40,8 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
       return {
         key: `project:${item.client.slug}/${item.project.slug}`,
         label: COLLECTION_LABEL.project,
-        years: item.project.year,
-        title: item.project.title,
+        years: item.project.year ?? item.client.years,
+        title: `${item.client.name} ${item.project.title}`,
         summary: item.project.summary,
         href: `/work/${item.client.slug}`,
         imageSrc: image

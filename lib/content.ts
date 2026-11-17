@@ -91,7 +91,7 @@ export type Project = {
   content: string;
   /** Filename within this project's /images folder. */
   featuredImage?: string;
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
   /** Visible on review builds only. See SHOW_DRAFTS. */
   draft?: boolean;
 };
@@ -102,7 +102,7 @@ export type Skill = {
   summary: string;
   /** Filename within this skill's /images folder. */
   featuredImage?: string;
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
 };
 
 /** Inputs. Peers to clients, not children. */
@@ -113,7 +113,7 @@ export type Study = {
   /** Full-form (`client/project`) references — required, since a study has no containing client. */
   projects?: string[];
   clients?: string[];
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
 };
 
 /** Outputs, nested under their owning project. */
@@ -131,7 +131,7 @@ export type Artifact = {
   summary: string;
   /** Filename within this artifact's /images folder. */
   featuredImage?: string;
-  featuredOnHome?: boolean;
+  featuredOnHome?: boolean | number;
   /** Shown in the homepage's Active column, even while its client's case study is a draft. */
   active?: boolean;
   /** Year (or range) shown on its card. */
@@ -431,7 +431,7 @@ function readProject(clientSlug: string, projectSlug: string): Project | null {
     summary: data.summary as string,
     content,
     featuredImage: data.featuredImage as string | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
     draft: data.draft === true,
   };
 }
@@ -514,7 +514,7 @@ function readArtifact(clientSlug: string, projectSlug: string, artifactSlug: str
     type: data.type as string,
     summary: data.summary as string,
     featuredImage: data.featuredImage as string | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
     active: data.active as boolean | undefined,
     year: data.year as string | undefined,
     url: data.url as string | undefined,
@@ -564,7 +564,7 @@ export function getSkillBySlug(slug: string): Skill | null {
     name: data.name as string,
     summary: data.summary as string,
     featuredImage: data.featuredImage as string | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
   };
 }
 
@@ -595,7 +595,7 @@ export function getStudyBySlug(slug: string): Study | null {
     summary: data.summary as string,
     projects: data.projects as string[] | undefined,
     clients: data.clients as string[] | undefined,
-    featuredOnHome: data.featuredOnHome as boolean | undefined,
+    featuredOnHome: data.featuredOnHome as boolean | number | undefined,
   };
 }
 
@@ -623,32 +623,35 @@ export function getRolesByClient(clientSlug: string): Role[] {
  * appear, don't hardcode the picks here.
  */
 export function getFeaturedOnHome(): FeaturedEntity[] {
-  const items: FeaturedEntity[] = [];
+  const items: { item: FeaturedEntity; order: boolean | number | undefined }[] = [];
 
-  const homeOrder = (client: Client) =>
-    typeof client.featuredOnHome === "number" ? client.featuredOnHome : Infinity;
-  const featuredClients = getAllClients()
-    .filter((client) => client.featuredOnHome)
-    .sort((a, b) => homeOrder(a) - homeOrder(b));
-  for (const client of featuredClients) items.push({ kind: "client", client });
+  for (const client of getAllClients()) {
+    if (client.featuredOnHome) items.push({ item: { kind: "client", client }, order: client.featuredOnHome });
+  }
 
   for (const project of getAllProjects()) {
     if (project.featuredOnHome) {
-      items.push({ kind: "project", project, client: getClientBySlug(project.client) });
+      items.push({
+        item: { kind: "project", project, client: getClientBySlug(project.client) },
+        order: project.featuredOnHome,
+      });
     }
   }
 
   for (const skill of getAllSkills()) {
-    if (skill.featuredOnHome) items.push({ kind: "skill", skill });
+    if (skill.featuredOnHome) items.push({ item: { kind: "skill", skill }, order: skill.featuredOnHome });
   }
 
   for (const artifact of getAllArtifacts()) {
     if (artifact.featuredOnHome) {
       items.push({
-        kind: "artifact",
-        artifact,
-        project: getProjectBySlug(`${artifact.client}/${artifact.project}`),
-        client: getClientBySlug(artifact.client),
+        item: {
+          kind: "artifact",
+          artifact,
+          project: getProjectBySlug(`${artifact.client}/${artifact.project}`),
+          client: getClientBySlug(artifact.client),
+        },
+        order: artifact.featuredOnHome,
       });
     }
   }
@@ -657,11 +660,14 @@ export function getFeaturedOnHome(): FeaturedEntity[] {
     if (study.featuredOnHome) {
       const clientSlug = study.clients?.[0];
       const client = clientSlug ? getClientBySlug(clientSlug) : null;
-      items.push({ kind: "study", study, client });
+      items.push({ item: { kind: "study", study, client }, order: study.featuredOnHome });
     }
   }
 
-  return items;
+  // A number sets the place in the strip (1 first), across every collection;
+  // `true` sorts after the numbered picks, in collection order. Sort is stable.
+  const rank = (order: boolean | number | undefined) => (typeof order === "number" ? order : Infinity);
+  return items.sort((a, b) => rank(a.order) - rank(b.order)).map(({ item }) => item);
 }
 
 // --- build-time validation ---

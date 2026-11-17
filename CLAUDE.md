@@ -158,8 +158,12 @@ migration — the fence syntax and props don't change.
 
 **Homepage featured strip.** Set `featuredOnHome: true` on any client,
 project, skill, artifact, or study to put it in the homepage strip —
-`getFeaturedOnHome()` scans all five collections and returns them in that
-order (client, project, skill, artifact, study). Don't hardcode the picks in
+`getFeaturedOnHome()` scans all five collections. A number sets the card's
+place in the strip across every collection (`featuredOnHome: 1` first);
+`true` sorts after the numbered picks, in collection order (client, project,
+skill, artifact, study). Feature at the level the work is: a role-scale case
+study as its Client, a client build as its main Project, a single piece as
+an Artifact. A project card's title is the client name plus the project's. Don't hardcode the picks in
 a page component; add the flag to the content instead.
 
 **Role rows link out, for now.** A client in a role's `clients[]` links to
@@ -334,9 +338,6 @@ Still open:
   grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
   evaluate them against, not before.
-- Homepage featured-strip ordering for non-client cards. Clients take an
-  authored order (`featuredOnHome: 1`, `2`, …; `true` sorts after numbered);
-  projects, skills, artifacts, and studies still follow collection order.
 - Hudson, HealHaus, Beni, Sustain Natural, and Lalo fence blocks are wired
   to images pulled from the 2026 folio PDF and the `_/` batch. App and
   ecommerce images are full folio slides (device comps on a colored field),
