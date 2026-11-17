@@ -162,9 +162,9 @@ project, skill, artifact, or study to put it in the homepage strip —
 order (client, project, skill, artifact, study). Don't hardcode the picks in
 a page component; add the flag to the content instead.
 
-**Role rows link only what's on the homepage.** A client in a role's
-`clients[]` links to its case study only when it's featured or active;
-otherwise to its own `url`; otherwise it's plain text. No dead ends.
+**Role rows link out, for now.** A client in a role's `clients[]` links to
+its own live site (`url`), or is plain text when it has none. No dead ends.
+As case studies fill out, these links move to `/work/<slug>`.
 
 **Entities are earned by content.** Create an entity file only when there's a
 real case study, project, study, or artifact behind it. A name with nothing

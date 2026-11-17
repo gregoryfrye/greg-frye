@@ -181,10 +181,9 @@ export default function Home() {
                     <span className="text-muted">
                       {" "}Select clients:{" "}
                       {clients.map((client, i) => {
-                        // Link only what's on the homepage (featured or active) to its case
-                        // study; otherwise its own live site; otherwise plain text. No dead ends.
-                        const onHome = Boolean(client.featuredOnHome) || Boolean(client.active);
-                        const href = onHome && !client.draft ? `/work/${client.slug}` : client.url;
+                        // For now role rows link out to the client's own site, or stay plain
+                        // text. Case studies take over these links as they're built out.
+                        const href = client.url;
                         const linkClass =
                           "text-ink underline decoration-border underline-offset-4 hover:decoration-ink";
                         return (
