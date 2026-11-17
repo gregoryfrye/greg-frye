@@ -195,13 +195,15 @@ export default function Home() {
                   <SkillList skills={role.skills} label="Skills" className="md:col-span-2 md:col-start-9" />
                 )}
                 {clientCount > 0 && (
-                  // One client per line. For now they link out to each client's own
+                  // One client per line, A to Z. For now they link out to each client's own
                   // site, or stay plain text; case studies take over as they're built.
                   <ul aria-label="Clients" className="type-body-small text-ink md:col-span-2 md:col-start-11">
                     {[
                       ...clients.map((client) => ({ key: client.slug, name: client.name, url: client.url })),
                       ...role.names.map((name) => ({ key: name, name, url: role.nameUrls[name] })),
-                    ].map((item) => (
+                    ]
+                      .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }))
+                      .map((item) => (
                       <li key={item.key}>
                         {item.url ? (
                           <a href={item.url} className={INLINE_LINK}>
