@@ -20,6 +20,9 @@ import {
   type FeaturedEntity,
 } from "@/lib/content";
 
+/** Alphabetize names the way a shelf does: a leading "The" doesn't count. */
+const sortName = (name: string) => name.replace(/^the\s+/i, "");
+
 /** Where a client's work links: its case study, or its own site while case studies are in revision. */
 function clientLink(client: { slug: string; url?: string }): { href?: string; external: boolean } {
   if (caseStudiesLive || !client.url) return { href: caseStudiesLive ? `/work/${client.slug}` : undefined, external: false };
@@ -195,14 +198,14 @@ export default function Home() {
                   <SkillList skills={role.skills} label="Skills" className="md:col-span-2 md:col-start-9" />
                 )}
                 {clientCount > 0 && (
-                  // One client per line, A to Z. For now they link out to each client's own
+                  // One client per line, A to Z (ignoring a leading "The"). For now they link out to each client's own
                   // site, or stay plain text; case studies take over as they're built.
                   <ul aria-label="Clients" className="type-body-small text-ink md:col-span-2 md:col-start-11">
                     {[
                       ...clients.map((client) => ({ key: client.slug, name: client.name, url: client.url })),
                       ...role.names.map((name) => ({ key: name, name, url: role.nameUrls[name] })),
                     ]
-                      .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }))
+                      .sort((a, b) => sortName(a.name).localeCompare(sortName(b.name), "en", { sensitivity: "base" }))
                       .map((item) => (
                       <li key={item.key}>
                         {item.url ? (
