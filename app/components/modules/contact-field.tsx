@@ -8,8 +8,8 @@ import { INLINE_LINK } from "@/app/components/ui/inline-link";
 /**
  * The contact field: a full-width band below the footer, tinted 10% black so it
  * reads as an oversized input. The text takes the hero headline's two columns. No prompt: an idle blinking caret until it's
- * used, then the real one. The email sits top right and Send, a boxed tag, bottom right, both on the
- * footer's right edge. Hands off to
+ * used, then the real one. Along the bottom: the email address left, Send (a boxed tag) right, on the
+ * page frame's edges, so it holds up on mobile. Hands off to
  * the visitor's email app: no form backend, nothing stored here.
  */
 export function ContactField({ email }: { email: string }) {
@@ -46,7 +46,7 @@ export function ContactField({ email }: { email: string }) {
             className="block w-full resize-none bg-transparent py-item type-headline-alt text-ink caret-ink"
           />
         </div>
-        <div className="flex flex-col items-end justify-between gap-gutter">
+        <div className="flex items-center justify-between gap-gutter md:col-span-3">
           <a href={`mailto:${email}`} className={`type-label ${INLINE_LINK}`}>
             {email}
           </a>
