@@ -338,8 +338,8 @@ export type ActiveItem = {
 };
 
 /**
- * The Active column: clients and artifacts flagged `active: true`, clients
- * first. Walks the folders directly so an active item still shows while its
+ * The Active column: clients, projects and artifacts flagged `active: true`,
+ * clients first. Walks the folders directly so an active item still shows while its
  * client's case study is a draft. Links: a visible case study page → the
  * item's `url` (external) → no link.
  */
@@ -358,6 +358,25 @@ export function getActiveItems(): ActiveItem[] {
     const clientData = readMdx(path.join(CLIENTS_DIR, clientSlug, "index.mdx"))?.data;
     const clientHasPage = Boolean(clientData) && (!clientData?.draft || SHOW_DRAFTS);
     for (const projectSlug of listFolderSlugs(projectsDirFor(clientSlug))) {
+      // An active project shows even while it (or its client) is a draft: read it raw.
+      const projectData = readMdx(path.join(projectsDirFor(clientSlug), projectSlug, "index.mdx"))?.data;
+      if (projectData?.active === true && clientData) {
+        const projectImages = listImageFiles(path.join(projectsDirFor(clientSlug), projectSlug, "images"));
+        const image = projectImages[0]
+          ? `/content-images/clients/${clientSlug}/projects/${projectSlug}/images/${projectImages[0]}`
+          : findActiveImage(clientSlug);
+        const url = (projectData.url as string | undefined) ?? (clientData.url as string | undefined);
+        items.push({
+          key: `project:${clientSlug}/${projectSlug}`,
+          kind: "project",
+          title: `${clientData.name as string} ${projectData.title as string}`,
+          summary: projectData.summary as string,
+          years: (projectData.year as string | undefined) ?? (clientData.years as string | undefined),
+          imageSrc: image,
+          href: clientHasPage ? `/work/${clientSlug}` : url,
+          external: !clientHasPage && Boolean(url),
+        });
+      }
       for (const artifactSlug of listFolderSlugs(artifactsDirFor(clientSlug, projectSlug))) {
         const a = readArtifact(clientSlug, projectSlug, artifactSlug);
         if (!a?.active) continue;

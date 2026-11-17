@@ -75,7 +75,9 @@ reference from a study as ambiguous.
   spine, no duplicating the client's story — and since projects don't have
   their own route, each must also work read inline on the client page.
   Frontmatter: `title`, `role` (slug), optional `year`, `skills` (slugs),
-  `summary`, optional `featuredImage`, optional `featuredOnHome`. Body:
+  `summary`, optional `featuredImage`, optional `featuredOnHome`, optional `active` +
+  `url` (a latest-work card, like a client's; falls back to the client's
+  `url`). Body:
   scope and process notes, using the fence-block image primitives below.
 - **Skills** — `/content/skills/<slug>/index.mdx` + `/images`. Frontmatter:
   `name`, `summary`, optional `featuredImage`, optional `featuredOnHome`. No
@@ -93,7 +95,7 @@ reference from a study as ambiguous.
   client's case study when there's no `url`).
 
 **Homepage work row.** One row of `CollectionCard`s: the latest first
-(`getActiveItems()`: clients and artifacts flagged `active: true`), then the
+(`getActiveItems()`: clients, projects and artifacts flagged `active: true`), then the
 `featuredOnHome` picks, deduplicated. Each card's boxed label names its
 collection from `COLLECTION_LABEL` in `lib/content.ts`, singular (Client,
 Project, Artifact …, one per `/content` folder); the date top right carries recency.
@@ -331,6 +333,9 @@ interleave on the client page.
 
 Still open:
 
+- Featured row, next: The Fader website (Project), Bobbie packaging
+  (Artifact), Nor'easter Festival logo (Artifact), once images and a line
+  each arrive. Prophetic logo becomes a more dynamic artifact.
 - Copy tone: revisit the mood-language rule after the 1.1 push. Greg wants
   words like *shepherding* and *world-building* available when they describe
   how he actually works; the rule should target empty filler, not those.
