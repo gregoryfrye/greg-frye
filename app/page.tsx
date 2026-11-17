@@ -4,6 +4,7 @@ import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
 import { Arrow } from "@/app/components/ui/arrow";
+import { Globe } from "@/app/components/ui/globe";
 import { caseStudiesLive } from "@/lib/site";
 import {
   COLLECTION_LABEL,
@@ -137,6 +138,7 @@ export default function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
+        <Globe className="hidden w-full lg:col-span-2 lg:col-start-9 lg:block" />
         {services.length > 0 && (
           // Its own column at lg, in line with the role rows' last column (the 6th of 6)
           <NumberedList items={services} label="Services" numbered={false} className="md:col-span-4 lg:col-span-2 lg:col-start-11" />
