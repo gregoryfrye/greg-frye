@@ -191,6 +191,7 @@ export default function Home() {
                             {href?.startsWith("http") ? (
                               <a href={href} className={linkClass}>
                                 {client.name}
+                                <span aria-hidden="true">&nbsp;↗</span>
                               </a>
                             ) : href ? (
                               <Link href={href} className={linkClass}>

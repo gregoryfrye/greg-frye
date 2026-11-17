@@ -33,7 +33,7 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
         <p className="type-body text-muted">{summary}</p>
       )}
       <span className="type-label text-ink underline decoration-transparent underline-offset-4 transition-colors motion-fast ease-standard group-hover:decoration-ink">
-        {title} <span aria-hidden="true">→</span>
+        {title} <span aria-hidden="true">{external ? "↗" : "→"}</span>
       </span>
     </>
   );

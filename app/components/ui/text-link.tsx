@@ -8,7 +8,7 @@ export function TextLink({ href, children }: { href: string; children: ReactNode
     "type-label text-ink underline decoration-transparent underline-offset-4 transition-colors motion-fast ease-standard hover:decoration-ink";
   const body = (
     <>
-      {children} <span aria-hidden="true">→</span>
+      {children} <span aria-hidden="true">{external ? "↗" : "→"}</span>
     </>
   );
   return external ? (

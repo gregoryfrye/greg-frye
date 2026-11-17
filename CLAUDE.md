@@ -166,6 +166,10 @@ a page component; add the flag to the content instead.
 its own live site (`url`), or is plain text when it has none. No dead ends.
 As case studies fill out, these links move to `/work/<slug>`.
 
+**Arrows.** A link that leaves the site ends in ↗; a link to another page
+here ends in → (cards, `TextLink`). Inline links in running text carry
+only the ↗, and only when they leave the site.
+
 **Entities are earned by content.** Create an entity file only when there's a
 real case study, project, study, or artifact behind it. A name with nothing
 behind it is plain text (a role's `names[]`, unlinked text elsewhere) — never
