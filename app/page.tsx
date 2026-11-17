@@ -4,6 +4,7 @@ import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
+import { Arrow } from "@/app/components/ui/arrow";
 import { caseStudiesLive } from "@/lib/site";
 import {
   COLLECTION_LABEL,
@@ -206,7 +207,7 @@ export default function Home() {
                           <span key={client.slug}>
                             {href?.startsWith("http") ? (
                               <a href={href} className={linkClass}>
-                                {client.name}
+                                {client.name}&nbsp;<Arrow external />
                               </a>
                             ) : href ? (
                               <Link href={href} className={linkClass}>
@@ -228,7 +229,7 @@ export default function Home() {
                                 href={url}
                                 className={INLINE_LINK}
                               >
-                                {name}
+                                {name}&nbsp;<Arrow external />
                               </a>
                             ) : (
                               <span>{name}</span>

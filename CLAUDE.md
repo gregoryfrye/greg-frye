@@ -174,8 +174,9 @@ role's `names[]` link out the same way when written `"Name | https://url"`. No d
 As case studies fill out, these links move to `/work/<slug>`.
 
 **Arrows.** Cards and `TextLink` end in ↗ when they leave the site and →
-when they go to another page here. Inline links in running text and the
-role rows carry no arrow: they're underlined by default instead. A role's
+when they go to another page here. Client names in the role rows end in ↗ too.
+Other inline links (running text, a role's company, its services) carry no
+arrow: they show at 90% ink and underline on hover. A role's
 `company` links out the same way as `names[]` (`"Name | https://url"`).
 
 **Entities are earned by content.** Create an entity file only when there's a
