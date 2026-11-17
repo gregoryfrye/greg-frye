@@ -160,10 +160,10 @@ export default function Home() {
             return (
               <li
                 key={role.slug}
-                className="grid grid-cols-1 gap-2 border-b border-border py-6 sm:grid-cols-12 sm:gap-6"
+                className="grid grid-cols-1 gap-x-gutter gap-y-item border-b border-border py-block md:grid-cols-12"
               >
-                <span className="type-caption text-ink sm:col-span-2">{role.years}</span>
-                <span className="type-body-small text-ink sm:col-span-3">
+                <span className="type-caption text-ink md:col-span-2">{role.years}</span>
+                <span className="type-body-small text-ink md:col-span-2">
                   {role.title}
                   {role.company !== role.title && (
                     <>
@@ -187,7 +187,7 @@ export default function Home() {
                     </>
                   )}
                 </span>
-                <p className="type-body-small text-ink sm:col-span-4">
+                <p className="type-body-small text-ink md:col-span-4">
                   {role.description}
                   {clientCount > 0 && (
                     <span className="text-muted">
@@ -237,7 +237,7 @@ export default function Home() {
                   )}
                 </p>
                 {role.skills.length > 0 && (
-                  <SkillList skills={role.skills} label="Skills" className="sm:col-span-3" />
+                  <SkillList skills={role.skills} label="Skills" className="md:col-span-4" />
                 )}
               </li>
             );
