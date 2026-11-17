@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 
 /**
- * The globe mark, turning with the day. Six meridians, 30° apart, are drawn as ellipses whose width
- * follows the globe's rotation, so it reads as a sphere spinning. Its angle is the time of day in
+ * The globe mark, turning with the day. Six meridians, 30° apart, are drawn as half-ellipses (front
+ * side only, so the globe reads as solid, not wireframe) whose width follows the globe's rotation, so it reads as a sphere spinning. Its angle is the time of day in
  * Kingston (one turn per 24 hours): on load it spins up from rest to that angle (the slow reveal), then
  * keeps drifting. With reduced motion it simply shows the angle for now.
  *
@@ -71,8 +71,19 @@ export function Globe({ className = "" }: { className?: string }) {
       <g strokeLinecap="round">
         <circle cx="16" cy="16" r="15" vectorEffect="non-scaling-stroke" />
         {MERIDIANS.map((offset) => {
-          const rx = 15 * Math.abs(Math.sin(((angle + offset) * Math.PI) / 180));
-          return <ellipse key={offset} cx="16" cy="16" rx={rx} ry="15" vectorEffect="non-scaling-stroke" />;
+          // Each ellipse is a meridian and its opposite; only the half on the near side is drawn, so the
+          // globe reads as solid (nothing shows through from behind). That half sits right of center when
+          // sin 2θ > 0, left otherwise.
+          const theta = ((angle + offset) * Math.PI) / 180;
+          const rx = 15 * Math.abs(Math.sin(theta));
+          const right = Math.sin(2 * theta) >= 0;
+          return (
+            <path
+              key={offset}
+              d={`M16 1 A ${rx} 15 0 0 ${right ? 1 : 0} 16 31`}
+              vectorEffect="non-scaling-stroke"
+            />
+          );
         })}
         {PARALLELS.map(({ y, half }) => (
           <line key={y} x1={16 - half} y1={y} x2={16 + half} y2={y} vectorEffect="non-scaling-stroke" />
