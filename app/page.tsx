@@ -148,7 +148,7 @@ export default function Home() {
 
       <section id="info" aria-labelledby="roles-heading" className="scroll-mt-40">
         <Tag as="h2" id="roles-heading" className="mx-auto">
-          {COLLECTION_LABEL.role}
+          Roles
         </Tag>
         <ul className="mt-6 flex flex-col border-t border-border">
           {roles.map((role) => {
@@ -180,17 +180,30 @@ export default function Home() {
                   {clientCount > 0 && (
                     <span className="text-muted">
                       {" "}Select clients:{" "}
-                      {clients.map((client, i) => (
-                        <span key={client.slug}>
-                          <Link
-                            href={`/work/${client.slug}`}
-                            className="text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
-                          >
-                            {client.name}
-                          </Link>
-                          {(i < clients.length - 1 || role.names.length > 0) && ", "}
-                        </span>
-                      ))}
+                      {clients.map((client, i) => {
+                        // Link only what's on the homepage (featured or active) to its case
+                        // study; otherwise its own live site; otherwise plain text. No dead ends.
+                        const onHome = Boolean(client.featuredOnHome) || Boolean(client.active);
+                        const href = onHome && !client.draft ? `/work/${client.slug}` : client.url;
+                        const linkClass =
+                          "text-ink underline decoration-border underline-offset-4 hover:decoration-ink";
+                        return (
+                          <span key={client.slug}>
+                            {href?.startsWith("http") ? (
+                              <a href={href} className={linkClass}>
+                                {client.name}
+                              </a>
+                            ) : href ? (
+                              <Link href={href} className={linkClass}>
+                                {client.name}
+                              </Link>
+                            ) : (
+                              <span className="text-ink">{client.name}</span>
+                            )}
+                            {(i < clients.length - 1 || role.names.length > 0) && ", "}
+                          </span>
+                        );
+                      })}
                       {role.names.join(", ")}.
                     </span>
                   )}

@@ -142,12 +142,12 @@ export type Artifact = {
  * reader can tell a client from a project from an artifact at a glance.
  */
 export const COLLECTION_LABEL = {
-  role: "Roles",
-  client: "Clients",
-  project: "Projects",
-  artifact: "Artifacts",
-  skill: "Skills",
-  study: "Studies",
+  role: "Role",
+  client: "Client",
+  project: "Project",
+  artifact: "Artifact",
+  skill: "Skill",
+  study: "Study",
 } as const;
 export type CollectionKind = keyof typeof COLLECTION_LABEL;
 

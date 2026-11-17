@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export type CollectionCardData = {
   key: string;
-  /** Collection label, e.g. "Clients", "Artifacts" (COLLECTION_LABEL). */
+  /** Collection label, e.g. "Client", "Artifact" (COLLECTION_LABEL). */
   label: string;
   years?: string;
   title: string;

@@ -95,8 +95,8 @@ reference from a study as ambiguous.
 **Homepage work row.** One row of `CollectionCard`s: the latest first
 (`getActiveItems()`: clients and artifacts flagged `active: true`), then the
 `featuredOnHome` picks, deduplicated. Each card's boxed label names its
-collection from `COLLECTION_LABEL` in `lib/content.ts` (Clients, Artifacts …,
-mirroring the `/content` folder names); the date top right carries recency.
+collection from `COLLECTION_LABEL` in `lib/content.ts`, singular (Client,
+Project, Artifact …, one per `/content` folder); the date top right carries recency.
 The hero above it is the headline (alt header face) plus the current role's
 services as a numbered index.
 
@@ -161,6 +161,10 @@ project, skill, artifact, or study to put it in the homepage strip —
 `getFeaturedOnHome()` scans all five collections and returns them in that
 order (client, project, skill, artifact, study). Don't hardcode the picks in
 a page component; add the flag to the content instead.
+
+**Role rows link only what's on the homepage.** A client in a role's
+`clients[]` links to its case study only when it's featured or active;
+otherwise to its own `url`; otherwise it's plain text. No dead ends.
 
 **Entities are earned by content.** Create an entity file only when there's a
 real case study, project, study, or artifact behind it. A name with nothing
