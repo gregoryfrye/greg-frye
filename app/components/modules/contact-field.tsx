@@ -8,8 +8,8 @@ import { INLINE_LINK } from "@/app/components/ui/inline-link";
 /**
  * The contact field: a full-width band below the footer, tinted 10% black so it
  * reads as an oversized input. The text takes the hero headline's two columns. No prompt: an idle blinking caret until it's
- * used, then the real one. Along the bottom: the email address left, Send (a boxed tag) right, on the
- * page frame's edges, so it holds up on mobile. Hands off to
+ * used, then the real one. The bottom row mirrors the footer's three columns (Contact · email · Send);
+ * on mobile it's just the email and Send. Hands off to
  * the visitor's email app: no form backend, nothing stored here.
  */
 export function ContactField({ email }: { email: string }) {
@@ -46,14 +46,15 @@ export function ContactField({ email }: { email: string }) {
             className="block w-full resize-none bg-transparent py-item type-headline-alt text-ink caret-ink"
           />
         </div>
-        <div className="flex items-center justify-between gap-gutter md:col-span-3">
-          <a href={`mailto:${email}`} className={`type-label ${INLINE_LINK}`}>
+        <div className="flex items-center justify-between gap-gutter sm:grid sm:grid-cols-3 md:col-span-3">
+          <p className="hidden type-label text-muted sm:block sm:justify-self-start">Contact</p>
+          <a href={`mailto:${email}`} className={`type-label sm:justify-self-center ${INLINE_LINK}`}>
             {email}
           </a>
           <Tag
             as="button"
             type="submit"
-            className="transition-colors motion-fast ease-standard hover:bg-ink hover:text-canvas-home"
+            className="whitespace-nowrap transition-colors motion-fast ease-standard hover:bg-ink hover:text-canvas-home sm:justify-self-end"
           >
             Send <Arrow external />
           </Tag>
