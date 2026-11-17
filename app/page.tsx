@@ -7,6 +7,8 @@ import { Arrow } from "@/app/components/ui/arrow";
 import { FilmFrame } from "@/app/components/ui/film-frame";
 import { Globe } from "@/app/components/ui/globe";
 import { caseStudiesLive } from "@/lib/site";
+import { getMoonPhaseName } from "@/lib/moon";
+import { getKingstonWeather } from "@/lib/weather";
 import {
   COLLECTION_LABEL,
   getActiveItems,
@@ -101,7 +103,11 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
 
 const withoutKey = ({ key: _key, ...card }: CollectionCardData) => card;
 
-export default function Home() {
+// Hourly, so the weather and moon in the hero stay current.
+export const revalidate = 3600;
+
+export default async function Home() {
+  const weather = await getKingstonWeather();
   const currentRole = getCurrentRole();
   const roles = getAllRoles();
 
@@ -139,14 +145,24 @@ export default function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
-        {/* Column 5: the globe placeholder over a random frame from the film roll, new on each load. */}
+        {/* Column 5: where and when: the globe, today's conditions in Kingston, then a film frame and a personal line. */}
         <div className="hidden flex-col gap-gutter lg:col-span-2 lg:col-start-9 lg:flex">
           <Globe className="w-1/2" />
+          <p className="type-caption text-ink">
+            Kingston, NY
+            {weather && (
+              <>
+                <br />
+                ☼ {weather.temperature}°F, {weather.conditions}
+              </>
+            )}
+            <br />☾ {getMoonPhaseName()}
+          </p>
           <figure>
             <FilmFrame />
             {/* Draft: Greg to rewrite. The personal counterweight to the headline. */}
             <figcaption className="mt-item type-caption text-ink">
-              Based in Kingston, NY. Shoots film, tends a garden, plays pickup soccer.
+              Shoots film, tends a garden, plays pickup soccer.
             </figcaption>
           </figure>
         </div>

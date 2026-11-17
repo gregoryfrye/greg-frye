@@ -343,6 +343,10 @@ Still open:
 - Copy tone: revisit the mood-language rule after the 1.1 push. Greg wants
   words like *shepherding* and *world-building* available when they describe
   how he actually works; the rule should target empty filler, not those.
+- Pinned for after 1.1: an alt nav with a link in each corner reaching toward a concept (e.g. Work,
+  Life, Play, Info), tying projects, studies and film together; and seasonality across the site
+  (the garden / "fertile ground" thread, the film roll in `public/images/film` as the mood pool).
+  Both start with a focused session, not a build.
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
   grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
