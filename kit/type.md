@@ -15,12 +15,11 @@
 |---|---|---|
 | `type-display` | 108 / 54, serif, 0.9 | The biggest, about one per page: case study name, hero |
 | `type-headline` | 72 / 36, serif, 0.9 | Big statements and section openers; stat figures |
-| `type-headline-alt` | 72 / 36, Clearface (alt face), 0.9 | Variant: the homepage headline and the contact field's text, in the alt face (Clearface) |
+| `type-headline-alt` | 72 / 36, Clearface (alt face), 0.9 / 1.05 | Variant: the homepage headline and the contact field's text, in the alt face (Clearface) |
 | `type-title` | 45 / 27, serif, 1.05 | Card and block titles |
 | `type-deck` | 36 / 21, serif, 1.2 | Summary line under a title |
 | `type-body` | 27 / 18, serif, 1.15 | Reading text |
 | `type-body-lede` | 36 / 21, serif, 1.2 | Variant: a larger first paragraph, when a piece opens without a deck |
-| `type-body-medium` | 21 at every size, serif, 1.15 | Variant: lists that lead a section, like the hero services index |
 | `type-body-small` | 18 at every size, serif, 1.35 | Variant: small reading text that wraps, like the role rows. Label size, reading line height |
 | `type-label` | 18 at every size, serif, 1.15 | Nav, CTAs, index, markers, tags, stat captions, card titles. One fixed size so controls and tags never shift as the layout steps |
 | `type-caption` | 15, sans, 1.2 | Dates and small notes: the standard date treatment |
@@ -35,3 +34,5 @@
 **Legacy.** `text-display`, `text-heading`, `text-body`, `text-caption` and `text-meta` are the pre-kit sizes still used by current components. The Visual Design Pass moves each component onto a role, then the legacy sizes are deleted. Don't use them in new work.
 
 **When the kit is silent.** Pick the role whose job matches, not the one whose size looks right. If no job matches, propose a role (name it by job) rather than inlining a size.
+
+**Line height can step too.** A role's `lineHeight` takes one number or a [compact, expanded] pair, like `size`. Tight display leading (0.9) collides descenders and ascenders once a headline wraps to many short lines on a phone, so `headline-alt` opens to 1.05 below 960.

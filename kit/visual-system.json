@@ -185,7 +185,11 @@
         "variants": {
           "alt": {
             "family": "display-alt",
-            "job": "Homepage headline and the contact field's text, in the alt face (Clearface)"
+            "job": "Homepage headline and the contact field's text, in the alt face (Clearface)",
+            "lineHeight": [
+              1.05,
+              0.9
+            ]
           }
         }
       },
@@ -234,14 +238,6 @@
             ],
             "lineHeight": 1.35,
             "job": "Small reading text that wraps (role rows): label size with reading line height"
-          },
-          "medium": {
-            "size": [
-              21,
-              21
-            ],
-            "lineHeight": 1.15,
-            "job": "Lists that lead a section (the hero services index): one step above body-small, fixed"
           }
         }
       },

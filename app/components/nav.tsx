@@ -6,19 +6,19 @@ export function Nav() {
       <div className="mx-auto grid max-w-wide grid-cols-3 px-gutter items-center gap-gutter">
         <Link
           href="/#work"
-          className="col-start-1 justify-self-start type-label text-muted no-underline hover:text-ink"
+          className="col-start-1 justify-self-start whitespace-nowrap type-label text-muted no-underline hover:text-ink"
         >
           Work
         </Link>
         <Link
           href="/"
-          className="col-start-2 justify-self-center type-label text-ink no-underline"
+          className="col-start-2 justify-self-center whitespace-nowrap type-label text-ink no-underline"
         >
           Greg Frye
         </Link>
         <Link
           href="/#info"
-          className="col-start-3 justify-self-end type-label text-muted no-underline hover:text-ink"
+          className="col-start-3 justify-self-end whitespace-nowrap type-label text-muted no-underline hover:text-ink"
         >
           Info
         </Link>

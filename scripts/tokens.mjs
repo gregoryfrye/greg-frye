@@ -37,6 +37,9 @@ const ROLES = entries(KIT.type.roles).flatMap(([k, r]) => [
   ...Object.entries(r.variants ?? {}).map(([v, o]) => [`${k}-${v}`, { ...r, ...o, variants: undefined }]),
 ]);
 
+/** Line height as [compact, expanded]: a role may give one number or a pair, like size. */
+const lh = (r) => (Array.isArray(r.lineHeight) ? r.lineHeight : [r.lineHeight, r.lineHeight]);
+
 /** Compact sizes apply below this breakpoint, expanded at and above it (Greg's grid switch). */
 const SWITCH = P.breakpoints.md;
 
@@ -84,7 +87,7 @@ function css() {
   t(`  /* Type roles: compact sizes, stepping to expanded at ${SWITCH}px (kit/type.md) */`);
   for (const [k, r] of ROLES) {
     t(`  --type-${k}-size: ${rem(r.size[0])};`);
-    t(`  --type-${k}-line-height: ${r.lineHeight};`);
+    t(`  --type-${k}-line-height: ${lh(r)[0]};`);
     t(`  --type-${k}-tracking: ${r.tracking};`);
   }
   t("");
@@ -97,7 +100,10 @@ function css() {
   t(`/* Expanded: type steps up at the ${SWITCH}px switch (Figma Layout mode "Expanded") */`);
   t(`@media (min-width: ${rem(SWITCH)}) {`);
   t("  :root {");
-  for (const [k, r] of ROLES) if (r.size[0] !== r.size[1]) t(`    --type-${k}-size: ${rem(r.size[1])};`);
+  for (const [k, r] of ROLES) {
+    if (r.size[0] !== r.size[1]) t(`    --type-${k}-size: ${rem(r.size[1])};`);
+    if (lh(r)[0] !== lh(r)[1]) t(`    --type-${k}-line-height: ${lh(r)[1]};`);
+  }
   t("  }");
   t("}");
   t("");
@@ -181,8 +187,8 @@ export function resolveTokens() {
       family: out.font[r.family],
       style: r.style ?? "normal",
       tracking: px(r.tracking === "0" ? "0em" : r.tracking, WIDTHS.Expanded),
-      Expanded: { size: desktop, lineHeight: round(desktop * r.lineHeight) },
-      Compact: { size: mobile, lineHeight: round(mobile * r.lineHeight) },
+      Expanded: { size: desktop, lineHeight: round(desktop * lh(r)[1]) },
+      Compact: { size: mobile, lineHeight: round(mobile * lh(r)[0]) },
     };
   }
   for (const [k, v] of entries(KIT.motion.duration)) out.motion[`duration-${k}`] = v.value;
