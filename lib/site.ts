@@ -12,3 +12,9 @@ export function isPublicHost(host: string | null | undefined): boolean {
 
 /** Where the site's contact links and message field send to. */
 export const contactEmail = "gregoryfrye@gmail.com";
+
+/**
+ * While case study pages are being revised, work cards link out to each
+ * client's own site instead. Flip to true when /work/<slug> pages are ready.
+ */
+export const caseStudiesLive = false;

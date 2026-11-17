@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { caseStudiesLive } from "./site";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const ROLES_DIR = path.join(CONTENT_DIR, "roles");
@@ -351,8 +352,8 @@ export function getActiveItems(): ActiveItem[] {
     summary: c.summary,
     years: c.years,
     imageSrc: c.imageSrc,
-    href: c.hasPage ? `/work/${c.slug}` : c.url,
-    external: !c.hasPage && Boolean(c.url),
+    href: c.hasPage && caseStudiesLive ? `/work/${c.slug}` : c.url,
+    external: !(c.hasPage && caseStudiesLive) && Boolean(c.url),
   }));
   for (const clientSlug of listFolderSlugs(CLIENTS_DIR)) {
     const clientData = readMdx(path.join(CLIENTS_DIR, clientSlug, "index.mdx"))?.data;
@@ -373,8 +374,8 @@ export function getActiveItems(): ActiveItem[] {
           summary: projectData.summary as string,
           years: (projectData.year as string | undefined) ?? (clientData.years as string | undefined),
           imageSrc: image,
-          href: clientHasPage ? `/work/${clientSlug}` : url,
-          external: !clientHasPage && Boolean(url),
+          href: clientHasPage && caseStudiesLive ? `/work/${clientSlug}` : url,
+          external: !(clientHasPage && caseStudiesLive) && Boolean(url),
         });
       }
       for (const artifactSlug of listFolderSlugs(artifactsDirFor(clientSlug, projectSlug))) {
@@ -390,8 +391,8 @@ export function getActiveItems(): ActiveItem[] {
           imageSrc: image
             ? `/content-images/clients/${clientSlug}/projects/${projectSlug}/artifacts/${artifactSlug}/images/${image}`
             : undefined,
-          href: a.url ?? (clientHasPage ? `/work/${clientSlug}` : undefined),
-          external: Boolean(a.url),
+          href: a.url ?? (clientHasPage && caseStudiesLive ? `/work/${clientSlug}` : (clientData?.url as string | undefined)),
+          external: Boolean(a.url) || !(clientHasPage && caseStudiesLive),
         });
       }
     }

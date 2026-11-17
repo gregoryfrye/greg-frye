@@ -4,6 +4,7 @@ import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
+import { caseStudiesLive } from "@/lib/site";
 import {
   COLLECTION_LABEL,
   getActiveItems,
@@ -19,6 +20,12 @@ import {
   type FeaturedEntity,
 } from "@/lib/content";
 
+/** Where a client's work links: its case study, or its own site while case studies are in revision. */
+function clientLink(client: { slug: string; url?: string }): { href?: string; external: boolean } {
+  if (caseStudiesLive || !client.url) return { href: caseStudiesLive ? `/work/${client.slug}` : undefined, external: false };
+  return { href: client.url, external: true };
+}
+
 function toCardData(item: FeaturedEntity): CollectionCardData | null {
   switch (item.kind) {
     case "client": {
@@ -29,7 +36,7 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
         years: item.client.years,
         title: item.client.name,
         summary: item.client.summary,
-        href: `/work/${item.client.slug}`,
+        ...clientLink(item.client),
         imageSrc: image ? `/content-images/clients/${item.client.slug}/images/${image}` : undefined,
       };
     }
@@ -42,7 +49,7 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
         years: item.project.year ?? item.client.years,
         title: `${item.client.name} ${item.project.title}`,
         summary: item.project.summary,
-        href: `/work/${item.client.slug}`,
+        ...clientLink(item.client),
         imageSrc: image
           ? `/content-images/clients/${item.client.slug}/projects/${item.project.slug}/images/${image}`
           : undefined,
@@ -68,8 +75,7 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
         years: item.artifact.year,
         title: item.artifact.title,
         summary: item.artifact.summary,
-        href: item.artifact.url ?? `/work/${item.client.slug}`,
-        external: Boolean(item.artifact.url),
+        ...(item.artifact.url ? { href: item.artifact.url, external: true } : clientLink(item.client)),
         imageSrc: image
           ? `/content-images/clients/${item.artifact.client}/projects/${item.artifact.project}/artifacts/${item.artifact.slug}/images/${image}`
           : undefined,
@@ -82,7 +88,7 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
         label: COLLECTION_LABEL.study,
         title: item.study.title,
         summary: item.study.summary,
-        href: `/work/${item.client.slug}`,
+        ...clientLink(item.client),
       };
     }
   }

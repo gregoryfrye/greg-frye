@@ -333,6 +333,9 @@ interleave on the client page.
 
 Still open:
 
+- Case study pages are in revision: `caseStudiesLive = false` in `lib/site.ts`
+  sends every work card to the client's own site (↗). Flip it to true when
+  the `/work/<slug>` pages are ready, and move role-row links in too.
 - Featured row, next: The Fader website (Project), Bobbie packaging
   (Artifact), Nor'easter Festival logo (Artifact), once images and a line
   each arrive. Prophetic logo becomes a more dynamic artifact.
