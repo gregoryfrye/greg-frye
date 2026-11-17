@@ -24,7 +24,17 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
     <>
       <div className="flex items-start justify-between gap-inline">
         <Tag>{label}</Tag>
-        {years && <span className="text-right type-caption text-ink">{years}</span>}
+        {years && (
+          // A range breaks after the dash, start over end, as in the Figma.
+          <span className="text-right type-caption text-ink">
+            {years.split("–").map((part, i, parts) => (
+              <span key={part} className="block">
+                {part}
+                {i < parts.length - 1 && "–"}
+              </span>
+            ))}
+          </span>
+        )}
       </div>
       {imageSrc ? (
         // Plain <img>: natural aspect ratio, served at size by the content-images route.
