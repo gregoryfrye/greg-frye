@@ -108,6 +108,7 @@
   --duration-fast: 120ms; /* Hover, focus, small UI */
   --duration-normal: 240ms; /* Menus, index highlight, leaving */
   --duration-slow: 800ms; /* Reveals */
+  --duration-blink: 1000ms; /* Caret blink cycle (the idle contact cursor) */
 
   --line-weight: 1px; /* Rules, dividers, outlines and line drawings (the globe) */
 }
@@ -225,6 +226,9 @@
 }
 @utility motion-slow {
   transition-duration: var(--duration-slow);
+}
+@utility motion-blink {
+  transition-duration: var(--duration-blink);
 }
 
 /* rule: the Figma divider line */

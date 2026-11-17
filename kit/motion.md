@@ -20,3 +20,5 @@
 **Reduced motion.** `app/globals.css` cuts every animation and transition to near zero when the reader asks for reduced motion. Nothing may depend on motion to be understood.
 
 **When the kit is silent.** Use `motion-fast ease-standard`. If it needs to be noticed, it's probably a reveal: `motion-slow ease-editorial`.
+
+**Blink.** `--duration-blink` (1000ms) is one on-off cycle of the idle caret in the contact field, stepped, not eased. Reduced motion holds it on.

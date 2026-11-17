@@ -6,11 +6,13 @@ import { Tag } from "@/app/components/ui/tag";
 
 /**
  * The contact field: a full-width band below the footer, tinted 10% black so it
- * reads as an oversized input. Send is a boxed tag in its lower right. Hands off
- * to the visitor's email app: no form backend, nothing stored here.
+ * reads as an oversized input. No prompt: an idle blinking caret until it's
+ * used, then the real one. Send is a boxed tag in the lower right. Hands off to
+ * the visitor's email app: no form backend, nothing stored here.
  */
 export function ContactField({ email }: { email: string }) {
   const [message, setMessage] = useState("");
+  const [focused, setFocused] = useState(false);
   const href = `mailto:${email}?subject=${encodeURIComponent("Hello from gregfrye.us")}&body=${encodeURIComponent(message)}`;
 
   return (
@@ -23,17 +25,25 @@ export function ContactField({ email }: { email: string }) {
         }}
       >
         <label htmlFor="contact-message" className="sr-only">
-          Message
+          Message to Greg
         </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          rows={4}
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-          placeholder="Say hello: a project, a role, an idea…"
-          className="block w-full resize-none bg-transparent type-headline text-ink placeholder:text-muted"
-        />
+        <div className="relative">
+          {!focused && message === "" && (
+            <span aria-hidden="true" className="caret-blink pointer-events-none absolute top-0 left-0 type-headline border-l border-ink">
+              {"\u200b"}
+            </span>
+          )}
+          <textarea
+            id="contact-message"
+            name="message"
+            rows={4}
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            className="block w-full resize-none bg-transparent type-headline text-ink caret-ink"
+          />
+        </div>
         <div className="flex justify-end">
           <Tag
             as="button"

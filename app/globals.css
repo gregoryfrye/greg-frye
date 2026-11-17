@@ -47,3 +47,21 @@ body:has(main[data-canvas="home"]) {
 body:has(main[data-canvas="home"]) > nav {
   background-color: color-mix(in srgb, var(--color-canvas-home) 85%, transparent);
 }
+
+/*
+ * The contact field shows its own idle caret until it's used; once focused,
+ * the real caret and the tinted band carry focus, so the ring is dropped.
+ */
+#contact-message:focus-visible {
+  outline: none;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.caret-blink {
+  animation: caret-blink var(--duration-blink) steps(1, end) infinite;
+}

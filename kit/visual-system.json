@@ -327,6 +327,10 @@
       "slow": {
         "value": 800,
         "job": "Reveals"
+      },
+      "blink": {
+        "value": 1000,
+        "job": "Caret blink cycle (the idle contact cursor)"
       }
     }
   },
