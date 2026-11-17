@@ -5,14 +5,15 @@ Edits the cloud runner can't make (it can't load Times New Roman, Helvetica or C
 File: `19deN2JJWs7hvt12Z0neT4`
 
 ## Fonts
-- [ ] Role/title, Role/deck, Role/body-lede: Tinos → Times New Roman Regular
+- [ ] Role/title, Role/deck, Role/body-lede, Role/body-small: Tinos → Times New Roman Regular
 - [ ] Typefaces slide: finish the Clearface "Alt header" column (text + font)
 - [ ] Typefaces slide: "GT America" → "GT America Mono"
 
 ## Type slides
 - [ ] Rename old role rows to the core roles: Role/stat → headline, Role/credit → caption-credit, Role/meta → caption (title, display, body, label stay)
 - [ ] Role/label row: spec line "21 / 15" → "18"; use line → "Nav, CTAs, index, markers, tags, stat captions, card titles"
-- [ ] Add rows for deck and body-lede if they're not on the slides yet
+- [ ] Add rows for deck, body-lede and body-small (18 · serif · 1.35 · role rows) if they're not on the slides yet
+- [ ] Role/label row: use line drops "role rows"; it's body-small now
 
 ## Styles
 - [ ] Swap Legacy/stat uses to Role/headline, then delete Legacy/stat
