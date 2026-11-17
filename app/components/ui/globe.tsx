@@ -8,7 +8,8 @@ import { useEffect, useState } from "react";
  * Kingston (one turn per 24 hours): on load it spins up from rest to that angle (the slow reveal), then
  * keeps drifting. With reduced motion it simply shows the angle for now.
  *
- * Parallels every 30° (the equator and ±30°, ±60°) stay put. Before mount it renders angle 0, so server
+ * Drawn without a fixed aspect ratio: the caller sets the box (the hero stretches it to 2:1, wide and
+ * flat), and the lines stay 1px however far it stretches. Parallels every 30° (the equator and ±30°, ±60°) stay put. Before mount it renders angle 0, so server
  * and client agree. Ink lines at the line weight, however large it's drawn.
  */
 const MERIDIANS = [0, 30, 60, 90, 120, 150];
@@ -66,7 +67,7 @@ export function Globe({ className = "" }: { className?: string }) {
   }, []);
 
   return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" className={`fill-none stroke-current stroke-1 text-ink ${className}`}>
+    <svg viewBox="0 0 32 32" preserveAspectRatio="none" aria-hidden="true" className={`fill-none stroke-current stroke-1 text-ink ${className}`}>
       <g strokeLinecap="round">
         <circle cx="16" cy="16" r="15" vectorEffect="non-scaling-stroke" />
         {MERIDIANS.map((offset) => {
