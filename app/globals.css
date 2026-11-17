@@ -12,6 +12,11 @@
     @apply bg-canvas font-serif text-ink antialiased;
   }
 
+  /* Underlines match rules and outlines: one line weight everywhere */
+  a {
+    text-decoration-thickness: var(--line-weight);
+  }
+
   /* Motion is opt-in: honor the reader's reduced-motion setting everywhere */
   @media (prefers-reduced-motion: reduce) {
     *,
