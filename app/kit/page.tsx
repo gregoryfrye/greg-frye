@@ -73,7 +73,7 @@ const SAMPLE: Record<string, string> = {
   caption: "2022–2025",
   "caption-credit": "© Adam Whyte, 2023",
 };
-type RoleSpec = { family: string; size: number[]; lineHeight: number; job: string; variants?: Record<string, Partial<RoleSpec>> };
+type RoleSpec = { family: string; size: number[]; lineHeight: number | number[]; job: string; variants?: Record<string, Partial<RoleSpec>> };
 const typeRows: [string, RoleSpec][] = Object.entries(kit.type.roles as Record<string, RoleSpec>).flatMap(([k, r]) => [
   [k, r] as [string, RoleSpec],
   ...Object.entries(r.variants ?? {}).map(([v, o]) => [`${k}-${v}`, { ...r, ...o } as RoleSpec] as [string, RoleSpec]),
@@ -122,7 +122,8 @@ export default function KitPage() {
               <div>
                 <p className="type-label text-ink">type-{name}</p>
                 <p className="type-caption text-muted">
-                  {r.size[1]} / {r.size[0]} · {r.family} · {r.lineHeight}
+                  {r.size[1]} / {r.size[0]} · {r.family} ·{" "}
+                  {Array.isArray(r.lineHeight) ? `${r.lineHeight[1]} / ${r.lineHeight[0]}` : r.lineHeight}
                 </p>
                 <p className="type-caption text-muted">{r.job}</p>
               </div>
