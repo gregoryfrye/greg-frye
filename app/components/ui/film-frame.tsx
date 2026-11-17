@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 
 /**
- * One frame from Greg's 35mm roll (public/images/film), picked at random on each load.
- * Chosen after mount so server and client render the same empty 3:2 box first (no hydration
- * mismatch, no layout shift); the frame fills it once picked.
+ * Greg's 35mm roll (public/images/film, 800px copies in /800) as a flip book: a random frame on
+ * load, then moving the pointer across the window scrubs through the roll, left edge to right.
+ * Touch and reduced motion keep the random frame. The frame is picked after mount, so server
+ * and client render the same empty 3:2 box first (no hydration mismatch, no layout shift).
  */
 const FRAMES: { file: string; alt: string }[] = [
   { file: "000154570001", alt: "Flat olive-green film frame" },
@@ -30,14 +31,32 @@ const FRAMES: { file: string; alt: string }[] = [
 ];
 
 export function FilmFrame({ className = "" }: { className?: string }) {
-  const [frame, setFrame] = useState<(typeof FRAMES)[number] | null>(null);
-  useEffect(() => setFrame(FRAMES[Math.floor(Math.random() * FRAMES.length)]), []);
+  const [index, setIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    setIndex(Math.floor(Math.random() * FRAMES.length));
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || still) return;
+
+    // Load the whole roll up front so scrubbing never waits on the network.
+    FRAMES.forEach(({ file }) => {
+      new window.Image().src = `/images/film/800/${file}.jpg`;
+    });
+    const onMove = (event: PointerEvent) => {
+      const next = Math.min(FRAMES.length - 1, Math.floor((event.clientX / window.innerWidth) * FRAMES.length));
+      setIndex(next);
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
+  const frame = index === null ? null : FRAMES[index];
   return (
     <div className={`aspect-[3/2] w-full ${className}`}>
       {frame && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={`/images/film/${frame.file}.jpg`} alt={frame.alt} className="h-full w-full object-cover" />
+        <img src={`/images/film/800/${frame.file}.jpg`} alt={frame.alt} className="h-full w-full object-cover" />
       )}
     </div>
   );
