@@ -189,8 +189,7 @@ export default function Home() {
                 </p>
                 <p className="type-body-small text-ink md:col-span-2">
                   {clientCount > 0 && (
-                    <span className="text-muted">
-                      Select Projects:{" "}
+                    <span>
                       {clients.map((client, i) => {
                         // For now role rows link out to the client's own site, or stay plain
                         // text. Case studies take over these links as they're built out.
@@ -231,7 +230,6 @@ export default function Home() {
                           </span>
                         );
                       })}
-                      .
                     </span>
                   )}
                 </p>
