@@ -145,19 +145,23 @@ export default async function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
-        {/* Column 5: where and when: the globe, today's conditions in Kingston, then a film frame and a personal line. */}
-        <div className="hidden flex-col gap-gutter lg:col-span-2 lg:col-start-9 lg:flex">
-          <Globe className="w-1/2" />
-          <p className="type-caption text-ink">
-            Kingston, NY
-            {weather && (
-              <>
-                <br />
-                ☼ {weather.temperature}°F, {weather.conditions}
-              </>
-            )}
-            <br />☾ {getMoonPhaseName()}
-          </p>
+        {/* Column 5 at lg: where and when (the globe turning with the day, today's conditions in Kingston),
+            then a film frame and a personal line. Below lg it moves under the headline and services as its
+            own row: stacked on phones, two halves from sm (lining up with the 2-up cards). */}
+        <div className="order-last col-span-full grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col">
+          <div className="grid grid-cols-4 items-center gap-gutter lg:flex lg:flex-col lg:items-start">
+            <Globe className="w-full lg:w-1/2" />
+            <p className="col-span-3 type-caption text-ink">
+              Kingston, NY
+              {weather && (
+                <>
+                  <br />
+                  ☼ {weather.temperature}°F, {weather.conditions}
+                </>
+              )}
+              <br />☾ {getMoonPhaseName()}
+            </p>
+          </div>
           <figure>
             <FilmFrame />
             {/* Draft: Greg to rewrite. The personal counterweight to the headline. */}
