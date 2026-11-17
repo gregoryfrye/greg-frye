@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Fragment } from "react";
 import { getSkillBySlug } from "@/lib/content";
+import { INLINE_LINK } from "@/app/components/ui/inline-link";
 
 /** Skills by slug as one comma-separated line of links (role rows). */
 export function SkillList({
@@ -21,7 +22,7 @@ export function SkillList({
         <Fragment key={skill.slug}>
           <Link
             href={`/skills/${skill.slug}`}
-            className="text-ink underline decoration-border underline-offset-4 transition-colors motion-fast ease-standard hover:decoration-ink"
+            className={INLINE_LINK}
           >
             {skill.name}
           </Link>

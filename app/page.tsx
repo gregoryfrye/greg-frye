@@ -4,6 +4,7 @@ import { CollectionCard, type CollectionCardData } from "@/app/components/ui/col
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
+import { INLINE_LINK } from "@/app/components/ui/inline-link";
 import {
   COLLECTION_LABEL,
   getActiveItems,
@@ -168,7 +169,7 @@ export default function Home() {
                       {role.companyUrl ? (
                         <a
                           href={role.companyUrl}
-                          className="text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
+                          className={INLINE_LINK}
                         >
                           {role.company}
                         </a>
@@ -193,8 +194,7 @@ export default function Home() {
                         // For now role rows link out to the client's own site, or stay plain
                         // text. Case studies take over these links as they're built out.
                         const href = client.url;
-                        const linkClass =
-                          "text-ink underline decoration-border underline-offset-4 hover:decoration-ink";
+                        const linkClass = INLINE_LINK;
                         return (
                           <span key={client.slug}>
                             {href?.startsWith("http") ? (
@@ -219,7 +219,7 @@ export default function Home() {
                             {url ? (
                               <a
                                 href={url}
-                                className="text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
+                                className={INLINE_LINK}
                               >
                                 {name}
                               </a>

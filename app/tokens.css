@@ -18,6 +18,7 @@
   --color-canvas: #ffffff; /* Case studies and inner pages */
   --color-canvas-home: #998060; /* Homepage field */
   --color-ink: #000000; /* Primary text, rules, focus */
+  --color-link: rgb(0 0 0 / 0.9); /* Inline links at rest: 90% ink hints a link; full ink + underline on hover */
   --color-muted: rgb(0 0 0 / 0.6); /* Secondary text on canvas */
   --color-muted-home: rgb(0 0 0 / 0.85); /* Secondary text on the field (60% is 3.3:1 there; 85% clears AA at 4.7:1) */
   --color-faint: rgb(0 0 0 / 0.25); /* Inactive index items, as in Figma. Fails AA for text (about 1.9:1): decide in the Visual Design Pass */
