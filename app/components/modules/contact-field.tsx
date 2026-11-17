@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { Arrow } from "@/app/components/ui/arrow";
 import { Tag } from "@/app/components/ui/tag";
+import { INLINE_LINK } from "@/app/components/ui/inline-link";
 
 /**
  * The contact field: a full-width band below the footer, tinted 10% black so it
  * reads as an oversized input. The text takes the hero headline's two columns. No prompt: an idle blinking caret until it's
- * used, then the real one. Send is a boxed tag in the lower right. Hands off to
+ * used, then the real one. The email sits top right and Send, a boxed tag, bottom right, both on the
+ * footer's right edge. Hands off to
  * the visitor's email app: no form backend, nothing stored here.
  */
 export function ContactField({ email }: { email: string }) {
@@ -44,7 +46,10 @@ export function ContactField({ email }: { email: string }) {
             className="block w-full resize-none bg-transparent py-item type-headline-alt text-ink caret-ink"
           />
         </div>
-        <div className="flex items-end justify-end">
+        <div className="flex flex-col items-end justify-between gap-gutter">
+          <a href={`mailto:${email}`} className={`type-label ${INLINE_LINK}`}>
+            {email}
+          </a>
           <Tag
             as="button"
             type="submit"
