@@ -6,7 +6,7 @@ import { Tag } from "@/app/components/ui/tag";
 
 /**
  * The contact field: a full-width band below the footer, tinted 10% black so it
- * reads as an oversized input. No prompt: an idle blinking caret until it's
+ * reads as an oversized input. The text takes the hero headline's two columns. No prompt: an idle blinking caret until it's
  * used, then the real one. Send is a boxed tag in the lower right. Hands off to
  * the visitor's email app: no form backend, nothing stored here.
  */
@@ -18,7 +18,7 @@ export function ContactField({ email }: { email: string }) {
   return (
     <section id="contact" aria-label="Contact" className="scroll-mt-40 bg-input">
       <form
-        className="mx-auto flex max-w-wide flex-col px-gutter pt-section pb-gutter"
+        className="mx-auto grid max-w-wide grid-cols-1 gap-gutter px-gutter pt-section pb-gutter md:grid-cols-3"
         onSubmit={(event) => {
           event.preventDefault();
           window.location.href = href;
@@ -27,9 +27,9 @@ export function ContactField({ email }: { email: string }) {
         <label htmlFor="contact-message" className="sr-only">
           Message to Greg
         </label>
-        <div className="relative">
+        <div className="relative md:col-span-2">
           {!focused && message === "" && (
-            <span aria-hidden="true" className="caret-blink pointer-events-none absolute top-0 left-0 type-headline-alt border-l border-ink">
+            <span aria-hidden="true" className="caret-blink pointer-events-none absolute top-item left-0 type-headline-alt border-l border-ink">
               {"\u200b"}
             </span>
           )}
@@ -41,10 +41,10 @@ export function ContactField({ email }: { email: string }) {
             onChange={(event) => setMessage(event.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            className="block w-full resize-none bg-transparent type-headline-alt text-ink caret-ink"
+            className="block w-full resize-none bg-transparent py-item type-headline-alt text-ink caret-ink"
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex items-end justify-end">
           <Tag
             as="button"
             type="submit"
