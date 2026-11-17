@@ -142,7 +142,13 @@ export default function Home() {
         {/* Column 5: the globe placeholder over a random frame from the film roll, new on each load. */}
         <div className="hidden flex-col gap-gutter lg:col-span-2 lg:col-start-9 lg:flex">
           <Globe className="w-1/2" />
-          <FilmFrame />
+          <figure>
+            <FilmFrame />
+            {/* Draft: Greg to rewrite. The personal counterweight to the headline. */}
+            <figcaption className="mt-item type-caption text-ink">
+              Based in Kingston, NY. Shoots film, tends a garden, plays pickup soccer.
+            </figcaption>
+          </figure>
         </div>
         {services.length > 0 && (
           // Beside the headline from sm up, 50/50 over the 2-up cards, 8/4 over the 3-up; column 6 at lg; the globe takes column 5
