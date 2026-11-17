@@ -185,7 +185,7 @@
         "variants": {
           "alt": {
             "family": "display-alt",
-            "job": "Section headlines on the homepage, in the hero's alt face (Clearface)"
+            "job": "Homepage headline and the contact field's text, in the alt face (Clearface)"
           }
         }
       },

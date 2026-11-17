@@ -29,7 +29,7 @@ export function ContactField({ email }: { email: string }) {
         </label>
         <div className="relative">
           {!focused && message === "" && (
-            <span aria-hidden="true" className="caret-blink pointer-events-none absolute top-0 left-0 type-headline border-l border-ink">
+            <span aria-hidden="true" className="caret-blink pointer-events-none absolute top-0 left-0 type-headline-alt border-l border-ink">
               {"\u200b"}
             </span>
           )}
@@ -41,7 +41,7 @@ export function ContactField({ email }: { email: string }) {
             onChange={(event) => setMessage(event.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            className="block w-full resize-none bg-transparent type-headline text-ink caret-ink"
+            className="block w-full resize-none bg-transparent type-headline-alt text-ink caret-ink"
           />
         </div>
         <div className="flex justify-end">

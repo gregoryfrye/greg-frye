@@ -120,7 +120,7 @@ export default function Home() {
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
       <section className="grid grid-cols-1 items-start gap-gutter md:grid-cols-3">
         <div className="md:col-span-2">
-          <h1 className="font-display-alt text-display tracking-tight text-ink">
+          <h1 className="type-headline-alt text-ink">
             A world-building creative director with 20 years channeling resonance through brand experiences,
             product ecosystems, and marketing functions.
           </h1>
