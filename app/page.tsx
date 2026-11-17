@@ -4,8 +4,6 @@ import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
-import { ContactField } from "@/app/components/modules/contact-field";
-import { contactEmail } from "@/lib/site";
 import {
   COLLECTION_LABEL,
   getActiveItems,
@@ -242,9 +240,6 @@ export default function Home() {
         </ul>
       </section>
 
-      <section id="contact" aria-label="Contact" className="scroll-mt-40">
-        <ContactField email={contactEmail} />
-      </section>
     </main>
   );
 }

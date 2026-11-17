@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import type { ReactNode } from "react";
 import { Footer } from "@/app/components/footer";
+import { ContactField } from "@/app/components/modules/contact-field";
 import { Nav } from "@/app/components/nav";
 import { getClientLeadImageUrl, validateContentGraph } from "@/lib/content";
-import { isPublicHost } from "@/lib/site";
+import { contactEmail, isPublicHost } from "@/lib/site";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
         <Footer />
+        <ContactField email={contactEmail} />
       </body>
     </html>
   );

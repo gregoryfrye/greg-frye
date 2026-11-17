@@ -23,6 +23,7 @@
   --color-muted-home: rgb(0 0 0 / 0.85); /* Secondary text on the field (60% is 3.3:1 there; 85% clears AA at 4.7:1) */
   --color-faint: rgb(0 0 0 / 0.25); /* Inactive index items, as in Figma. Fails AA for text (about 1.9:1): decide in the Visual Design Pass */
   --color-border: #000000; /* Rules and outlines */
+  --color-input: rgb(0 0 0 / 0.1); /* Fill for the oversized contact field: a tint on the canvas that reads as an input */
   --color-placeholder: rgb(0 0 0 / 0.06); /* Image boxes while loading and placeholder slots */
 
   /* Families */
