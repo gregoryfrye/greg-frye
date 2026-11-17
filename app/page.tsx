@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CollectionCard, type CollectionCardData } from "@/app/components/ui/collection-card";
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
@@ -195,52 +194,26 @@ export default function Home() {
                 {role.skills.length > 0 && (
                   <SkillList skills={role.skills} label="Skills" className="md:col-span-2 md:col-start-9" />
                 )}
-                <p className="type-body-small text-ink md:col-span-2 md:col-start-11">
-                  {clientCount > 0 && (
-                    <span>
-                      {clients.map((client, i) => {
-                        // For now role rows link out to the client's own site, or stay plain
-                        // text. Case studies take over these links as they're built out.
-                        const href = client.url;
-                        const linkClass = INLINE_LINK;
-                        return (
-                          <span key={client.slug}>
-                            {href?.startsWith("http") ? (
-                              <a href={href} className={linkClass}>
-                                {client.name}&nbsp;<Arrow external />
-                              </a>
-                            ) : href ? (
-                              <Link href={href} className={linkClass}>
-                                {client.name}
-                              </Link>
-                            ) : (
-                              <span>{client.name}</span>
-                            )}
-                            {(i < clients.length - 1 || role.names.length > 0) && ", "}
-                          </span>
-                        );
-                      })}
-                      {role.names.map((name, i) => {
-                        const url = role.nameUrls[name];
-                        return (
-                          <span key={name}>
-                            {url ? (
-                              <a
-                                href={url}
-                                className={INLINE_LINK}
-                              >
-                                {name}&nbsp;<Arrow external />
-                              </a>
-                            ) : (
-                              <span>{name}</span>
-                            )}
-                            {i < role.names.length - 1 && ", "}
-                          </span>
-                        );
-                      })}
-                    </span>
-                  )}
-                </p>
+                {clientCount > 0 && (
+                  // One client per line. For now they link out to each client's own
+                  // site, or stay plain text; case studies take over as they're built.
+                  <ul aria-label="Clients" className="type-body-small text-ink md:col-span-2 md:col-start-11">
+                    {[
+                      ...clients.map((client) => ({ key: client.slug, name: client.name, url: client.url })),
+                      ...role.names.map((name) => ({ key: name, name, url: role.nameUrls[name] })),
+                    ].map((item) => (
+                      <li key={item.key}>
+                        {item.url ? (
+                          <a href={item.url} className={INLINE_LINK}>
+                            {item.name}&nbsp;<Arrow external />
+                          </a>
+                        ) : (
+                          item.name
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             );
           })}
