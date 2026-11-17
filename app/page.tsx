@@ -189,7 +189,7 @@ export default function Home() {
                   {role.description}
                   {clientCount > 0 && (
                     <span className="text-muted">
-                      {" "}Select clients:{" "}
+                      {" "}Select Projects:{" "}
                       {clients.map((client, i) => {
                         // For now role rows link out to the client's own site, or stay plain
                         // text. Case studies take over these links as they're built out.
