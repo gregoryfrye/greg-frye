@@ -210,6 +210,14 @@
             ],
             "lineHeight": 1.2,
             "job": "A larger first paragraph, when a piece opens without a deck"
+          },
+          "small": {
+            "size": [
+              18,
+              18
+            ],
+            "lineHeight": 1.35,
+            "job": "Small reading text that wraps (role rows): label size with reading line height"
           }
         }
       },
@@ -221,7 +229,7 @@
         ],
         "lineHeight": 1.15,
         "tracking": "-0.01em",
-        "job": "Nav, CTAs, index, markers, tags, stat captions, card titles, role rows"
+        "job": "Nav, CTAs, index, markers, tags, stat captions, card titles"
       },
       "caption": {
         "family": "sans",

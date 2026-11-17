@@ -160,7 +160,7 @@ export default function Home() {
                 className="grid grid-cols-1 gap-2 border-b border-border py-6 sm:grid-cols-12 sm:gap-6"
               >
                 <span className="type-caption text-ink sm:col-span-2">{role.years}</span>
-                <span className="type-label text-ink sm:col-span-3">
+                <span className="type-body-small text-ink sm:col-span-3">
                   {role.title}
                   {role.company !== role.title && (
                     <>
@@ -175,7 +175,7 @@ export default function Home() {
                     </>
                   )}
                 </span>
-                <p className="type-label text-ink sm:col-span-4">
+                <p className="type-body-small text-ink sm:col-span-4">
                   {role.description}
                   {clientCount > 0 && (
                     <span className="text-muted">
