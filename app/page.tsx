@@ -189,9 +189,11 @@ export default function Home() {
                 </span>
                 <p className="type-body-small text-ink md:col-span-4">
                   {role.description}
+                </p>
+                <p className="type-body-small text-ink md:col-span-2">
                   {clientCount > 0 && (
                     <span className="text-muted">
-                      {" "}Select Projects:{" "}
+                      Select Projects:{" "}
                       {clients.map((client, i) => {
                         // For now role rows link out to the client's own site, or stay plain
                         // text. Case studies take over these links as they're built out.
@@ -237,7 +239,7 @@ export default function Home() {
                   )}
                 </p>
                 {role.skills.length > 0 && (
-                  <SkillList skills={role.skills} label="Skills" className="md:col-span-4" />
+                  <SkillList skills={role.skills} label="Skills" className="md:col-span-2 md:col-start-11" />
                 )}
               </li>
             );

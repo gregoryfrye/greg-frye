@@ -20,7 +20,7 @@ Use them as Tailwind classes: `gap-item`, `mt-block`, `py-section`, `px-gutter`.
 
 **Page frame.** Every full-width band (nav, main, footer) is `mx-auto max-w-wide px-gutter` on one element: the gutter sits inside the 1280 container, so all content shares one left and right edge (1226 wide at most, 27 from the window edge below that). Never pad outside the container and cap inside it.
 
-**Grids.** One column system across Greg's projects: layouts divide the wide container into **1, 2, 3, 4 or 6** equal columns, always with the `gutter` gap. Write them as spans of a 12-column grid when a row mixes widths, so every line falls on the same edges: a 3-column row's lines sit at 4 and 8 twelfths, so a 12-column row spanning 2 · 2 · 4 · 4 lines up under it (the homepage role rows under the work cards). Below `md`, rows stack to 1 column (the work cards go 2-up at `sm`).
+**Grids.** One column system across Greg's projects: layouts divide the wide container into **1, 2, 3, 4 or 6** equal columns, always with the `gutter` gap. Write them as spans of a 12-column grid when a row mixes widths, so every line falls on the same edges: a 3-column row's lines sit at 4 and 8 twelfths, so a row of 6 (years · title · description over two · select projects · services) lines up under it (the homepage role rows under the work cards). Below `md`, rows stack to 1 column (the work cards go 2-up at `sm`).
 
 Case study modules sit on the 3-column grid at `md` and up (`md:grid-cols-3 gap-x-gutter`), the Figma's 3 × 390. The case hero uses 4 columns with a 2-column center (index · title and image · stats).
 
