@@ -234,6 +234,14 @@
             ],
             "lineHeight": 1.35,
             "job": "Small reading text that wraps (role rows): label size with reading line height"
+          },
+          "medium": {
+            "size": [
+              21,
+              21
+            ],
+            "lineHeight": 1.15,
+            "job": "Lists that lead a section (the hero services index): one step above body-small, fixed"
           }
         }
       },

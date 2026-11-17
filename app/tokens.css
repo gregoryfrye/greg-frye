@@ -94,6 +94,9 @@
   --type-body-small-size: 1.125rem;
   --type-body-small-line-height: 1.35;
   --type-body-small-tracking: -0.01em;
+  --type-body-medium-size: 1.3125rem;
+  --type-body-medium-line-height: 1.15;
+  --type-body-medium-tracking: -0.01em;
   --type-label-size: 1.125rem;
   --type-label-line-height: 1.15;
   --type-label-tracking: -0.01em;
@@ -189,6 +192,14 @@
   font-size: var(--type-body-small-size);
   line-height: var(--type-body-small-line-height);
   letter-spacing: var(--type-body-small-tracking);
+  font-weight: 400;
+  font-style: normal;
+}
+@utility type-body-medium {
+  font-family: var(--font-serif);
+  font-size: var(--type-body-medium-size);
+  line-height: var(--type-body-medium-line-height);
+  letter-spacing: var(--type-body-medium-tracking);
   font-weight: 400;
   font-style: normal;
 }
