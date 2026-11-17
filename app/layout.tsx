@@ -11,7 +11,7 @@ import "./globals.css";
 export async function generateMetadata(): Promise<Metadata> {
   const host = (await headers()).get("host");
   const description =
-    "A whole-system creative director with 20 years channeling founder vision into a focused brand, product, and marketing function.";
+    "A world-building creative director with 20 years channeling resonance through brand experiences, product ecosystems, and marketing functions.";
   // Placeholder share image until a designed one exists: the lead Hudson image.
   const shareImage = getClientLeadImageUrl("hudson-cannabis");
   return {
