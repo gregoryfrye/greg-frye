@@ -5,6 +5,7 @@ import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
 import {
+import { Arrow } from "@/app/components/ui/arrow";
   COLLECTION_LABEL,
   getActiveItems,
   getAllRoles,
@@ -191,7 +192,7 @@ export default function Home() {
                             {href?.startsWith("http") ? (
                               <a href={href} className={linkClass}>
                                 {client.name}
-                                <span aria-hidden="true">&nbsp;↗</span>
+                                &nbsp;<Arrow external />
                               </a>
                             ) : href ? (
                               <Link href={href} className={linkClass}>

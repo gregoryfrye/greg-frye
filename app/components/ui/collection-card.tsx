@@ -1,5 +1,6 @@
 import { Tag } from "./tag";
 import Link from "next/link";
+import { Arrow } from "./arrow";
 
 export type CollectionCardData = {
   key: string;
@@ -33,7 +34,7 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
         <p className="type-body text-muted">{summary}</p>
       )}
       <span className="type-label text-ink underline decoration-transparent underline-offset-4 transition-colors motion-fast ease-standard group-hover:decoration-ink">
-        {title} <span aria-hidden="true">{external ? "↗" : "→"}</span>
+        {title} <Arrow external={external} />
       </span>
     </>
   );
