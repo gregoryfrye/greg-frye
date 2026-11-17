@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Arrow } from "@/app/components/ui/arrow";
+import { Tag } from "@/app/components/ui/tag";
 
 /**
- * A message field that hands off to the visitor's email app: no form backend,
- * no data held here. Typing composes the note; Send opens a prefilled email.
+ * One large message box, outlined like a card, with Send as a boxed tag in its
+ * lower right. Hands off to the visitor's email app: no form backend, nothing
+ * stored here. Typing composes the note; Send opens a prefilled email.
  */
 export function ContactField({ email }: { email: string }) {
   const [message, setMessage] = useState("");
@@ -13,31 +15,32 @@ export function ContactField({ email }: { email: string }) {
 
   return (
     <form
-      className="flex flex-col gap-item"
+      className="flex flex-col border border-border"
       onSubmit={(event) => {
         event.preventDefault();
         window.location.href = href;
       }}
     >
-      <label htmlFor="contact-message" className="type-label text-muted">
-        Start a conversation
+      <label htmlFor="contact-message" className="sr-only">
+        Message
       </label>
       <textarea
         id="contact-message"
         name="message"
-        rows={4}
+        rows={8}
         value={message}
         onChange={(event) => setMessage(event.target.value)}
-        placeholder="What are you building?"
-        className="rule w-full resize-y bg-transparent pt-item type-body text-ink placeholder:text-muted"
+        placeholder="Start a conversation"
+        className="block w-full resize-y bg-transparent p-gutter type-body text-ink placeholder:text-muted"
       />
-      <div className="rule pt-item">
-        <button
+      <div className="flex justify-end px-gutter pb-gutter">
+        <Tag
+          as="button"
           type="submit"
-          className="type-label text-ink underline decoration-transparent underline-offset-4 transition-colors motion-fast ease-standard hover:decoration-ink"
+          className="transition-colors motion-fast ease-standard hover:bg-ink hover:text-canvas-home"
         >
           Send <Arrow external />
-        </button>
+        </Tag>
       </div>
     </form>
   );

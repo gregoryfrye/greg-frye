@@ -1,23 +1,19 @@
-import type { ElementType, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 /**
- * Boxed collection tag: the one treatment for naming a collection
- * (Roles, Clients, Artifacts …), on cards and as a section heading.
- * `as` sets the element so a heading stays a heading.
+ * Boxed tag: the one outlined-label treatment. Names a collection on cards
+ * (Client, Project, Artifact) and doubles as a button (the contact Send).
+ * `as` sets the element; other props pass through (type, onClick …).
  */
-export function Tag({
-  as: Element = "span",
-  id,
+export function Tag<T extends ElementType = "span">({
+  as,
   className = "",
   children,
-}: {
-  as?: ElementType;
-  id?: string;
-  className?: string;
-  children: ReactNode;
-}) {
+  ...rest
+}: { as?: T; className?: string; children: ReactNode } & Omit<ComponentPropsWithoutRef<T>, "as" | "className" | "children">) {
+  const Element = (as ?? "span") as ElementType;
   return (
-    <Element id={id} className={`w-fit border border-border px-inline py-item type-label text-ink ${className}`}>
+    <Element className={`w-fit border border-border px-inline py-item type-label text-ink ${className}`} {...rest}>
       {children}
     </Element>
   );
