@@ -4,7 +4,6 @@ import { CollectionCard, type CollectionCardData } from "@/app/components/ui/col
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { SkillList } from "@/app/components/skill-list";
-import { Arrow } from "@/app/components/ui/arrow";
 import {
   COLLECTION_LABEL,
   getActiveItems,
@@ -166,7 +165,16 @@ export default function Home() {
                   {role.company !== role.title && (
                     <>
                       <br />
-                      {role.company}
+                      {role.companyUrl ? (
+                        <a
+                          href={role.companyUrl}
+                          className="text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
+                        >
+                          {role.company}
+                        </a>
+                      ) : (
+                        role.company
+                      )}
                     </>
                   )}
                   {role.location && (
@@ -192,7 +200,6 @@ export default function Home() {
                             {href?.startsWith("http") ? (
                               <a href={href} className={linkClass}>
                                 {client.name}
-                                &nbsp;<Arrow external />
                               </a>
                             ) : href ? (
                               <Link href={href} className={linkClass}>
@@ -215,7 +222,6 @@ export default function Home() {
                                 className="text-ink underline decoration-border underline-offset-4 hover:decoration-ink"
                               >
                                 {name}
-                                &nbsp;<Arrow external />
                               </a>
                             ) : (
                               <span>{name}</span>

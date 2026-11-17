@@ -21,7 +21,7 @@ export function SkillList({
         <Fragment key={skill.slug}>
           <Link
             href={`/skills/${skill.slug}`}
-            className="text-ink underline decoration-transparent underline-offset-4 transition-colors motion-fast ease-standard hover:decoration-ink"
+            className="text-ink underline decoration-border underline-offset-4 transition-colors motion-fast ease-standard hover:decoration-ink"
           >
             {skill.name}
           </Link>

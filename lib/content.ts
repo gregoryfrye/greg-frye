@@ -24,6 +24,8 @@ export type Stat = {
 export type Role = {
   slug: string;
   company: string;
+  /** The company's own site, from `company: "Name | https://url"`. */
+  companyUrl?: string;
   title: string;
   years: string;
   location: string;
@@ -215,7 +217,8 @@ export function getRoleBySlug(slug: string): Role | null {
   const { data } = parsed;
   return {
     slug,
-    company: data.company as string,
+    company: String(data.company).split(" | ")[0].trim(),
+    companyUrl: String(data.company).split(" | ")[1]?.trim() || undefined,
     title: data.title as string,
     years: data.years as string,
     location: data.location as string,

@@ -167,9 +167,10 @@ its own live site (`url`), or is plain text when it has none. Entries in a
 role's `names[]` link out the same way when written `"Name | https://url"`. No dead ends.
 As case studies fill out, these links move to `/work/<slug>`.
 
-**Arrows.** A link that leaves the site ends in ↗; a link to another page
-here ends in → (cards, `TextLink`). Inline links in running text carry
-only the ↗, and only when they leave the site.
+**Arrows.** Cards and `TextLink` end in ↗ when they leave the site and →
+when they go to another page here. Inline links in running text and the
+role rows carry no arrow: they're underlined by default instead. A role's
+`company` links out the same way as `names[]` (`"Name | https://url"`).
 
 **Entities are earned by content.** Create an entity file only when there's a
 real case study, project, study, or artifact behind it. A name with nothing
