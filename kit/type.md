@@ -19,7 +19,7 @@
 | `type-deck` | 36 / 21, serif, 1.2 | Summary line under a title |
 | `type-body` | 27 / 18, serif, 1.15 | Reading text |
 | `type-body-lede` | 36 / 21, serif, 1.2 | Variant: a larger first paragraph, when a piece opens without a deck |
-| `type-label` | 18 at every size, serif, 1.15 | Nav, CTAs, index, markers, tags, stat captions, card titles. One fixed size so controls and tags never shift as the layout steps |
+| `type-label` | 18 at every size, serif, 1.15 | Nav, CTAs, index, markers, tags, stat captions, card titles, role rows. One fixed size so controls and tags never shift as the layout steps |
 | `type-caption` | 15, sans, 1.2 | Dates and small notes: the standard date treatment |
 | `type-caption-credit` | 27 / 18, serif italic, 1.08 | Variant: photo and project credits |
 

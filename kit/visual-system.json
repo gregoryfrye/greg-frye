@@ -221,7 +221,7 @@
         ],
         "lineHeight": 1.15,
         "tracking": "-0.01em",
-        "job": "Nav, CTAs, index, markers, tags, stat captions, card titles"
+        "job": "Nav, CTAs, index, markers, tags, stat captions, card titles, role rows"
       },
       "caption": {
         "family": "sans",

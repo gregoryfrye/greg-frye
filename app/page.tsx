@@ -159,8 +159,8 @@ export default function Home() {
                 key={role.slug}
                 className="grid grid-cols-1 gap-2 border-b border-border py-6 sm:grid-cols-12 sm:gap-6"
               >
-                <span className="font-sans text-meta text-ink sm:col-span-2">{role.years}</span>
-                <span className="text-body text-ink sm:col-span-3">
+                <span className="type-caption text-ink sm:col-span-2">{role.years}</span>
+                <span className="type-label text-ink sm:col-span-3">
                   {role.title}
                   {role.company !== role.title && (
                     <>
@@ -175,7 +175,7 @@ export default function Home() {
                     </>
                   )}
                 </span>
-                <p className="text-body text-ink sm:col-span-4">
+                <p className="type-label text-ink sm:col-span-4">
                   {role.description}
                   {clientCount > 0 && (
                     <span className="text-muted">

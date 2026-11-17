@@ -16,7 +16,7 @@ export function SkillList({
     .map((slug) => getSkillBySlug(slug))
     .filter((skill): skill is NonNullable<typeof skill> => skill !== null);
   return (
-    <p aria-label={label} className={`type-body text-ink ${className}`}>
+    <p aria-label={label} className={`type-label text-ink ${className}`}>
       {items.map((skill, i) => (
         <Fragment key={skill.slug}>
           <Link
