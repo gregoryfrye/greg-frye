@@ -128,8 +128,8 @@ export default function Home() {
 
   return (
     <main data-canvas="home" className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
-      <section className="grid grid-cols-1 items-start gap-gutter md:grid-cols-12">
-        <div className="md:col-span-8">
+      <section className="grid grid-cols-1 items-start gap-gutter sm:grid-cols-12">
+        <div className="sm:col-span-8">
           <h1 className="type-headline-alt text-ink">
             A world-building creative director with 20 years channeling resonance through brand experiences,
             product ecosystems, and marketing functions.
@@ -139,8 +139,8 @@ export default function Home() {
           </div>
         </div>
         {services.length > 0 && (
-          // Two columns between sm and md; column 5 at lg, over the role rows' services; the globe takes column 6
-          <NumberedList items={services} label="Services" numbered={false} className="sm:block sm:columns-2 sm:gap-gutter md:flex md:columns-1 md:col-span-4 lg:col-span-2" />
+          // Beside the headline from sm up; column 5 at lg, over the role rows' services; the globe takes column 6
+          <NumberedList items={services} label="Services" numbered={false} className="sm:col-span-4 lg:col-span-2" />
         )}
         <Globe className="hidden w-1/2 justify-self-end lg:col-span-2 lg:block" />
       </section>
