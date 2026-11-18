@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 
 /**
- * The globe mark, turning with the day. Six meridians, 30° apart, are drawn front side only (so the globe reads as solid, not wireframe), each following the
+ * The globe mark, turning with the day. Three meridians, at the center and quarter lines, are drawn front side only (so the globe reads as solid, not wireframe), each following the
  * superellipse outline, whose width follows the globe's rotation, so it reads as a sphere spinning. Its angle is the time of day in
  * Kingston (one turn per 24 hours): on load it spins up from rest to that angle (the slow reveal), then
  * keeps drifting. With reduced motion it simply shows the angle for now.
@@ -16,7 +16,9 @@ import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } fr
  * flat), and the lines stay 1px however far it stretches. Parallels at the equator and the quarter lines stay put. Before mount it renders angle 0, so server
  * and client agree. Ink lines at the line weight, however large it's drawn.
  */
-const MERIDIANS = [0, 30, 60, 90, 120, 150];
+// Meridians at 0° and ±30° (each ellipse also carries the one opposite it): face-on they land on the
+// center and the quarter lines, like the parallels (sin 30° = ½). Spinning, they pass as a group of three.
+const MERIDIANS = [0, 30, 150];
 // The outline is |x|^n + y^2 = 1: n = 2 is a circle; a higher n flattens the top and bottom while the
 // sides stay fully round (the old printed-globe mark). Every line follows the same curve.
 const SQUARENESS = 3;
