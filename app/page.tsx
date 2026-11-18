@@ -12,7 +12,7 @@ import {
   getAllRoles,
   getArtifactCardImage,
   getClientImages,
-  getClientsByRole,
+  getClientList,
   getCurrentRole,
   getFeaturedOnHome,
   getProjectCardImage,
@@ -135,16 +135,7 @@ export default async function Home() {
     .filter((card) => !seen.has(card.key) && seen.add(card.key))
     .sort((a, b) => span(b.years).end - span(a.years).end || span(b.years).start - span(a.years).start);
 
-  const allClients = [
-    ...new Map(
-      roles
-        .flatMap((role) => [
-          ...getClientsByRole(role.slug).map((client) => ({ name: client.name, url: client.url })),
-          ...role.names.map((name) => ({ name, url: role.nameUrls[name] })),
-        ])
-        .map((item) => [item.name, item] as const),
-    ).values(),
-  ].sort((a, b) => a.name.replace(/^the\s+/i, "").localeCompare(b.name.replace(/^the\s+/i, ""), "en", { sensitivity: "base" }));
+  const allClients = getClientList();
 
   const services = (currentRole?.skills ?? [])
     .map((slug) => getSkillBySlug(slug))
@@ -253,7 +244,7 @@ export default async function Home() {
               </li>
             ))}
           </ol>
-          {/* Every client across the roles, A to Z (ignoring a leading "The"), linking out where there's a site. */}
+          {/* The client list, authored in content/client-list.mdx: A to Z, linking out where there's a site. */}
           <p aria-label="Clients" className="type-caption text-muted-home">
             {allClients.map((item, i) => (
               <span key={item.name}>

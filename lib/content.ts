@@ -774,6 +774,16 @@ export function validateContentGraph(): string[] {
   return warnings;
 }
 
+/** The authored client list under Info (content/client-list.mdx), A to Z ignoring a leading "The". */
+export function getClientList(): { name: string; url?: string }[] {
+  const file = readMdx(path.join(CONTENT_DIR, "client-list.mdx"));
+  const { names, nameUrls } = parseNames((file?.data.clients as string[] | undefined) ?? []);
+  const key = (name: string) => name.replace(/^the\s+/i, "");
+  return names
+    .map((name) => ({ name, url: nameUrls[name] }))
+    .sort((a, b) => key(a.name).localeCompare(key(b.name), "en", { sensitivity: "base" }));
+}
+
 /** Split role names[] entries of the form "Name | https://url" into names and their urls. */
 function parseNames(raw: string[]): { names: string[]; nameUrls: Record<string, string> } {
   const names: string[] = [];

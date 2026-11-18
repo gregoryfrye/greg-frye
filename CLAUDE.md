@@ -174,7 +174,9 @@ a page component; add the flag to the content instead.
 **The timeline lists jobs, not clients.** Info's timeline is one line per role: years, title and
 company (the `company` links out when written `"Name | https://url"`), location. Clients and their
 work show in the homepage cards instead; a role's `clients[]` and `names[]` stay in the content for
-joins and future pages, and `names[]` entries keep the `"Name | https://url"` form.
+joins and future pages, and `names[]` entries keep the `"Name | https://url"` form. The client list
+under the timeline is authored separately in `content/client-list.mdx` (same `"Name | https://url"`
+form), in Greg's words, so it can differ from the joins.
 
 **Arrows.** Cards and `TextLink` end in ↗ when they leave the site and →
 when they go to another page here. Other inline links (running text, a role's company, its services) carry no
