@@ -26,6 +26,6 @@ Case study modules sit on the 3-column grid at `md` and up (`md:grid-cols-3 gap-
 
 **Containers.** `max-w-wide` (1280) for layout, anything with horizontal structure. `max-w-prose` (672) for continuous text. `max-w-hero` (768) for the homepage headline only. Grids never go inside `max-w-prose` (see CLAUDE.md, two-container rule).
 
-**Line.** One line weight (`--line-weight`, 1px) in `border` for every rule, divider and outline, and for line drawings. The `rule` class draws the Figma divider. The globe mark is the one exception: it draws in `--line-mark` (4px, `stroke-mark`), heavy like the printed globe logos it comes from (Wu-Tang, Tamla, Holographic Society), because it's an emblem, not a diagram.
+**Line.** One line weight (`--line-weight`, 1px) in `border` for every rule, divider and outline, and for line drawings like the globe. The `rule` class draws the Figma divider.
 
 **When the kit is silent.** Use the next step on the 9px rhythm and name the job. If two spaces feel different but share a job, they're the same token.

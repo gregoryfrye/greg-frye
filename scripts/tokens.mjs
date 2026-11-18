@@ -95,7 +95,6 @@ function css() {
   for (const [k, v] of entries(KIT.motion.duration)) t(`  --duration-${k}: ${v.value}ms; /* ${v.job} */`);
   t("");
   t(`  --line-weight: ${KIT.line.weight.value}px; /* ${KIT.line.weight.job} */`);
-  t(`  --line-mark: ${KIT.line.mark.value}px; /* ${KIT.line.mark.job} */`);
   t("}");
   t("");
   t(`/* Expanded: type steps up at the ${SWITCH}px switch (Figma Layout mode "Expanded") */`);
@@ -133,11 +132,6 @@ function css() {
     t(`  transition-duration: var(--duration-${k});`);
     t("}");
   }
-  t("");
-  t("/* stroke-mark: the globe's heavy line, in px however far the drawing is scaled (pair with non-scaling strokes) */");
-  t("@utility stroke-mark {");
-  t("  stroke-width: var(--line-mark);");
-  t("}");
   t("");
   t("/* rule: the Figma divider line */");
   t("@utility rule {");
@@ -208,7 +202,6 @@ export function resolveTokens() {
   for (const [k, v] of entries(KIT.motion.duration)) out.motion[`duration-${k}`] = v.value;
   for (const [k, v] of entries(P.breakpoints)) out.breakpoint[k] = v;
   out.space["line-weight"] = KIT.line.weight.value;
-  out.space["line-mark"] = KIT.line.mark.value;
   return out;
 }
 
