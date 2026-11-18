@@ -146,13 +146,14 @@ export default async function Home() {
           </div>
         </div>
         {/* Column 5 at lg: where and when (the globe turning with the day, today's conditions in Kingston),
-            then a film frame and a personal line. Below lg only the where-and-when travels, as a slim strip
-            under the headline and services: globe on the left (a quarter of a phone, a column of the grid
-            from sm), conditions beside it. The film frame stays a desktop moment. */}
+            then a film frame and a personal line. Below lg only the where-and-when travels, as a strip under the
+            headline and services. The globe always fills the columns it sits in: the full width on phones, the
+            left half from sm (over the 2-up cards), four columns from md (the services column's width); the
+            conditions sit beside it. The film frame stays a desktop moment. */}
         <div className="order-last col-span-full lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col lg:gap-gutter">
-          <div className="grid grid-cols-4 items-center gap-gutter sm:grid-cols-12 lg:flex lg:flex-col lg:items-start">
-            <Globe className="aspect-[2/1] w-full sm:col-span-3 md:col-span-2" />
-            <p className="col-span-3 type-caption text-ink sm:col-span-9 md:col-span-10">
+          <div className="grid grid-cols-1 items-center gap-gutter sm:grid-cols-12 lg:flex lg:flex-col lg:items-start">
+            <Globe className="aspect-[2/1] w-full sm:col-span-6 md:col-span-4" />
+            <p className="type-caption text-ink sm:col-span-6 md:col-span-8">
               Kingston, NY
               {weather && (
                 <>
