@@ -1,10 +1,8 @@
 import { CollectionCard, type CollectionCardData } from "@/app/components/ui/collection-card";
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
-import { SkillList } from "@/app/components/skill-list";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
 import { Arrow } from "@/app/components/ui/arrow";
-import { FilmFrame } from "@/app/components/ui/film-frame";
 import { Globe } from "@/app/components/ui/globe";
 import { caseStudiesLive } from "@/lib/site";
 import { getMoonPhaseName } from "@/lib/moon";
@@ -188,87 +186,66 @@ export default async function Home() {
         <h2 id="info-heading" className="sr-only">
           Info
         </h2>
-        {/* About: opens the Info half. A film frame in the first card column, a short bio beside it. */}
-        <div className="mb-section grid grid-cols-1 items-start gap-gutter sm:grid-cols-2 md:grid-cols-3">
-          <FilmFrame />
-          {/* Draft bio: Greg to rewrite in his own words. */}
-          <p className="type-body-lede text-ink md:col-span-2">
-            Raised in the woods of New Hampshire. Learned design at a local print shop before college, then came
-            up in New York making some of the first consumer internet brands. Now in Kingston, NY: shooting film,
-            tending a garden, playing pickup soccer.
+        {/* Info is a spread: a tight timeline on the left (a third), the bio large on the right (two thirds),
+            with film frames set into its lines. On phones the bio comes first. */}
+        <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-3">
+          {/* Draft bio: Greg to rewrite in his own words. Key phrases at full ink, the rest a step softer. */}
+          <p className="type-deck text-muted-home md:order-last md:col-span-2">
+            <span className="text-ink">A creative director who builds worlds</span> for brands, products, and the
+            teams behind them. I grew up in the woods of New Hampshire building forts{" "}
+            <img src="/images/film/sm/000622630031.jpg" alt="Neon sneakers on moss" className="inline-photo" />, learned
+            design at a local print shop, and came up in New York making{" "}
+            <span className="text-ink">some of the first consumer internet brands</span>. Most recently I led creative at{" "}
+            <span className="text-ink">Hudson Cannabis</span>{" "}
+            <img src="/images/film/sm/29510010.jpg" alt="Olive trees from above, long shadows on dirt" className="inline-photo" />,
+            from the farm to the shelf. Now in <span className="text-ink">Kingston, NY</span>, I work fractionally with
+            founders and small teams, and shoot film, tend a garden{" "}
+            <img src="/images/film/sm/000622630002.jpg" alt="Hen and chicks in the weeds by a wall" className="inline-photo" />,
+            and play pickup soccer.
           </p>
-        </div>
-        <ul aria-label="Roles" className="flex flex-col border-t border-border">
-          {roles.map((role) => {
-            const clients = getClientsByRole(role.slug);
-            const clientCount = clients.length + role.names.length;
-            return (
-              <li
-                key={role.slug}
-                className="grid grid-cols-1 gap-x-gutter gap-y-item border-b border-border py-block sm:grid-cols-2 md:grid-cols-12"
-              >
-                {/* Two columns from sm (matching the 2-up cards): who/when left, what right. At md the wrappers dissolve into the 12-column row. */}
-                <div className="flex flex-col gap-item md:contents">
-                <span className="type-caption text-ink md:col-span-2">{role.years}</span>
-                <span className="type-body-small text-ink md:col-span-2">
-                  {role.title}
-                  {role.company !== role.title && (
-                    <>
-                      <br />
+          {/* The timeline: one entry per role, years then title and company, clients beneath in a softer line. */}
+          <ol aria-label="Roles" className="flex flex-col border-t border-border">
+            {roles.map((role) => {
+              const clients = [
+                ...getClientsByRole(role.slug).map((client) => ({ key: client.slug, name: client.name, url: client.url })),
+                ...role.names.map((name) => ({ key: name, name, url: role.nameUrls[name] })),
+              ].sort((a, b) => sortName(a.name).localeCompare(sortName(b.name), "en", { sensitivity: "base" }));
+              return (
+                <li key={role.slug} className="grid grid-cols-4 gap-x-gutter border-b border-border py-item">
+                  <span className="type-caption text-ink">{role.years}</span>
+                  <div className="col-span-3 type-caption">
+                    <p className="text-ink">
+                      {role.title},{" "}
                       {role.companyUrl ? (
-                        <a
-                          href={role.companyUrl}
-                          className={INLINE_LINK}
-                        >
+                        <a href={role.companyUrl} className={INLINE_LINK}>
                           {role.company}
                         </a>
                       ) : (
                         role.company
                       )}
-                    </>
-                  )}
-                  {role.location && (
-                    <>
-                      <br />
-                      <em className="italic">{role.location}</em>
-                    </>
-                  )}
-                </span>
-                </div>
-                <div className="flex flex-col gap-block md:contents">
-                <p className="type-body-small text-ink md:col-span-4">
-                  {role.description}
-                </p>
-                {role.skills.length > 0 && (
-                  <SkillList skills={role.skills} label="Skills" className="md:col-span-2 md:col-start-9" />
-                )}
-                {clientCount > 0 && (
-                  // One client per line, A to Z (ignoring a leading "The"). For now they link out to each client's own
-                  // site, or stay plain text; case studies take over as they're built.
-                  <ul aria-label="Clients" className="type-body-small text-ink md:col-span-2 md:col-start-11">
-                    {[
-                      ...clients.map((client) => ({ key: client.slug, name: client.name, url: client.url })),
-                      ...role.names.map((name) => ({ key: name, name, url: role.nameUrls[name] })),
-                    ]
-                      .sort((a, b) => sortName(a.name).localeCompare(sortName(b.name), "en", { sensitivity: "base" }))
-                      .map((item) => (
-                      <li key={item.key}>
-                        {item.url ? (
-                          <a href={item.url} className={INLINE_LINK}>
-                            {item.name}&nbsp;<Arrow external />
-                          </a>
-                        ) : (
-                          item.name
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+                    </p>
+                    {clients.length > 0 && (
+                      <p className="text-muted-home">
+                        {clients.map((item, i) => (
+                          <span key={item.key}>
+                            {item.url ? (
+                              <a href={item.url} className={INLINE_LINK}>
+                                {item.name}&nbsp;<Arrow external />
+                              </a>
+                            ) : (
+                              item.name
+                            )}
+                            {i < clients.length - 1 && ", "}
+                          </span>
+                        ))}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </section>
 
     </main>

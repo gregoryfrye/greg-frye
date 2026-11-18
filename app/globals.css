@@ -68,3 +68,13 @@ body:has(main[data-canvas="home"]) > nav {
 .caret-blink {
   animation: caret-blink var(--duration-blink) steps(1, end) infinite;
 }
+
+/* A film frame set into a line of text (the Info bio): sized by the type around it, 3:2 like the roll. */
+.inline-photo {
+  display: inline-block;
+  height: 0.8em;
+  width: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  vertical-align: baseline;
+}
