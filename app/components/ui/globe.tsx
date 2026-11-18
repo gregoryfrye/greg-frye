@@ -117,6 +117,8 @@ export function Globe({ className = "" }: { className?: string }) {
   };
 
   const onPointerDown = (event: PointerEvent<SVGSVGElement>) => {
+    // Keep a click or tap from focusing the globe, so the focus ring only appears for keyboard users.
+    event.preventDefault();
     const s = state.current;
     s.dragging = true;
     s.spinningUp = false;
