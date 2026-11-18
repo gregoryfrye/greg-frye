@@ -218,10 +218,10 @@ export default async function Home() {
             <img src="/images/film/sm/000622630002.jpg" alt="Hen and chicks in the weeds by a wall" className="inline-photo" />,
             and play pickup soccer.
           </p>
-          {/* Draft caption: Greg to confirm the place and the photographer for a credit. */}
+          {/* Needs the photographer's name as a credit before it goes live. */}
           <figure className="flex w-1/2 flex-col gap-item md:col-start-2 md:row-start-2 md:w-full lg:col-span-2 lg:col-start-5 lg:row-start-1">
-            <img src="/images/portraits/greg-floating.jpg" alt="Greg floating on his back in a lake, black and white" className="w-full" />
-            <figcaption className="type-caption text-muted-home">Me, floating upstate. 35mm.</figcaption>
+            <img src="/images/portraits/greg-greenhouse.jpg" alt="Greg in an orange vest, standing among harvest bins in a greenhouse" className="w-full" />
+            <figcaption className="type-caption text-muted-home">Hudson Cannabis, 2023.</figcaption>
           </figure>
           {/* The timeline: the jobs, one line each. Years, then title and company, then where. The work itself
               lives in the cards above. */}
