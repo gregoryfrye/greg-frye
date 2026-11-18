@@ -13,7 +13,7 @@ export function Tag<T extends ElementType = "span">({
 }: { as?: T; className?: string; children: ReactNode } & Omit<ComponentPropsWithoutRef<T>, "as" | "className" | "children">) {
   const Element = (as ?? "span") as ElementType;
   return (
-    <Element className={`w-fit border border-border px-inline py-item type-label text-ink ${className}`} {...rest}>
+    <Element className={`w-fit border border-border px-item py-item type-label text-ink ${className}`} {...rest}>
       {children}
     </Element>
   );

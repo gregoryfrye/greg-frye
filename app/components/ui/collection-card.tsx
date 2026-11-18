@@ -13,7 +13,7 @@ export type CollectionCardData = {
   href?: string;
   external?: boolean;
   /**
-   * Set by the card's type: "small" for artifacts (one column, date under the label), medium (the
+   * Set by the card's type: "small" for artifacts (one column), medium (the
    * default) for projects, "large" for clients (half the row from md).
    */
   size?: "small" | "large";
@@ -22,18 +22,18 @@ export type CollectionCardData = {
 /**
  * A card for anything pulled onto the homepage, from any level of the
  * content model: boxed collection label, date top right (recency), image at
- * its natural height, title with an arrow. Hugs its content. A small card (an artifact) is half as wide,
- * so its date drops under the label.
+ * its natural height, title with an arrow. Hugs its content. A small card (an artifact) is half as wide;
+ * the tag is tight enough that its date still fits beside the label, and wraps under it if not.
  */
 export function CollectionCard({ label, years, title, summary, imageSrc, href, external, size }: Omit<CollectionCardData, "key">) {
   const small = size === "small";
   const body = (
     <>
-      <div className={small ? "flex flex-col items-start gap-item" : "flex items-start justify-between gap-inline"}>
+      <div className="flex flex-wrap items-start justify-between gap-x-inline gap-y-item">
         <Tag>{label}</Tag>
         {years && (
           // A range breaks before the dash: start year, then "–end" below it.
-          <span className={`${small ? "" : "text-right "}type-caption text-ink`}>
+          <span className="text-right type-caption text-ink">
             {years.split("–").map((part, i) => (
               <span key={part} className="block">
                 {i > 0 && "–"}
