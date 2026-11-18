@@ -39,6 +39,7 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
         years: item.client.years,
         title: item.client.name,
         summary: item.client.summary,
+        size: item.client.cardSize,
         ...clientLink(item.client),
         imageSrc: image ? `/content-images/clients/${item.client.slug}/images/${image}` : undefined,
       };

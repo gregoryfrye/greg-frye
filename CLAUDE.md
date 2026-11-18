@@ -101,6 +101,7 @@ collection from `COLLECTION_LABEL` in `lib/content.ts`, singular (Client,
 Project, Artifact …, one per `/content` folder); the date top right carries recency.
 Card size follows the level of the work: clients and projects are full cards, artifacts (single
 pieces) half-width small cards (`size: "small"`), on a doubled grid (2 / 4 / 6 columns, dense).
+A client can set `cardSize: "large"` (Hudson): two card widths from sm, all three from lg.
 The hero above it is the headline (alt header face) plus the current role's
 services as a numbered index.
 
