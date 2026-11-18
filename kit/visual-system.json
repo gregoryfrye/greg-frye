@@ -346,7 +346,11 @@
   "line": {
     "weight": {
       "value": 1,
-      "job": "Rules, dividers, outlines and line drawings (the globe)"
+      "job": "Rules, dividers, outlines and line drawings"
+    },
+    "mark": {
+      "value": 4,
+      "job": "The globe mark: heavy emblem lines, like the printed globe logos it comes from"
     }
   }
 }

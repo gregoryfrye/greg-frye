@@ -24,3 +24,5 @@ File: `19deN2JJWs7hvt12Z0neT4`
 
 ## Color
 - [ ] Semantic `input` (black 10%, the contact band) and primitive `black-10`; `link` and `black-90` are in already
+
+- Space: add `line-mark` = 4 (the globe mark's heavy line; WEB code syntax `var(--line-mark)`).

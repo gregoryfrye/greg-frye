@@ -110,7 +110,8 @@
   --duration-slow: 800ms; /* Reveals */
   --duration-blink: 1000ms; /* Caret blink cycle (the idle contact cursor) */
 
-  --line-weight: 1px; /* Rules, dividers, outlines and line drawings (the globe) */
+  --line-weight: 1px; /* Rules, dividers, outlines and line drawings */
+  --line-mark: 4px; /* The globe mark: heavy emblem lines, like the printed globe logos it comes from */
 }
 
 /* Expanded: type steps up at the 960px switch (Figma Layout mode "Expanded") */
@@ -237,6 +238,11 @@
 }
 @utility motion-blink {
   transition-duration: var(--duration-blink);
+}
+
+/* stroke-mark: the globe's heavy line, in px however far the drawing is scaled (pair with non-scaling strokes) */
+@utility stroke-mark {
+  stroke-width: var(--line-mark);
 }
 
 /* rule: the Figma divider line */

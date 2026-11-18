@@ -13,7 +13,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } fr
  * rest if it was stopped. Vertical swipes still scroll the page.
  *
  * Drawn without a fixed aspect ratio: the caller sets the box (the hero stretches it to 2:1, wide and
- * flat), and the lines stay 1px however far it stretches. Parallels at the equator and the quarter lines stay put. Before mount it renders angle 0, so server
+ * flat), and the lines stay the mark weight (--line-mark) however far it stretches. Parallels at the equator and the quarter lines stay put. Before mount it renders angle 0, so server
  * and client agree. Ink lines at the line weight, however large it's drawn.
  */
 // Ten meridians evenly spaced, 36° apart (each ellipse also carries the one opposite it), so the near
@@ -194,9 +194,9 @@ export function Globe({ className = "" }: { className?: string }) {
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       onKeyDown={onKeyDown}
-      className={`cursor-grab touch-pan-y select-none fill-none stroke-current stroke-1 text-ink active:cursor-grabbing ${className}`}
+      className={`overflow-visible cursor-grab touch-pan-y select-none fill-none stroke-current stroke-mark text-ink active:cursor-grabbing ${className}`}
     >
-      <g strokeLinecap="round">
+      <g strokeLinecap="round" strokeLinejoin="round">
         <path d={OUTLINE} vectorEffect="non-scaling-stroke" />
         {MERIDIANS.map((offset) => {
           // Each ellipse is a meridian and its opposite; only the half on the near side is drawn, so the
