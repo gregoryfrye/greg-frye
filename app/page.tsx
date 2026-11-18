@@ -210,11 +210,11 @@ export default async function Home() {
         </h2>
         {/* Info is a spread: the timeline and client list on the left, the bio large on the right with film
             frames set into its lines. Half and half from md; from lg the timeline takes a third (4 of 12),
-            the bio takes the middle half, and a portrait with a caption closes the row in the last sixth. At md the
+            a portrait with a caption takes the next sixth, and the bio takes the right half. At md the
             portrait sits under the bio. On phones: bio, portrait, timeline. */}
         <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-2 lg:grid-cols-12">
           {/* Draft bio: Greg to rewrite in his own words. Key phrases at full ink, the rest a step softer. */}
-          <p className="type-deck text-muted-home md:col-start-2 md:row-start-1 lg:col-span-6 lg:col-start-5">
+          <p className="type-deck text-muted-home md:col-start-2 md:row-start-1 lg:col-span-6 lg:col-start-7">
             <span className="text-ink">A creative director who builds worlds</span> for brands, products, and the
             teams behind them. I grew up in the woods of New Hampshire building forts{" "}
             <img src="/images/film/sm/000622630031.jpg" alt="Neon sneakers on moss" className="inline-photo" />, learned
@@ -228,7 +228,7 @@ export default async function Home() {
             and play pickup soccer.
           </p>
           {/* Draft caption: Greg to confirm the place and the photographer for a credit. */}
-          <figure className="flex w-1/2 flex-col gap-item md:col-start-2 md:row-start-2 md:w-full lg:col-span-2 lg:col-start-11 lg:row-start-1">
+          <figure className="flex w-1/2 flex-col gap-item md:col-start-2 md:row-start-2 md:w-full lg:col-span-2 lg:col-start-5 lg:row-start-1">
             <img src="/images/portraits/greg-floating.jpg" alt="Greg floating on his back in a lake, black and white" className="w-full" />
             <figcaption className="type-caption text-muted-home">Me, floating upstate. 35mm.</figcaption>
           </figure>
