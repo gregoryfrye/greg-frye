@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 
 /**
  * The globe mark, turning with the day. Six meridians, 30° apart, are drawn front side only (so the globe reads as solid, not wireframe), each following the
  * superellipse outline, whose width follows the globe's rotation, so it reads as a sphere spinning. Its angle is the time of day in
  * Kingston (one turn per 24 hours): on load it spins up from rest to that angle (the slow reveal), then
  * keeps drifting. With reduced motion it simply shows the angle for now.
+ *
+ * It's a toy you can hold: tap (or Enter / Space) stops it or starts it again; drag sideways (or the
+ * arrow keys) turns it, and a flick keeps it spinning until friction settles it back to its drift, or to
+ * rest if it was stopped. Vertical swipes still scroll the page.
  *
  * Drawn without a fixed aspect ratio: the caller sets the box (the hero stretches it to 2:1, wide and
  * flat), and the lines stay 1px however far it stretches. Parallels every 30° (the equator and ±30°, ±60°) stay put. Before mount it renders angle 0, so server
@@ -39,6 +43,10 @@ const PARALLELS = [-60, -30, 0, 30, 60].map((degrees) => {
   return { y: 16 + 15 * v, half: 15 * halfWidth(v) };
 });
 const DRIFT_DEGREES_PER_SECOND = 3; // one visible turn every two minutes; the day angle sets where it starts
+const DRAG_DEGREES_PER_WIDTH = 180; // dragging across the whole globe turns it half a revolution
+const FRICTION_PER_SECOND = 2.5; // how fast a flick settles back to the drift
+const TAP_SLOP_PX = 6; // movement under this counts as a tap, not a drag
+const KEY_STEP_DEGREES = 15;
 
 function kingstonDayAngle(): number {
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -60,34 +68,125 @@ function durationMs(token: string, fallback: number): number {
 
 export function Globe({ className = "" }: { className?: string }) {
   const [angle, setAngle] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const state = useRef({ angle: 0, velocity: 0, paused: false, reduced: false, dragging: false, spinningUp: true });
+  const drag = useRef({ x: 0, startX: 0, time: 0, moved: false, velocity: 0, width: 1 });
 
   useEffect(() => {
+    const s = state.current;
     const target = kingstonDayAngle();
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    s.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (s.reduced) {
+      s.angle = target;
+      s.spinningUp = false;
       setAngle(target);
-      return;
     }
     // Spin up: an extra half turn plus the day angle, eased out over three slow reveals.
     const spinUp = durationMs("--duration-slow", 800) * 3;
     const start = performance.now();
+    let last = start;
     let frame = 0;
     const tick = (now: number) => {
-      const elapsed = now - start;
-      if (elapsed < spinUp) {
-        const t = elapsed / spinUp;
-        const eased = 1 - Math.pow(1 - t, 3);
-        setAngle((target + 180) * eased);
-      } else {
-        setAngle(target + 180 + ((elapsed - spinUp) / 1000) * DRIFT_DEGREES_PER_SECOND);
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      if (s.spinningUp && !s.dragging) {
+        const t = (now - start) / spinUp;
+        if (t < 1) {
+          s.angle = (target + 180) * (1 - Math.pow(1 - t, 3));
+        } else {
+          s.angle = target + 180;
+          s.spinningUp = false;
+          s.velocity = s.paused ? 0 : DRIFT_DEGREES_PER_SECOND;
+        }
+      } else if (!s.dragging) {
+        const rest = s.paused || s.reduced ? 0 : DRIFT_DEGREES_PER_SECOND;
+        s.velocity += (rest - s.velocity) * (1 - Math.exp(-FRICTION_PER_SECOND * dt));
+        s.angle += s.velocity * dt;
       }
+      setAngle(s.angle);
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, []);
 
+  const togglePaused = () => {
+    const s = state.current;
+    s.paused = !s.paused;
+    setPaused(s.paused);
+  };
+
+  const onPointerDown = (event: PointerEvent<SVGSVGElement>) => {
+    const s = state.current;
+    s.dragging = true;
+    s.spinningUp = false;
+    s.velocity = 0;
+    drag.current = {
+      x: event.clientX,
+      startX: event.clientX,
+      time: event.timeStamp,
+      moved: false,
+      velocity: 0,
+      width: event.currentTarget.getBoundingClientRect().width || 1,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
+    const s = state.current;
+    const d = drag.current;
+    if (!s.dragging) return;
+    const dx = event.clientX - d.x;
+    const dt = Math.max((event.timeStamp - d.time) / 1000, 0.001);
+    const degrees = (dx / d.width) * DRAG_DEGREES_PER_WIDTH;
+    s.angle += degrees;
+    d.velocity = degrees / dt;
+    d.x = event.clientX;
+    d.time = event.timeStamp;
+    if (Math.abs(event.clientX - d.startX) > TAP_SLOP_PX) d.moved = true;
+  };
+
+  const onPointerUp = (event: PointerEvent<SVGSVGElement>) => {
+    const s = state.current;
+    const d = drag.current;
+    if (!s.dragging) return;
+    s.dragging = false;
+    if (!d.moved) {
+      togglePaused();
+      return;
+    }
+    // A flick keeps its speed (unless the last move was a while ago, i.e. the drag ended at rest).
+    const stale = event.timeStamp - d.time > 100;
+    s.velocity = s.reduced || stale ? 0 : d.velocity;
+  };
+
+  const onKeyDown = (event: KeyboardEvent<SVGSVGElement>) => {
+    const s = state.current;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      togglePaused();
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      s.spinningUp = false;
+      s.angle += event.key === "ArrowRight" ? KEY_STEP_DEGREES : -KEY_STEP_DEGREES;
+    }
+  };
+
   return (
-    <svg viewBox="0 0 32 32" preserveAspectRatio="none" aria-hidden="true" className={`fill-none stroke-current stroke-1 text-ink ${className}`}>
+    <svg
+      viewBox="0 0 32 32"
+      preserveAspectRatio="none"
+      role="button"
+      tabIndex={0}
+      aria-label={paused ? "Globe, stopped. Press to spin; arrow keys turn it." : "Globe, spinning. Press to stop; arrow keys turn it."}
+      aria-pressed={paused}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onKeyDown={onKeyDown}
+      className={`cursor-grab touch-pan-y select-none fill-none stroke-current stroke-1 text-ink active:cursor-grabbing ${className}`}
+    >
       <g strokeLinecap="round">
         <path d={OUTLINE} vectorEffect="non-scaling-stroke" />
         {MERIDIANS.map((offset) => {
