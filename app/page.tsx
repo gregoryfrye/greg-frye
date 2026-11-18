@@ -12,6 +12,7 @@ import {
   getAllRoles,
   getArtifactCardImage,
   getClientImages,
+  getClientsByRole,
   getCurrentRole,
   getFeaturedOnHome,
   getProjectCardImage,
@@ -123,6 +124,17 @@ export default async function Home() {
   const seen = new Set<string>();
   const cards = [...latest, ...featured].filter((card) => !seen.has(card.key) && seen.add(card.key));
 
+  const allClients = [
+    ...new Map(
+      roles
+        .flatMap((role) => [
+          ...getClientsByRole(role.slug).map((client) => ({ name: client.name, url: client.url })),
+          ...role.names.map((name) => ({ name, url: role.nameUrls[name] })),
+        ])
+        .map((item) => [item.name, item] as const),
+    ).values(),
+  ].sort((a, b) => a.name.replace(/^the\s+/i, "").localeCompare(b.name.replace(/^the\s+/i, ""), "en", { sensitivity: "base" }));
+
   const services = (currentRole?.skills ?? [])
     .map((slug) => getSkillBySlug(slug))
     .filter((skill): skill is NonNullable<typeof skill> => skill !== null)
@@ -183,11 +195,12 @@ export default async function Home() {
         <h2 id="info-heading" className="sr-only">
           Info
         </h2>
-        {/* Info is a spread, half and half: a tight timeline on the left, the bio large on the right with film
-            frames set into its lines. On phones the bio comes first. */}
-        <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-2">
+        {/* Info is a spread: the timeline and client list on the left, the bio large on the right with film
+            frames set into its lines. Half and half from md; from lg the timeline takes a third (4 of 12), one
+            sixth stays open, and the bio takes the right half. On phones the bio comes first. */}
+        <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-2 lg:grid-cols-12">
           {/* Draft bio: Greg to rewrite in his own words. Key phrases at full ink, the rest a step softer. */}
-          <p className="type-deck text-muted-home md:order-last">
+          <p className="type-deck text-muted-home md:order-last lg:col-span-6 lg:col-start-7">
             <span className="text-ink">A creative director who builds worlds</span> for brands, products, and the
             teams behind them. I grew up in the woods of New Hampshire building forts{" "}
             <img src="/images/film/sm/000622630031.jpg" alt="Neon sneakers on moss" className="inline-photo" />, learned
@@ -202,6 +215,7 @@ export default async function Home() {
           </p>
           {/* The timeline: the jobs, one line each. Years, then title and company, then where. The work itself
               lives in the cards above. */}
+          <div className="flex flex-col gap-block lg:col-span-4">
           <ol aria-label="Roles" className="flex flex-col border-t border-border">
             {roles.map((role) => (
               <li key={role.slug} className="grid grid-cols-4 gap-x-gutter border-b border-border py-item type-caption">
@@ -220,6 +234,22 @@ export default async function Home() {
               </li>
             ))}
           </ol>
+          {/* Every client across the roles, A to Z (ignoring a leading "The"), linking out where there's a site. */}
+          <p aria-label="Clients" className="type-caption text-muted-home">
+            {allClients.map((item, i) => (
+              <span key={item.name}>
+                {item.url ? (
+                  <a href={item.url} className={INLINE_LINK}>
+                    {item.name}
+                  </a>
+                ) : (
+                  item.name
+                )}
+                {i < allClients.length - 1 && ", "}
+              </span>
+            ))}
+          </p>
+          </div>
         </div>
       </section>
 
