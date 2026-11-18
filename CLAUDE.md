@@ -168,14 +168,13 @@ study as its Client, a client build as its main Project, a single piece as
 an Artifact. A project card's title is the client name plus the project's. Don't hardcode the picks in
 a page component; add the flag to the content instead.
 
-**Role rows link out, for now.** A client in a role's `clients[]` links to
-its own live site (`url`), or is plain text when it has none. Entries in a
-role's `names[]` link out the same way when written `"Name | https://url"`. No dead ends.
-As case studies fill out, these links move to `/work/<slug>`.
+**The timeline lists jobs, not clients.** Info's timeline is one line per role: years, title and
+company (the `company` links out when written `"Name | https://url"`), location. Clients and their
+work show in the homepage cards instead; a role's `clients[]` and `names[]` stay in the content for
+joins and future pages, and `names[]` entries keep the `"Name | https://url"` form.
 
 **Arrows.** Cards and `TextLink` end in ↗ when they leave the site and →
-when they go to another page here. Client names in the role rows end in ↗ too.
-Other inline links (running text, a role's company, its services) carry no
+when they go to another page here. Other inline links (running text, a role's company, its services) carry no
 arrow: they show at 90% ink and underline on hover. A role's
 `company` links out the same way as `names[]` (`"Name | https://url"`).
 

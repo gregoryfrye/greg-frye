@@ -2,7 +2,6 @@ import { CollectionCard, type CollectionCardData } from "@/app/components/ui/col
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
-import { Arrow } from "@/app/components/ui/arrow";
 import { Globe } from "@/app/components/ui/globe";
 import { caseStudiesLive } from "@/lib/site";
 import { getMoonPhaseName } from "@/lib/moon";
@@ -13,7 +12,6 @@ import {
   getAllRoles,
   getArtifactCardImage,
   getClientImages,
-  getClientsByRole,
   getCurrentRole,
   getFeaturedOnHome,
   getProjectCardImage,
@@ -23,7 +21,6 @@ import {
 } from "@/lib/content";
 
 /** Alphabetize names the way a shelf does: a leading "The" doesn't count. */
-const sortName = (name: string) => name.replace(/^the\s+/i, "");
 
 /** Where a client's work links: its case study, or its own site while case studies are in revision. */
 function clientLink(client: { slug: string; url?: string }): { href?: string; external: boolean } {
@@ -203,49 +200,25 @@ export default async function Home() {
             <img src="/images/film/sm/000622630002.jpg" alt="Hen and chicks in the weeds by a wall" className="inline-photo" />,
             and play pickup soccer.
           </p>
-          {/* The timeline: one entry per role. Years, then title and company with clients beneath in a softer
-              line, then where. */}
+          {/* The timeline: the jobs, one line each. Years, then title and company, then where. The work itself
+              lives in the cards above. */}
           <ol aria-label="Roles" className="flex flex-col border-t border-border">
-            {roles.map((role) => {
-              const clients = [
-                ...getClientsByRole(role.slug).map((client) => ({ key: client.slug, name: client.name, url: client.url })),
-                ...role.names.map((name) => ({ key: name, name, url: role.nameUrls[name] })),
-              ].sort((a, b) => sortName(a.name).localeCompare(sortName(b.name), "en", { sensitivity: "base" }));
-              return (
-                <li key={role.slug} className="grid grid-cols-4 gap-x-gutter border-b border-border py-item">
-                  <span className="type-caption text-ink">{role.years}</span>
-                  <div className="col-span-2 type-caption">
-                    <p className="text-ink">
-                      {role.title},{" "}
-                      {role.companyUrl ? (
-                        <a href={role.companyUrl} className={INLINE_LINK}>
-                          {role.company}
-                        </a>
-                      ) : (
-                        role.company
-                      )}
-                    </p>
-                    {clients.length > 0 && (
-                      <p className="text-muted-home">
-                        {clients.map((item, i) => (
-                          <span key={item.key}>
-                            {item.url ? (
-                              <a href={item.url} className={INLINE_LINK}>
-                                {item.name}&nbsp;<Arrow external />
-                              </a>
-                            ) : (
-                              item.name
-                            )}
-                            {i < clients.length - 1 && ", "}
-                          </span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                  <span className="type-caption italic text-muted-home">{role.location}</span>
-                </li>
-              );
-            })}
+            {roles.map((role) => (
+              <li key={role.slug} className="grid grid-cols-4 gap-x-gutter border-b border-border py-item type-caption">
+                <span className="text-ink">{role.years}</span>
+                <p className="col-span-2 text-ink">
+                  {role.title},{" "}
+                  {role.companyUrl ? (
+                    <a href={role.companyUrl} className={INLINE_LINK}>
+                      {role.company}
+                    </a>
+                  ) : (
+                    role.company
+                  )}
+                </p>
+                <span className="italic text-muted-home">{role.location}</span>
+              </li>
+            ))}
           </ol>
         </div>
       </section>
