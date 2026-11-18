@@ -186,11 +186,11 @@ export default async function Home() {
         <h2 id="info-heading" className="sr-only">
           Info
         </h2>
-        {/* Info is a spread: a tight timeline on the left (a third), the bio large on the right (two thirds),
-            with film frames set into its lines. On phones the bio comes first. */}
-        <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-3">
+        {/* Info is a spread, half and half: a tight timeline on the left, the bio large on the right with film
+            frames set into its lines. On phones the bio comes first. */}
+        <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-2">
           {/* Draft bio: Greg to rewrite in his own words. Key phrases at full ink, the rest a step softer. */}
-          <p className="type-deck text-muted-home md:order-last md:col-span-2">
+          <p className="type-deck text-muted-home md:order-last">
             <span className="text-ink">A creative director who builds worlds</span> for brands, products, and the
             teams behind them. I grew up in the woods of New Hampshire building forts{" "}
             <img src="/images/film/sm/000622630031.jpg" alt="Neon sneakers on moss" className="inline-photo" />, learned
@@ -203,7 +203,8 @@ export default async function Home() {
             <img src="/images/film/sm/000622630002.jpg" alt="Hen and chicks in the weeds by a wall" className="inline-photo" />,
             and play pickup soccer.
           </p>
-          {/* The timeline: one entry per role, years then title and company, clients beneath in a softer line. */}
+          {/* The timeline: one entry per role. Years, then title and company with clients beneath in a softer
+              line, then where. */}
           <ol aria-label="Roles" className="flex flex-col border-t border-border">
             {roles.map((role) => {
               const clients = [
@@ -213,7 +214,7 @@ export default async function Home() {
               return (
                 <li key={role.slug} className="grid grid-cols-4 gap-x-gutter border-b border-border py-item">
                   <span className="type-caption text-ink">{role.years}</span>
-                  <div className="col-span-3 type-caption">
+                  <div className="col-span-2 type-caption">
                     <p className="text-ink">
                       {role.title},{" "}
                       {role.companyUrl ? (
@@ -241,6 +242,7 @@ export default async function Home() {
                       </p>
                     )}
                   </div>
+                  <span className="type-caption italic text-muted-home">{role.location}</span>
                 </li>
               );
             })}

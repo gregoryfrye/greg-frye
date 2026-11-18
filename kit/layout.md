@@ -30,4 +30,4 @@ Case study modules sit on the 3-column grid at `md` and up (`md:grid-cols-3 gap-
 
 **When the kit is silent.** Use the next step on the 9px rhythm and name the job. If two spaces feel different but share a job, they're the same token.
 
-**Info spread.** Info is a third and two thirds: a tight timeline on the left (years, then title and company, clients a step softer beneath, one entry per role) and the bio large on the right (`type-deck`), with film frames set into its lines (`.inline-photo`, sized in em so they track the type). On phones the bio comes first.
+**Info spread.** Info is half and half: a tight timeline on the left (one entry per role in four columns: years, then title and company over two with clients a step softer beneath, then location) and the bio large on the right (`type-deck`), with film frames set into its lines (`.inline-photo`, sized in em so they track the type). On phones the bio comes first.
