@@ -146,12 +146,13 @@ export default async function Home() {
           </div>
         </div>
         {/* Column 5 at lg: where and when (the globe turning with the day, today's conditions in Kingston),
-            then a film frame and a personal line. Below lg it moves under the headline and services as its
-            own row: stacked on phones, two halves from sm (lining up with the 2-up cards). */}
-        <div className="order-last col-span-full grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col">
-          <div className="grid grid-cols-4 items-center gap-gutter lg:flex lg:flex-col lg:items-start">
-            <Globe className="aspect-[2/1] w-full" />
-            <p className="col-span-3 type-caption text-ink">
+            then a film frame and a personal line. Below lg only the where-and-when travels, as a slim strip
+            under the headline and services: globe on the left (a quarter of a phone, a column of the grid
+            from sm), conditions beside it. The film frame stays a desktop moment. */}
+        <div className="order-last col-span-full lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col lg:gap-gutter">
+          <div className="grid grid-cols-4 items-center gap-gutter sm:grid-cols-12 lg:flex lg:flex-col lg:items-start">
+            <Globe className="aspect-[2/1] w-full sm:col-span-3 md:col-span-2" />
+            <p className="col-span-3 type-caption text-ink sm:col-span-9 md:col-span-10">
               Kingston, NY
               {weather && (
                 <>
@@ -162,7 +163,7 @@ export default async function Home() {
               <br />☾ {getMoonPhaseName()}
             </p>
           </div>
-          <figure>
+          <figure className="hidden lg:block">
             <FilmFrame />
             {/* Draft: Greg to rewrite. The personal counterweight to the headline. */}
             <figcaption className="mt-item type-caption text-ink">
