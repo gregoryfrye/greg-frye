@@ -351,6 +351,11 @@ Still open:
 - Pinned for after 1.1: the corner nav above, tying projects, studies and film together; and seasonality across the site
   (the garden / "fertile ground" thread, the film roll in `public/images/film` as the mood pool).
   Both start with a focused session, not a build.
+- Role skills in plain language (future): the ten services read as today's sales taxonomy on past
+  roles. Plan: a role's `skills[]` entries become `"Plain Label | service-slug"` (like `names[]` and
+  `"Name | url"`): the row shows Greg's own words, a mapped slug links to the service and joins for
+  browse-by-service, an unmapped label stays plain text. The hero keeps the ten services. Greg supplies
+  each role's list; Claude proposes the mapping before it ships.
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
   grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
