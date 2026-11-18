@@ -13,13 +13,13 @@ import { useEffect, useState } from "react";
  * and client agree. Ink lines at the line weight, however large it's drawn.
  */
 const MERIDIANS = [0, 30, 60, 90, 120, 150];
-// The outline is a superellipse, |x|^n + |y|^n = 1: n = 2 is a circle; higher n flattens the top and
-// bottom while the sides stay round (the old printed-globe mark). Every line follows the same curve.
+// The outline is |x|^n + y^2 = 1: n = 2 is a circle; a higher n flattens the top and bottom while the
+// sides stay fully round (the old printed-globe mark). Every line follows the same curve.
 const SQUARENESS = 3;
 const SAMPLES = 48;
 /** Half-width of the globe at height v (-1 top … 1 bottom), as a fraction of its radius. */
 function halfWidth(v: number): number {
-  return Math.pow(Math.max(0, 1 - Math.pow(Math.abs(v), SQUARENESS)), 1 / SQUARENESS);
+  return Math.pow(Math.max(0, 1 - v * v), 1 / SQUARENESS);
 }
 function point(u: number, v: number): string {
   return `${(16 + 15 * u * halfWidth(v)).toFixed(3)} ${(16 + 15 * v).toFixed(3)}`;
