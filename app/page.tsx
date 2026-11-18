@@ -146,11 +146,13 @@ export default async function Home() {
           </div>
         </div>
         {/* Column 5 at lg: where and when (the globe turning with the day, today's conditions in Kingston),
-            then a film frame and a personal line. Below lg only the where-and-when travels, as a strip under the
-            headline and services: globe and conditions side by side, filling the full width together. The
-            conditions take only the width of their longest line, on the right; the globe stretches over the rest. The film frame stays a desktop moment. */}
-        <div className="order-last col-span-full lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col lg:gap-gutter">
-          <div className="flex items-center gap-gutter lg:flex-col lg:items-start">
+            then a film frame and a personal line. Below lg (fewer than six columns of content) only the
+            where-and-when travels, as a strip under the headline and services: globe and conditions are one
+            unit filling one column of the card grid (the whole width on phones, a half from sm, a third from
+            md), the globe stretching over the left of it and the conditions on the right at their natural
+            width. The film frame stays a desktop moment. */}
+        <div className="order-last col-span-full grid grid-cols-1 gap-gutter sm:grid-cols-12 lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col">
+          <div className="flex items-center gap-gutter sm:col-span-6 md:col-span-4 lg:flex-col lg:items-start">
             <Globe className="aspect-[2/1] w-full min-w-0 flex-1 lg:flex-none" />
             <p className="shrink-0 whitespace-nowrap type-caption text-ink">
               Kingston, NY
