@@ -75,6 +75,7 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
       return {
         key: `artifact:${item.artifact.fullSlug}`,
         label: COLLECTION_LABEL.artifact,
+        size: "small",
         years: item.artifact.year,
         title: item.artifact.title,
         summary: item.artifact.summary,
@@ -117,6 +118,7 @@ export default async function Home() {
     imageSrc: item.imageSrc,
     href: item.href,
     external: item.external,
+    ...(item.kind === "artifact" ? { size: "small" as const } : {}),
   }));
   const featured = getFeaturedOnHome()
     .map(toCardData)
@@ -183,7 +185,9 @@ export default async function Home() {
           <h2 id="work-heading" className="sr-only">
             Work
           </h2>
-          <div className="grid grid-cols-1 items-start gap-gutter sm:grid-cols-2 md:grid-cols-3">
+          {/* Card sizes follow the content model: clients and projects span two columns, artifacts (single
+                pieces) one, so the grid is doubled (2 / 4 / 6) and packs densely. */}
+          <div className="grid grid-flow-dense grid-cols-2 items-start gap-gutter sm:grid-cols-4 md:grid-cols-6">
             {cards.map((card) => (
               <CollectionCard key={card.key} {...withoutKey(card)} />
             ))}
