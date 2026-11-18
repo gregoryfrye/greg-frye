@@ -339,9 +339,7 @@ Still open:
 - Case study pages are in revision: `caseStudiesLive = false` in `lib/site.ts`
   sends every work card to the client's own site (↗). Flip it to true when
   the `/work/<slug>` pages are ready, and move role-row links in too.
-- Featured row, next: Bobbie packaging
-  (Artifact), Nor'easter Festival logo (Artifact), once images and a line
-  each arrive. Prophetic logo becomes a more dynamic artifact.
+- Featured row, next: Bobbie packaging (Artifact), once images and a line arrive. Prophetic logo becomes a more dynamic artifact.
 - Copy tone: revisit the mood-language rule after the 1.1 push. Greg wants
   words like *shepherding* and *world-building* available when they describe
   how he actually works; the rule should target empty filler, not those.
