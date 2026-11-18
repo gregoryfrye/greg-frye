@@ -356,6 +356,12 @@ Still open:
   `"Name | url"`): the row shows Greg's own words, a mapped slug links to the service and joins for
   browse-by-service, an unmapped label stays plain text. The hero keeps the ten services. Greg supplies
   each role's list; Claude proposes the mapping before it ships.
+- Globe mark sprint (future): Greg's Are.na "Frye" board holds the references (Wu-Tang, Tamla,
+  Holographic Society, interlocking globes, globe + eye, globe + antenna). Leading direction: "real meets
+  projected", a solid globe overlapping a dashed one so an eye forms in the overlap, drawn in heavy
+  emblem lines; each project then dresses the base globe in its own world (texture, objects, color,
+  motion, atmosphere). A 4px line-mark token was tried on the hero globe and reverted for now; revisit
+  it here (possibly a weight that scales with the drawing).
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
   grid stub to real behavior (offset stack, horizontal
   scroll-snap, silent autoplay loop) — do this once there's real content to
