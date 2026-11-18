@@ -21,9 +21,13 @@ const MERIDIANS = [0, 30, 60, 90, 120, 150];
 // sides stay fully round (the old printed-globe mark). Every line follows the same curve.
 const SQUARENESS = 3;
 const SAMPLES = 48;
+// The poles are flat lines, not points: the top and bottom edges run straight for this share of the width,
+// and the meridians fan out along them (like a flat-polar map projection).
+const POLE_WIDTH = 0.25;
 /** Half-width of the globe at height v (-1 top … 1 bottom), as a fraction of its radius. */
 function halfWidth(v: number): number {
-  return Math.pow(Math.max(0, 1 - v * v), 1 / SQUARENESS);
+  const pole = POLE_WIDTH / 2;
+  return pole + (1 - pole) * Math.pow(Math.max(0, 1 - v * v), 1 / SQUARENESS);
 }
 function point(u: number, v: number): string {
   return `${(16 + 15 * u * halfWidth(v)).toFixed(3)} ${(16 + 15 * v).toFixed(3)}`;
