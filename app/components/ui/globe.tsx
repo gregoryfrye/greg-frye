@@ -13,7 +13,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } fr
  * rest if it was stopped. Vertical swipes still scroll the page.
  *
  * Drawn without a fixed aspect ratio: the caller sets the box (the hero stretches it to 2:1, wide and
- * flat), and the lines stay 1px however far it stretches. Parallels every 30° (the equator and ±30°, ±60°) stay put. Before mount it renders angle 0, so server
+ * flat), and the lines stay 1px however far it stretches. Parallels at the equator and the quarter lines stay put. Before mount it renders angle 0, so server
  * and client agree. Ink lines at the line weight, however large it's drawn.
  */
 const MERIDIANS = [0, 30, 60, 90, 120, 150];
@@ -41,7 +41,8 @@ function verticalPath(u: number): string {
 // Down the right side, back up the left.
 const OUTLINE = `${verticalPath(1)} ${[...HEIGHTS].reverse().map((v) => `L${point(-1, v)}`).join(" ")} Z`;
 // Seen side-on, a parallel at latitude φ is a straight chord at height sin φ, as wide as the outline there.
-const PARALLELS = [-60, -30, 0, 30, 60].map((degrees) => {
+// Three: the equator and ±30°, which land exactly on the quarter lines (sin 30° = ½).
+const PARALLELS = [-30, 0, 30].map((degrees) => {
   const radians = (degrees * Math.PI) / 180;
   const v = -Math.sin(radians);
   return { y: 16 + 15 * v, half: 15 * halfWidth(v) };
