@@ -343,8 +343,12 @@ Still open:
 - Copy tone: revisit the mood-language rule after the 1.1 push. Greg wants
   words like *shepherding* and *world-building* available when they describe
   how he actually works; the rule should target empty filler, not those.
-- Pinned for after 1.1: an alt nav with a link in each corner reaching toward a concept (e.g. Work,
-  Life, Play, Info), tying projects, studies and film together; and seasonality across the site
+- Site IA, decided Nov 2026. Now, while everything lives on the homepage: two sections, **Work**
+  (clients, projects, artifacts, and studies as play) and **Info** (roles and dates, services, about,
+  and contact). Later, once real case studies exist: four, one per corner of the nav: **Work**
+  (projects), **Play** (studies), **Info** (about) and **Contact**. The hero teases each section
+  (current project for Work, film frame for Play, globe/photo for Info). Revisit after the case studies.
+- Pinned for after 1.1: the corner nav above, tying projects, studies and film together; and seasonality across the site
   (the garden / "fertile ground" thread, the film roll in `public/images/film` as the mood pool).
   Both start with a focused session, not a build.
 - Upgrade `stagger`/`scroll`/`motion` image blocks from their v1
