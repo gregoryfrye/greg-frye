@@ -145,12 +145,11 @@ export default async function Home() {
             <TextLink href="/#info">More Information</TextLink>
           </div>
         </div>
-        {/* Column 5 at lg: where and when (the globe turning with the day, today's conditions in Kingston),
-            then a film frame and a personal line. Below lg (fewer than six columns of content) only the
-            where-and-when travels, as a strip under the headline and services: globe and conditions are one
-            unit filling one column of the card grid (the whole width on phones, a half from sm, a third from
-            md), the globe stretching over the left of it and the conditions on the right at their natural
-            width. The film frame stays a desktop moment. */}
+        {/* Column 5 at lg: where and when (the globe turning with the day, today's conditions in Kingston).
+            Below lg (fewer than six columns of content) it moves under the headline and services: globe and
+            conditions are one unit filling one column of the card grid (the whole width on phones, a half from
+            sm, a third from md), the globe stretching over the left and the conditions on the right at their
+            natural width. The film frame lives in the About block that opens Info. */}
         <div className="order-last col-span-full grid grid-cols-1 gap-gutter sm:grid-cols-12 lg:order-none lg:col-span-2 lg:col-start-9 lg:flex lg:flex-col">
           <div className="flex items-center gap-gutter sm:col-span-6 md:col-span-4 lg:flex-col lg:items-start">
             <Globe className="aspect-[2/1] w-full min-w-0 flex-1 lg:flex-none" />
@@ -165,13 +164,6 @@ export default async function Home() {
               <br />☾ {getMoonPhaseName()}
             </p>
           </div>
-          <figure className="hidden lg:block">
-            <FilmFrame />
-            {/* Draft: Greg to rewrite. The personal counterweight to the headline. */}
-            <figcaption className="mt-item type-caption text-ink">
-              Shoots film, tends a garden, plays pickup soccer.
-            </figcaption>
-          </figure>
         </div>
         {services.length > 0 && (
           // Beside the headline from sm up, 50/50 over the 2-up cards, 8/4 over the 3-up; column 6 at lg; the globe takes column 5
@@ -196,6 +188,16 @@ export default async function Home() {
         <h2 id="info-heading" className="sr-only">
           Info
         </h2>
+        {/* About: opens the Info half. A film frame in the first card column, a short bio beside it. */}
+        <div className="mb-section grid grid-cols-1 items-start gap-gutter sm:grid-cols-2 md:grid-cols-3">
+          <FilmFrame />
+          {/* Draft bio: Greg to rewrite in his own words. */}
+          <p className="type-body-lede text-ink md:col-span-2">
+            Raised in the woods of New Hampshire. Learned design at a local print shop before college, then came
+            up in New York making some of the first consumer internet brands. Now in Kingston, NY: shooting film,
+            tending a garden, playing pickup soccer.
+          </p>
+        </div>
         <ul aria-label="Roles" className="flex flex-col border-t border-border">
           {roles.map((role) => {
             const clients = getClientsByRole(role.slug);
