@@ -39,7 +39,7 @@ function toCardData(item: FeaturedEntity): CollectionCardData | null {
         years: item.client.years,
         title: item.client.name,
         summary: item.client.summary,
-        size: item.client.cardSize,
+        size: "large",
         ...clientLink(item.client),
         imageSrc: image ? `/content-images/clients/${item.client.slug}/images/${image}` : undefined,
       };
@@ -119,13 +119,21 @@ export default async function Home() {
     imageSrc: item.imageSrc,
     href: item.href,
     external: item.external,
-    ...(item.kind === "artifact" ? { size: "small" as const } : {}),
+    ...(item.kind === "artifact" ? { size: "small" as const } : item.kind === "client" ? { size: "large" as const } : {}),
   }));
   const featured = getFeaturedOnHome()
     .map(toCardData)
     .filter((card): card is CollectionCardData => card !== null);
   const seen = new Set<string>();
-  const cards = [...latest, ...featured].filter((card) => !seen.has(card.key) && seen.add(card.key));
+  // Newest first: by end year ("Present" leads), then start year. Size comes from the card's type.
+  const span = (years?: string) => {
+    const [start, end] = (years ?? "").split("–");
+    const year = (part?: string) => (part === "Present" ? 9999 : Number.parseInt(part ?? "", 10) || 0);
+    return { start: year(start), end: end ? year(end) : year(start) };
+  };
+  const cards = [...latest, ...featured]
+    .filter((card) => !seen.has(card.key) && seen.add(card.key))
+    .sort((a, b) => span(b.years).end - span(a.years).end || span(b.years).start - span(a.years).start);
 
   const allClients = [
     ...new Map(
@@ -186,9 +194,9 @@ export default async function Home() {
           <h2 id="work-heading" className="sr-only">
             Work
           </h2>
-          {/* Card sizes follow the content model: clients and projects span two columns, artifacts (single
-                pieces) one, so the grid is doubled (2 / 4 / 6) and packs densely. */}
-          <div className="grid grid-flow-dense grid-cols-2 items-start gap-gutter sm:grid-cols-4 md:grid-cols-6">
+          {/* Cards run newest first. Size follows the content model on a doubled grid (2 / 4 / 6): an artifact
+                is small (one column), a project medium (two), a client large (half the row). */}
+          <div className="grid grid-cols-2 items-start gap-gutter sm:grid-cols-4 md:grid-cols-6">
             {cards.map((card) => (
               <CollectionCard key={card.key} {...withoutKey(card)} />
             ))}

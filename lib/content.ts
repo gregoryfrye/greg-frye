@@ -60,8 +60,6 @@ export type Client = {
    * in the strip (1 first). Unnumbered clients follow the numbered ones.
    */
   featuredOnHome?: boolean | number;
-  /** "large" gives the client's homepage card more room (a role-scale case study, e.g. Hudson). */
-  cardSize?: "large";
   /**
    * Short-form project slugs, in authored display order. A project on disk
    * but missing here (or vice versa) is a validateContentGraph warning.
@@ -260,7 +258,6 @@ export function getClientBySlug(slug: string): Client | null {
     stats: data.stats as Stat[] | undefined,
     content,
     featuredOnHome: data.featuredOnHome as boolean | number | undefined,
-    cardSize: data.cardSize === "large" ? "large" : undefined,
     projects: data.projects as string[] | undefined,
     draft: data.draft === true,
     active: data.active === true,

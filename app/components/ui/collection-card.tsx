@@ -13,8 +13,8 @@ export type CollectionCardData = {
   href?: string;
   external?: boolean;
   /**
-   * "small" for single pieces (artifacts): half a column, date under the label. "large" for a
-   * role-scale client: two card columns, all three from lg.
+   * Set by the card's type: "small" for artifacts (one column, date under the label), medium (the
+   * default) for projects, "large" for clients (half the row from md).
    */
   size?: "small" | "large";
 };
@@ -55,9 +55,9 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
       </span>
     </>
   );
-  // On the homepage's doubled grid (2 / 4 / 6) a card spans two columns, a small one one, and a large
-  // one two card widths (4) from sm and all three (6) from lg.
-  const span = small ? "col-span-1" : size === "large" ? "col-span-2 sm:col-span-4 lg:col-span-6" : "col-span-2";
+  // On the homepage's doubled grid (2 / 4 / 6): small spans one column, medium two, large the full row
+  // on tablets (4) and half the row (3) from md.
+  const span = small ? "col-span-1" : size === "large" ? "col-span-2 sm:col-span-4 md:col-span-3" : "col-span-2";
   const className = `group flex flex-col gap-inline border border-border p-inline no-underline ${span}`;
   if (href && external) return <a href={href} className={className}>{body}</a>;
   if (href) return <Link href={href} className={className}>{body}</Link>;
