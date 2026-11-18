@@ -1,6 +1,7 @@
 import { Tag } from "./tag";
 import Link from "next/link";
 import { Arrow } from "./arrow";
+import { Years } from "./years";
 
 export type CollectionCardData = {
   key: string;
@@ -31,17 +32,7 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
     <>
       <div className="flex flex-wrap items-start justify-between gap-x-inline gap-y-item">
         <Tag>{label}</Tag>
-        {years && (
-          // A range breaks before the dash: start year, then "–end" below it.
-          <span className="text-right type-caption text-ink">
-            {years.split("–").map((part, i) => (
-              <span key={part} className="block">
-                {i > 0 && "–"}
-                {part}
-              </span>
-            ))}
-          </span>
-        )}
+        {years && <Years years={years} className="text-right type-caption text-ink" />}
       </div>
       {imageSrc ? (
         // Plain <img>: natural aspect ratio, served at size by the content-images route.

@@ -1,6 +1,7 @@
 import { CollectionCard, type CollectionCardData } from "@/app/components/ui/collection-card";
 import { NumberedList } from "@/app/components/ui/numbered-list";
 import { TextLink } from "@/app/components/ui/text-link";
+import { Years } from "@/app/components/ui/years";
 import { INLINE_LINK } from "@/app/components/ui/inline-link";
 import { Globe } from "@/app/components/ui/globe";
 import { caseStudiesLive } from "@/lib/site";
@@ -229,9 +230,9 @@ export default async function Home() {
           <ol aria-label="Roles" className="flex flex-col border-t border-border">
             {roles.map((role) => (
               <li key={role.slug} className="grid grid-cols-4 gap-x-gutter border-b border-border py-item type-caption">
-                <span className="text-ink">{role.years}</span>
+                <Years years={role.years} className="text-ink" />
                 <p className="col-span-2 text-ink">
-                  {role.title},{" "}
+                  <span className="block">{role.title}</span>
                   {role.companyUrl ? (
                     <a href={role.companyUrl} className={INLINE_LINK}>
                       {role.company}
