@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>HealHaus app — MVP prototype</title>
+<style>
+  /* HealHaus app, MVP (R11, 2021): a clickable prototype that plays itself until touched.
+     Colors are HealHaus's, sampled from the app's screens, not gregfrye.us tokens.
+     The app is drawn at 320 × 640 and scaled to fit the frame. */
+  :root { --cream: #f2eee3; --peach: #f1c4a3; --sand: #e3cba9; --butter: #f3db9d; --ink: #111; --faint: #bab7ae; --tap: #f59e0b; }
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+  body { display: grid; place-items: center; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .fit { position: relative; }
+  .app {
+    position: absolute; left: 0; top: 0; width: 320px; height: 640px; overflow: hidden;
+    transform-origin: 0 0; background: var(--cream); border-radius: 20px;
+    -webkit-tap-highlight-color: transparent; user-select: none; touch-action: pan-y;
+  }
+  .screen { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; background: var(--cream); scrollbar-width: none; }
+  .screen::-webkit-scrollbar { display: none; }
+  .screen img.shot { display: block; width: 320px; pointer-events: none; }
+  .hot { position: absolute; cursor: pointer; border-radius: 8px; }
+  .app.hints .hot { outline: 2px solid var(--tap); outline-offset: -2px; background: rgb(245 158 11 / 0.12); }
+  .hot:focus-visible { outline: 2px solid var(--tap); outline-offset: -2px; }
+  /* Transitions */
+  .screen.enter-push { animation: inR 380ms cubic-bezier(.2,.7,.2,1) both; }
+  .screen.leave-push { animation: outL 380ms cubic-bezier(.2,.7,.2,1) both; }
+  .screen.enter-pop { animation: inL 380ms cubic-bezier(.2,.7,.2,1) both; }
+  .screen.leave-pop { animation: outR 380ms cubic-bezier(.2,.7,.2,1) both; }
+  .screen.enter-fade { animation: fadeIn 260ms ease both; }
+  .screen.leave-fade { animation: fadeOut 260ms ease both; }
+  .screen.enter-up { animation: inUp 420ms cubic-bezier(.2,.7,.2,1) both; }
+  .screen.leave-down { animation: outDown 380ms cubic-bezier(.4,0,.6,1) both; }
+  @keyframes inR { from { transform: translateX(100%); } }
+  @keyframes outL { to { transform: translateX(-30%); opacity: .6; } }
+  @keyframes inL { from { transform: translateX(-30%); opacity: .6; } }
+  @keyframes outR { to { transform: translateX(100%); } }
+  @keyframes fadeIn { from { opacity: 0; } }
+  @keyframes fadeOut { to { opacity: 0; } }
+  @keyframes inUp { from { transform: translateY(100%); } }
+  @keyframes outDown { to { transform: translateY(100%); } }
+  /* Landing: the three hero photos cross-fade */
+  .landing img.shot { position: absolute; inset: 0; transition: opacity 900ms ease; }
+  .landing img.shot + img.shot { opacity: 0; }
+  /* Breath loader */
+  .loader { background: var(--cream); }
+  .loader .fill { position: absolute; inset: 0; background: linear-gradient(160deg, var(--peach), var(--sand) 50%, var(--butter)); clip-path: circle(0 at 50% 50%); }
+  .loader .mark { position: absolute; left: 50%; top: 50%; width: 68.5px; transform: translate(-50%, -50%); opacity: 0; }
+  .loader svg { position: absolute; left: 50%; top: 50%; width: 120px; transform: translate(-50%, -50%); overflow: visible; }
+  .loader circle { fill: none; stroke: var(--ink); stroke-width: 2.6; }
+  .loader .label { position: absolute; left: 0; right: 0; bottom: 20px; text-align: center; font-size: 19px; letter-spacing: .02em; color: var(--ink); }
+  /* Tap ripple and hint */
+  .ripple { position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: rgb(17 17 17 / .22); pointer-events: none; animation: ripple 520ms ease-out forwards; z-index: 10; }
+  @keyframes ripple { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+  .chip {
+    position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 20; pointer-events: none;
+    padding: 6px 12px; border-radius: 999px; background: rgb(17 17 17 / .78); color: #fff; font-size: 11px; letter-spacing: .04em;
+    white-space: nowrap; transition: opacity 400ms ease;
+  }
+  .chip[hidden] { display: block; opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .screen, .landing img.shot { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="fit"><div class="app" id="app" aria-label="HealHaus app prototype. It plays a tour until you tap; then tap through the app. Highlighted areas show what's tappable." role="application"></div></div>
+<script>
+// ---------------------------------------------------------------------------------------------
+// Screens. Hotspots are [x, y, w, h, target, label] in the app's 320-pt space. Target is a screen
+// id, "back", or "home" (reset). A screen's `swap` targets cross-fade in place (same screen, new
+// state) instead of pushing; `tabs` are the five swipeable main pages.
+// ---------------------------------------------------------------------------------------------
+const NAV = (extra = []) => [[8, 12, 40, 40, "menu", "Menu"], [272, 12, 40, 40, "search", "Search"], ...extra];
+const BACK = [8, 12, 40, 40, "back", "Back"];
+const S = {
+  landing: { srcs: ["landing-1", "landing-2", "landing-3"], hot: [[12, 536, 296, 48, "welcome", "Get Started"]] },
+  welcome: { hot: [[16, 216, 288, 72, "welcome-filled", "Email", "swap"], [16, 536, 288, 48, "welcome-filled", "Submit", "swap"]] },
+  "welcome-filled": { hot: [[16, 536, 288, 48, "account", "Submit"]] },
+  account: { hot: [BACK, [16, 216, 288, 250, "account-filled", "Fields", "swap"], [16, 536, 288, 48, "account-filled", "Next Step", "swap"]] },
+  "account-filled": { hot: [BACK, [16, 536, 288, 48, "plan", "Next Step"]] },
+  plan: { hot: [BACK, [16, 356, 288, 60, "plan-trial", "Free Trial", "swap"], [16, 536, 288, 48, "card", "Next Step"]] },
+  "plan-trial": { hot: [BACK, [16, 216, 288, 60, "plan", "Yearly", "swap"], [16, 536, 288, 48, "card", "Next Step"]] },
+  card: { h: 768, hot: [BACK, [16, 208, 288, 360, "card-filled", "Card details", "swap"], [24, 664, 272, 48, "card-filled", "Next Step", "swap"]] },
+  "card-filled": { h: 768, hot: [BACK, [164, 352, 140, 72, "card-done", "Code", "swap"], [24, 664, 272, 48, "aspects", "Next Step"]] },
+  "card-done": { h: 768, hot: [BACK, [24, 664, 272, 48, "aspects", "Next Step"]] },
+  aspects: { hot: [BACK, [16, 436, 288, 56, "aspects-some", "Spirit", "swap"], [16, 536, 288, 48, "modalities", "Next Step"]] },
+  "aspects-some": { hot: [BACK, [16, 436, 288, 56, "aspects", "Spirit", "swap"], [16, 536, 288, 48, "modalities", "Next Step"]] },
+  modalities: { hot: [BACK, [16, 536, 288, 48, "qualities", "Next Step"]] },
+  qualities: { hot: [BACK, [16, 290, 288, 220, "qualities-done", "Qualities", "swap"], [16, 536, 288, 48, "qualities-done", "Complete Profile", "swap"]] },
+  "qualities-done": { hot: [BACK, [16, 536, 288, 48, "home", "Complete Profile"]] },
+
+  home: { h: 1588, tab: 0, hot: NAV([[0, 52, 320, 210, "video", "Alchemy Meditation"], [232, 262, 56, 56, "video", "Play"], [216, 448, 76, 40, "live-waiting", "Join"], [222, 386, 82, 24, "my-classes", "My Classes"]]) },
+  mind: { h: 1986, tab: 1, hot: NAV([[0, 52, 320, 300, "class", "Heart Coherence Meditation"]]) },
+  body: { h: 2058, tab: 2, hot: NAV([[124, 300, 84, 44, "live-waiting", "Join"], [0, 52, 320, 240, "class", "Rise & Flow"]]) },
+  spirit: { h: 1706, tab: 3, hot: NAV([[124, 300, 76, 40, "workshop", "Reserve"], [0, 52, 320, 240, "workshop", "Tarot For The Winter Solstice"]]) },
+  profile: { h: 1766, tab: 4, hot: NAV() },
+
+  class: { h: 886, hot: [BACK, [16, 636, 288, 104, "healer", "Healer"], [20, 810, 140, 56, "live-waiting", "Join Now"]] },
+  workshop: { h: 886, hot: [BACK, [16, 636, 288, 104, "healer", "Healer"], [20, 810, 140, 56, "workshop-reserved", "Reserve Seat", "swap"]] },
+  "workshop-reserved": { h: 886, hot: [BACK, [16, 636, 288, 104, "healer", "Healer"]] },
+  video: { h: 825, hot: [BACK, [228, 218, 62, 58, "player", "Play"], [0, 52, 320, 230, "player", "Video"]] },
+  healer: { h: 1100, hot: [BACK, [212, 368, 88, 40, "healer-fav", "Favorite", "swap"]] },
+  "healer-fav": { h: 1100, hot: [BACK, [212, 368, 88, 40, "healer", "Favorite", "swap"]] },
+  "live-waiting": { hot: [BACK], auto: [2600, "live"] },
+  live: { hot: [BACK, [20, 564, 280, 56, "live-chat", "Join Chat", "swap"]] },
+  "live-chat": { hot: [BACK] },
+  player: { hot: [BACK] },
+
+  search: { hot: [[0, 0, 270, 64, "search-results", "Search"], [278, 12, 40, 40, "back", "Close"], [20, 564, 280, 56, "filter", "Filter"]] },
+  "search-results": { h: 958, hot: [[278, 12, 40, 40, "back", "Close"]] },
+  filter: { h: 944, hot: [BACK] },
+  menu: { h: 1096, hot: [BACK, [272, 12, 40, 40, "search", "Search"], [0, 64, 320, 64, "classes", "Live Classes"], [0, 128, 320, 64, "spirit", "Workshops"],
+    [0, 192, 320, 64, "videos", "On Demand Videos"], [0, 256, 320, 64, "healers", "Healers"], [0, 320, 320, 64, "meditation", "Modalities"], [0, 384, 320, 64, "profile", "Account"]] },
+  classes: { h: 980, hot: [BACK] },
+  videos: { h: 1592, hot: [BACK, [0, 72, 320, 84, "video", "Abundance"]] },
+  healers: { h: 1416, hot: [BACK, [0, 80, 320, 110, "healer", "Healer"]] },
+  meditation: { h: 1240, hot: [BACK] },
+  "my-classes": { h: 888, hot: [BACK] },
+};
+const TABS = ["home", "mind", "body", "spirit", "profile"];
+
+// ---------------------------------------------------------------------------------------------
+const app = document.getElementById("app");
+const fit = app.parentElement;
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const preload = new Set();
+let current = null, stack = [], autoTimer = 0;
+
+function resize() {
+  const s = Math.min(innerWidth / 320, innerHeight / 640);
+  app.style.transform = `scale(${s})`;
+  fit.style.width = 320 * s + "px"; fit.style.height = 640 * s + "px";
+}
+addEventListener("resize", resize); resize();
+
+function build(id) {
+  const def = S[id], el = document.createElement("div");
+  el.className = "screen"; el.dataset.id = id;
+  const wrap = document.createElement("div"); wrap.style.position = "relative";
+  const srcs = def.srcs || [id];
+  if (def.srcs) { el.classList.add("landing"); wrap.style.height = "640px"; }
+  srcs.forEach((src) => { const img = new Image(); img.className = "shot"; img.alt = ""; img.src = `screens/${src}.jpg`; wrap.append(img); });
+  for (const [x, y, w, h, target, label, kind] of def.hot) {
+    const b = document.createElement("button");
+    b.className = "hot"; b.setAttribute("aria-label", label);
+    Object.assign(b.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px", border: 0, padding: 0, background: "none" });
+    b.addEventListener("click", (e) => { e.stopPropagation(); ripple(x + w / 2, y + h / 2 - el.scrollTop); go(target, kind); });
+    wrap.append(b);
+  }
+  el.append(wrap);
+  return el;
+}
+
+function warm(id) { // preload the screens one tap away
+  for (const h of S[id]?.hot || []) {
+    const t = h[4]; if (S[t] && !preload.has(t)) { preload.add(t); (S[t].srcs || [t]).forEach((s) => (new Image().src = `screens/${s}.jpg`)); }
+  }
+}
+
+function show(id, how = "push") {
+  clearTimeout(autoTimer);
+  const next = build(id), prev = current;
+  app.append(next);
+  if (prev && !still) {
+    const map = { push: ["enter-push", "leave-push"], pop: ["enter-pop", "leave-pop"], fade: ["enter-fade", "leave-fade"], up: ["enter-up", "leave-fade"],
+      left: ["enter-push", "leave-push"], right: ["enter-pop", "leave-pop"] };
+    const [inC, outC] = map[how] || map.push;
+    next.classList.add(inC); prev.classList.add(outC);
+    if (how === "pop" || how === "right") next.style.zIndex = 0, prev.style.zIndex = 1;
+    setTimeout(() => prev.remove(), 420);
+  } else if (prev) prev.remove();
+  current = next;
+  if (S[id]?.srcs) cycle(next);
+  if (S[id]?.auto) autoTimer = setTimeout(() => go(S[id].auto[1], "swap"), S[id].auto[0]);
+  warm(id);
+  return next;
+}
+
+function go(target, kind) {
+  const id = current?.dataset.id;
+  if (target === "back") { const prev = stack.pop(); if (prev) show(prev, "pop"); return; }
+  if (target === "home") { stack = []; return breathe(() => show("home", "fade")); } // the loader plays between onboarding and the app
+  if (kind === "swap") { const y = current.scrollTop; const el = show(target, "fade"); el.scrollTop = y; return; }
+  if (TABS.includes(target) && TABS.includes(id)) { const d = TABS.indexOf(target) - TABS.indexOf(id); return show(target, d > 0 ? "left" : "right"); }
+  if (target === "menu" || target === "search") { stack.push(id); return show(target, "up"); }
+  stack.push(id); show(target, "push");
+}
+
+// Swipe between the five main pages.
+let sx = null, sy = null;
+app.addEventListener("pointerdown", (e) => { sx = e.clientX; sy = e.clientY; });
+app.addEventListener("pointerup", (e) => {
+  if (sx === null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+  const i = TABS.indexOf(current?.dataset.id);
+  if (i < 0 || Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+  const j = i + (dx < 0 ? 1 : -1); if (j >= 0 && j < TABS.length) show(TABS[j], dx < 0 ? "left" : "right");
+});
+addEventListener("keydown", (e) => {
+  const i = TABS.indexOf(current?.dataset.id); if (i < 0) { if (e.key === "Escape") go("back"); return; }
+  if (e.key === "ArrowRight" && i < 4) show(TABS[i + 1], "left");
+  if (e.key === "ArrowLeft" && i > 0) show(TABS[i - 1], "right");
+});
+
+function cycle(el) {
+  const imgs = el.querySelectorAll("img.shot"); let k = 0;
+  const t = setInterval(() => { if (!el.isConnected) return clearInterval(t); imgs[k].style.opacity = 0; k = (k + 1) % imgs.length; imgs[k].style.opacity = 1; }, 2400);
+}
+
+function ripple(x, y) { const r = document.createElement("div"); r.className = "ripple"; r.style.left = x + "px"; r.style.top = y + "px"; app.append(r); setTimeout(() => r.remove(), 600); }
+
+// Tapping somewhere that isn't tappable flashes the tappable areas, like a Figma prototype.
+app.addEventListener("click", () => { app.classList.add("hints"); setTimeout(() => app.classList.remove("hints"), 700); });
+
+// ---------------------------------------------------------------------------------------------
+// The breath loader (inhale, hold, exhale), drawn live.
+// ---------------------------------------------------------------------------------------------
+function breathe(done, speed = 1.5) {
+  clearTimeout(autoTimer);
+  const el = document.createElement("div"); el.className = "screen loader"; el.dataset.id = "loader";
+  el.innerHTML = `<div class="fill"></div><img class="mark" src="wordmark.png" alt=""><svg viewBox="-61 -61 122 122" aria-hidden="true"><circle r="59" pathLength="100" transform="rotate(180)" stroke-dasharray="0 100"></circle></svg><div class="label">Inhale</div>`;
+  if (current) current.remove(); app.append(el); current = el;
+  const fill = el.querySelector(".fill"), mark = el.querySelector(".mark"), ring = el.querySelector("circle"), label = el.querySelector(".label");
+  const cover = Math.hypot(160, 320), ease = (t) => (t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2), clamp = (v) => Math.min(1, Math.max(0, v));
+  const draw = (t) => {
+    let r, o, a, w, faint;
+    if (t < 4) { r = cover * ease(t / 4); o = clamp((t / 4 - .45) / .55); a = 0; w = "Inhale"; faint = t < .4; }
+    else if (t < 8) { r = cover; o = 1; a = 100 * ease((t - 4) / 4); w = "Hold"; faint = false; }
+    else { const q = clamp((t - 8) / 4); r = cover * (1 - ease(q)); o = 1 - clamp(q / .7); a = 100 * (1 - clamp(q / .6)); w = "Exhale"; faint = q > .9; }
+    fill.style.clipPath = `circle(${r}px at 50% 50%)`; mark.style.opacity = o; ring.setAttribute("stroke-dasharray", `${a} 100`);
+    if (label.textContent !== w) label.textContent = w; label.style.color = faint ? "var(--faint)" : "var(--ink)";
+  };
+  if (still) { draw(8); autoTimer = setTimeout(done, 1500); return; }
+  const t0 = performance.now();
+  const tick = (now) => { if (current !== el) return; const t = ((now - t0) / 1000) * speed; if (t >= 12.4) return done(); draw(t); requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+}
+
+// ---------------------------------------------------------------------------------------------
+// The tour: plays on its own until someone touches the prototype; after 12 s without a touch it
+// starts again from the top.
+// ---------------------------------------------------------------------------------------------
+const TOUR = [
+  ["loader"], ["wait", 4800],
+  ["tap", "Get Started"], ["wait", 1200], ["tap", "Email"], ["wait", 900], ["tap", "Submit"], ["wait", 1100],
+  ["tap", "Fields"], ["wait", 900], ["tap", "Next Step"], ["wait", 1100], ["tap", "Free Trial"], ["wait", 900], ["tap", "Next Step"], ["wait", 1100],
+  ["tap", "Card details"], ["wait", 800], ["tap", "Code"], ["wait", 800], ["tap", "Next Step"], ["wait", 1100],
+  ["tap", "Spirit"], ["wait", 800], ["tap", "Spirit"], ["wait", 800], ["tap", "Next Step"], ["wait", 1100], ["tap", "Next Step"], ["wait", 1100],
+  ["tap", "Qualities"], ["wait", 900], ["tap", "Complete Profile"], ["wait", 9800],
+  ["scroll", 640, 2200], ["wait", 600], ["scroll", 0, 1200], ["wait", 500],
+  ["swipe", "mind"], ["wait", 1500], ["swipe", "body"], ["wait", 1400], ["tap", "Join"], ["wait", 2800], ["wait", 1000], ["tap", "Join Chat"], ["wait", 1800], ["tap", "Back"], ["wait", 1200],
+  ["swipe", "spirit"], ["wait", 1300], ["tap", "Reserve"], ["wait", 1300], ["scroll", 260, 1000], ["wait", 400], ["tap", "Reserve Seat"], ["wait", 1600], ["tap", "Back"], ["wait", 1100],
+  ["tap", "Menu"], ["wait", 1200], ["tap", "Healers"], ["wait", 1300], ["tap", "Healer"], ["wait", 1300], ["tap", "Favorite"], ["wait", 1400], ["tap", "Back"], ["wait", 900], ["tap", "Back"], ["wait", 900], ["tap", "Back"], ["wait", 1100],
+  ["tap", "Search"], ["wait", 1200], ["tap", "Search"], ["wait", 1800], ["tap", "Close"], ["wait", 1500],
+];
+let touring = false, intro = false, step = 0, tourTimer = 0, idleTimer = 0;
+const chip = document.createElement("div"); chip.className = "chip"; chip.textContent = "Tap to try it";
+
+function tapByLabel(label) {
+  const b = [...current.querySelectorAll(".hot")].find((h) => h.getAttribute("aria-label") === label);
+  if (!b) return;
+  const top = parseFloat(b.style.top) - current.scrollTop;
+  if (top < 0 || top > 600) current.scrollTo({ top: Math.max(0, parseFloat(b.style.top) - 320), behavior: "smooth" });
+  b.click();
+}
+function scrollTo(y, ms) {
+  const el = current, y0 = el.scrollTop, t0 = performance.now();
+  const f = (now) => { const p = Math.min(1, (now - t0) / ms), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; el.scrollTop = y0 + (y - y0) * e; if (p < 1 && touring) requestAnimationFrame(f); };
+  requestAnimationFrame(f);
+}
+function run() {
+  if (!touring) return;
+  if (step >= TOUR.length) step = 0;
+  const [op, a, b] = TOUR[step++];
+  let wait = 0;
+  if (op === "loader") { intro = true; stack = []; app.querySelectorAll(".screen").forEach((s) => s.remove()); current = null; breathe(() => { intro = false; if (touring) show("landing", "fade"); }); }
+  else if (op === "wait") wait = a;
+  else if (op === "tap") tapByLabel(a);
+  else if (op === "scroll") { scrollTo(a, b); wait = b; }
+  else if (op === "swipe") { const i = TABS.indexOf(current.dataset.id), j = TABS.indexOf(a); show(a, j > i ? "left" : "right"); }
+  tourTimer = setTimeout(run, wait);
+}
+function startTour() { touring = true; step = 0; app.append(chip); chip.hidden = false; run(); }
+function stopTour() {
+  if (touring) { touring = false; clearTimeout(tourTimer); chip.hidden = true; if (intro) { intro = false; stack = []; show("landing", "fade"); } }
+  clearTimeout(idleTimer); idleTimer = setTimeout(startTour, 12000);
+}
+// A real touch stops the tour; the tour's own synthetic clicks don't.
+app.addEventListener("pointerdown", stopTour, true);
+addEventListener("keydown", stopTour, true);
+app.addEventListener("wheel", stopTour, { passive: true, capture: true });
+
+// ?screen=<id> opens one screen with its tappable areas shown (for checking hotspots).
+const only = new URLSearchParams(location.search).get("screen");
+if (only && S[only]) { show(only, "fade"); app.classList.add("hints"); app.style.setProperty("--tap", "#e11d48"); }
+else if (still) show("landing"); else startTour();
+</script>
+</body>
+</html>
