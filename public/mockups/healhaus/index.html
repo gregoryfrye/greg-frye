@@ -11,7 +11,7 @@
      The app is drawn at 320 × 640 and scaled to fit the frame. */
   :root { --cream: #f2eee3; --peach: #f1c4a3; --sand: #e3cba9; --butter: #f3db9d; --ink: #111; --faint: #bab7ae; --tap: #f59e0b; }
   html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
-  body { display: grid; place-items: center; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
   .fit { position: relative; }
   .app {
     position: absolute; left: 0; top: 0; width: 320px; height: 640px; overflow: hidden;
@@ -54,11 +54,8 @@
   /* Tap ripple and hint */
   .ripple { position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: rgb(17 17 17 / .22); pointer-events: none; animation: ripple 520ms ease-out forwards; z-index: 10; }
   @keyframes ripple { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
-  .chip {
-    position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 20; pointer-events: none;
-    padding: 6px 12px; border-radius: 999px; background: rgb(17 17 17 / .78); color: #fff; font-size: 11px; letter-spacing: .04em;
-    white-space: nowrap; transition: opacity 400ms ease;
-  }
+  /* The hint sits under the phone, not on the app's own buttons. */
+  .chip { height: 18px; font-size: 11px; letter-spacing: .04em; color: #6b6760; transition: opacity 400ms ease; }
   .chip[hidden] { display: block; opacity: 0; }
   @media (prefers-reduced-motion: reduce) {
     .screen, .landing img.shot { animation: none !important; transition: none !important; }
@@ -130,7 +127,7 @@ const preload = new Set();
 let current = null, stack = [], autoTimer = 0;
 
 function resize() {
-  const s = Math.min(innerWidth / 320, innerHeight / 640);
+  const s = Math.min(innerWidth / 320, (innerHeight - 28) / 640); // leaves a line for the hint below
   app.style.transform = `scale(${s})`;
   fit.style.width = 320 * s + "px"; fit.style.height = 640 * s + "px";
 }
@@ -289,7 +286,8 @@ function run() {
   else if (op === "swipe") { const i = TABS.indexOf(current.dataset.id), j = TABS.indexOf(a); show(a, j > i ? "left" : "right"); }
   tourTimer = setTimeout(run, wait);
 }
-function startTour() { touring = true; step = 0; app.append(chip); chip.hidden = false; run(); }
+document.body.append(chip);
+function startTour() { touring = true; step = 0; chip.hidden = false; run(); }
 function stopTour() {
   if (touring) { touring = false; clearTimeout(tourTimer); chip.hidden = true; if (intro) { intro = false; stack = []; show("landing", "fade"); } }
   clearTimeout(idleTimer); idleTimer = setTimeout(startTour, 12000);
