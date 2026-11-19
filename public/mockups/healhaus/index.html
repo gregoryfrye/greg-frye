@@ -120,6 +120,9 @@ const S = {
   "my-classes": { h: 888, hot: [BACK] },
 };
 const TABS = ["home", "mind", "body", "spirit", "profile"];
+// Screens snap from one to the next (an instant cut), like a tap in the real app. Set to false to
+// bring back the slide and fade transitions.
+const SNAP = true;
 
 // ---------------------------------------------------------------------------------------------
 const app = document.getElementById("app");
@@ -163,7 +166,7 @@ function show(id, how = "push") {
   clearTimeout(autoTimer);
   const next = build(id), prev = current;
   app.append(next);
-  if (prev && !still) {
+  if (prev && !still && !SNAP) {
     const map = { push: ["enter-push", "leave-push"], pop: ["enter-pop", "leave-pop"], fade: ["enter-fade", "leave-fade"], up: ["enter-up", "leave-fade"],
       left: ["enter-push", "leave-push"], right: ["enter-pop", "leave-pop"] };
     const [inC, outC] = map[how] || map.push;
