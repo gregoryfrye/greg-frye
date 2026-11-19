@@ -243,12 +243,12 @@ function breathe(done, speed = 1.5) {
 // starts again from the top.
 // ---------------------------------------------------------------------------------------------
 const TOUR = [
-  ["loader"], ["wait", 4800],
+  ["loader"],
   ["tap", "Get Started"], ["wait", 1200], ["tap", "Email"], ["wait", 900], ["tap", "Submit"], ["wait", 1100],
   ["tap", "Fields"], ["wait", 900], ["tap", "Next Step"], ["wait", 1100], ["tap", "Free Trial"], ["wait", 900], ["tap", "Next Step"], ["wait", 1100],
   ["tap", "Card details"], ["wait", 800], ["tap", "Code"], ["wait", 800], ["tap", "Next Step"], ["wait", 1100],
   ["tap", "Spirit"], ["wait", 800], ["tap", "Spirit"], ["wait", 800], ["tap", "Next Step"], ["wait", 1100], ["tap", "Next Step"], ["wait", 1100],
-  ["tap", "Qualities"], ["wait", 900], ["tap", "Complete Profile"], ["wait", 9800],
+  ["tap", "Qualities"], ["wait", 900], ["tap", "Complete Profile"], ["wait", 900], ["until", "home"], ["wait", 1400],
   ["scroll", 640, 2200], ["wait", 600], ["scroll", 0, 1200], ["wait", 500],
   ["swipe", "mind"], ["wait", 1500], ["swipe", "body"], ["wait", 1400], ["tap", "Join"], ["wait", 2800], ["wait", 1000], ["tap", "Join Chat"], ["wait", 1800], ["tap", "Back"], ["wait", 1200],
   ["swipe", "spirit"], ["wait", 1300], ["tap", "Reserve"], ["wait", 1300], ["scroll", 260, 1000], ["wait", 400], ["tap", "Reserve Seat"], ["wait", 1600], ["tap", "Back"], ["wait", 1100],
@@ -258,9 +258,8 @@ const TOUR = [
 let touring = false, intro = false, step = 0, tourTimer = 0, idleTimer = 0;
 const chip = document.createElement("div"); chip.className = "chip"; chip.textContent = "Tap to try it";
 
-function tapByLabel(label) {
-  const b = [...current.querySelectorAll(".hot")].find((h) => h.getAttribute("aria-label") === label);
-  if (!b) return;
+function findHot(label) { return current && [...current.querySelectorAll(".hot")].find((h) => h.getAttribute("aria-label") === label); }
+function tapByLabel(b) {
   const top = parseFloat(b.style.top) - current.scrollTop;
   if (top < 0 || top > 600) current.scrollTo({ top: Math.max(0, parseFloat(b.style.top) - 320), behavior: "smooth" });
   b.click();
@@ -275,9 +274,17 @@ function run() {
   if (step >= TOUR.length) step = 0;
   const [op, a, b] = TOUR[step++];
   let wait = 0;
-  if (op === "loader") { intro = true; stack = []; app.querySelectorAll(".screen").forEach((s) => s.remove()); current = null; breathe(() => { intro = false; if (touring) show("landing", "fade"); }); }
+  if (op === "loader") { intro = true; stack = []; app.querySelectorAll(".screen").forEach((s) => s.remove()); current = null; breathe(() => { intro = false; if (touring) { show("landing", "fade"); tourTimer = setTimeout(run, 2600); } }); return; }
   else if (op === "wait") wait = a;
-  else if (op === "tap") tapByLabel(a);
+  else if (op === "tap") { // waits for the screen that has this button (up to 15 s), then taps it
+    let tries = 0;
+    const attempt = () => { if (!touring) return; const b = findHot(a); if (b) { tapByLabel(b); tourTimer = setTimeout(run, 0); } else if (tries++ < 150) tourTimer = setTimeout(attempt, 100); else tourTimer = setTimeout(run, 0); };
+    return attempt();
+  }
+  else if (op === "until") { // waits for a screen (e.g. home, after the loader)
+    const attempt = () => { if (!touring) return; tourTimer = setTimeout(current?.dataset.id === a ? run : attempt, 100); };
+    return attempt();
+  }
   else if (op === "scroll") { scrollTo(a, b); wait = b; }
   else if (op === "swipe") { const i = TABS.indexOf(current.dataset.id), j = TABS.indexOf(a); show(a, j > i ? "left" : "right"); }
   tourTimer = setTimeout(run, wait);
