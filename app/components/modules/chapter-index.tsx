@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-export type Chapter = { id: string; label: string };
+/** `marker` overrides the position number (a case study letters its beats A, B, C and numbers its projects). */
+export type Chapter = { id: string; label: string; marker?: string };
 
 /**
  * The case study's numbered chapter list (00 Narrative Strategy …), sticky
@@ -43,7 +44,7 @@ export function ChapterIndex({ chapters }: { chapters: Chapter[] }) {
                   isCurrent ? "text-ink" : "text-faint"
                 }`}
               >
-                <span className="w-marker shrink-0">{String(i).padStart(2, "0")}</span>
+                <span className="w-marker shrink-0">{chapter.marker ?? String(i).padStart(2, "0")}</span>
                 <span>{chapter.label}</span>
               </a>
             </li>

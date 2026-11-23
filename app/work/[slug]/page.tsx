@@ -68,8 +68,9 @@ function markSpine(source: string): { source: string; beats: Chapter[] } {
   const beats: Chapter[] = [];
   const marked = source.replace(/<SpineSection\s+label="([^"]+)"/g, (_, label: string) => {
     const id = slugify(label);
-    beats.push({ id, label });
-    return `<SpineSection marker="${String.fromCharCode(64 + beats.length)}" id="${id}" label="${label}"`;
+    const marker = String.fromCharCode(65 + beats.length);
+    beats.push({ id, label, marker });
+    return `<SpineSection marker="${marker}" id="${id}" label="${label}"`;
   });
   return { source: marked, beats };
 }
@@ -95,8 +96,8 @@ export default async function ClientPage({
   // The chapter index: the spine's beats, then the projects, then the close.
   const chapters: Chapter[] = [
     ...spine.beats,
-    ...projects.map((project) => ({ id: projectId(project.slug), label: project.title })),
-    ...(closing ? [{ id: "results", label: "Results" }] : []),
+    ...projects.map((project, i) => ({ id: projectId(project.slug), label: project.title, marker: String(i + 1).padStart(2, "0") })),
+    ...(closing ? [{ id: "results", label: "Results", marker: "" }] : []),
   ];
   // Recirculation: the homepage's featured case studies, minus this one.
   const moreWork = getFeaturedOnHome()
