@@ -1,24 +1,26 @@
 import type { ReactNode } from "react";
+import { BeatHeader } from "@/app/components/ui/beat-header";
 
 type SpineSectionProps = {
   label: string;
   subhead: string;
+  /** Set by the case study page: the beat's letter (A, B, C …) and anchor for the chapter index. */
+  marker?: string;
+  id?: string;
   children: ReactNode;
 };
 
 /**
- * Narrative (the argument): a reusable functional label plus a
- * project-specific subhead. Text-led — children render at prose width
- * except for ImageBlock variants that explicitly break the column.
+ * Narrative (the argument): the rule-and-label row (marker + functional
+ * label), then the subhead as a big statement. Text-led: children render at
+ * prose width except for ImageBlock variants that explicitly break the column.
  */
-export function SpineSection({ label, subhead, children }: SpineSectionProps) {
+export function SpineSection({ label, subhead, marker, id, children }: SpineSectionProps) {
   return (
-    <section className="mt-20 first:mt-0">
-      <div className="mx-auto max-w-prose">
-        <p className="text-caption tracking-tight text-muted uppercase">{label}</p>
-        <h2 className="mt-2 font-serif text-heading text-ink">{subhead}</h2>
-      </div>
-      <div className="mt-8">{children}</div>
+    <section id={id} className="mt-section scroll-mt-masthead first:mt-0">
+      <BeatHeader marker={marker} label={label} />
+      <h2 className="mt-block max-w-hero type-headline text-ink">{subhead}</h2>
+      <div className="mt-block">{children}</div>
     </section>
   );
 }

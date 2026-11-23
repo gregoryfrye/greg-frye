@@ -24,6 +24,8 @@ Use them as Tailwind classes: `gap-item`, `mt-block`, `py-section`, `px-gutter`.
 
 Case study modules sit on the 3-column grid at `md` and up (`md:grid-cols-3 gap-x-gutter`), the Figma's 3 × 390. The case hero uses 4 columns with a 2-column center (index · title and image · stats).
 
+**Case study page** (`/work/[slug]`). Four columns from `md`: the chapter index in the first (sticky), the story in the other three. Every beat opens with the same rule-and-label row (`BeatHeader`): spine beats lettered A, B, C with the subhead as a `type-headline` statement; projects numbered 01, 02 with their summary as a `type-deck`; then Results. Reading text is `type-body` in ink at `max-w-prose`, left-aligned; captions `type-caption`; spacing is `item` / `block` / `section` only.
+
 **Containers.** `max-w-wide` (1280) for layout, anything with horizontal structure. `max-w-prose` (672) for continuous text. `max-w-hero` (768) for the homepage headline only. Grids never go inside `max-w-prose` (see CLAUDE.md, two-container rule).
 
 **Line.** One line weight (`--line-weight`, 1px) in `border` for every rule, divider and outline, and for line drawings like the globe. The `rule` class draws the Figma divider.

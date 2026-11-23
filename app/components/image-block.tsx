@@ -23,21 +23,21 @@ function Media({ image, aspect }: { image: ImageBlockImage; aspect: string }) {
   }
   return (
     <div className={`relative ${aspect} overflow-hidden bg-placeholder`}>
-      <div className="flex h-full w-full items-center justify-center p-4 text-center">
-        <p className="text-caption text-muted">{image.alt}</p>
+      <div className="flex h-full w-full items-center justify-center p-block text-center">
+        <p className="type-caption text-muted">{image.alt}</p>
       </div>
     </div>
   );
 }
 
 function Caption({ children }: { children: string }) {
-  return <p className="mx-auto mt-3 max-w-prose text-body text-muted">{children}</p>;
+  return <p className="mt-item max-w-prose type-caption text-muted">{children}</p>;
 }
 
 /** full: full-bleed single image, breaks the text column. */
 function FullBlock({ images, caption }: { images: ImageBlockImage[]; caption?: string }) {
   return (
-    <figure className="my-16">
+    <figure className="my-section">
       {images[0] && <Media image={images[0]} aspect="aspect-[16/9]" />}
       {caption && <Caption>{caption}</Caption>}
     </figure>
@@ -47,8 +47,8 @@ function FullBlock({ images, caption }: { images: ImageBlockImage[]; caption?: s
 /** pair: two side by side, equal width, stack on mobile. */
 function PairBlock({ images, caption }: { images: ImageBlockImage[]; caption?: string }) {
   return (
-    <figure className="my-16">
-      <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
+    <figure className="my-section">
+      <div className="grid grid-cols-1 items-start gap-gutter sm:grid-cols-2">
         {images.map((image, i) => (
           <Media key={i} image={image} aspect="aspect-[4/3]" />
         ))}
@@ -61,9 +61,9 @@ function PairBlock({ images, caption }: { images: ImageBlockImage[]; caption?: s
 /** inset: single image inline in the text column, no break. */
 function InsetBlock({ images, caption }: { images: ImageBlockImage[]; caption?: string }) {
   return (
-    <figure className="mx-auto my-10 max-w-prose">
+    <figure className="my-block max-w-prose">
       {images[0] && <Media image={images[0]} aspect="aspect-[4/3]" />}
-      {caption && <figcaption className="mt-3 text-body text-muted">{caption}</figcaption>}
+      {caption && <figcaption className="mt-item type-caption text-muted">{caption}</figcaption>}
     </figure>
   );
 }
@@ -78,8 +78,8 @@ function StackBlock({ images, caption }: { images: ImageBlockImage[]; caption?: 
   const columns =
     images.length >= 3 ? "sm:grid-cols-2 md:grid-cols-3" : images.length === 2 ? "sm:grid-cols-2" : "";
   return (
-    <figure className="my-16">
-      <div className={`grid grid-cols-1 items-start gap-6 ${columns}`}>
+    <figure className="my-section">
+      <div className={`grid grid-cols-1 items-start gap-gutter ${columns}`}>
         {images.map((image, i) => (
           <Media key={i} image={image} aspect="aspect-[4/3]" />
         ))}
