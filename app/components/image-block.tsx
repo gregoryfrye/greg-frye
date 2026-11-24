@@ -37,7 +37,7 @@ function Caption({ children }: { children: string }) {
 /** full: full-bleed single image, breaks the text column. */
 function FullBlock({ images, caption }: { images: ImageBlockImage[]; caption?: string }) {
   return (
-    <figure className="my-section">
+    <figure className="breakout my-section" data-breakout>
       {images[0] && <Media image={images[0]} aspect="aspect-[16/9]" />}
       {caption && <Caption>{caption}</Caption>}
     </figure>

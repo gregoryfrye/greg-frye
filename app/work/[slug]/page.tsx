@@ -143,7 +143,17 @@ export default async function ClientPage({
 
         {chapters.length > 1 && (
           <aside className="self-stretch md:col-span-4 md:col-start-1 md:row-span-2 md:row-start-1 lg:col-span-3">
-            <ChapterIndex chapters={chapters} />
+            {/* Phones: folded into a Contents toggle. md up: the sticky list beside the story. */}
+            <details className="group md:hidden [&_li:first-child]:border-t-0">
+              <summary className="flex cursor-pointer list-none justify-between border-t border-b border-border py-item type-label text-ink [&::-webkit-details-marker]:hidden">
+                <span>Contents</span>
+                <span aria-hidden="true" className="transition-transform motion-fast ease-standard group-open:rotate-45">+</span>
+              </summary>
+              <ChapterIndex chapters={chapters} />
+            </details>
+            <div className="hidden h-full md:block">
+              <ChapterIndex chapters={chapters} />
+            </div>
           </aside>
         )}
 

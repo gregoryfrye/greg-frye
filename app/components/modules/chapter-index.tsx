@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /** `marker` overrides the position number (a case study letters its beats A, B, C and numbers its projects). */
 export type Chapter = { id: string; label: string; marker?: string };
@@ -13,6 +13,28 @@ export type Chapter = { id: string; label: string; marker?: string };
  */
 export function ChapterIndex({ chapters }: { chapters: Chapter[] }) {
   const [current, setCurrent] = useState(chapters[0]?.id);
+  const [covered, setCovered] = useState(false);
+  const nav = useRef<HTMLElement>(null);
+
+  // Full-width images ([data-breakout]) run under the sticky index; it steps aside while one passes.
+  useEffect(() => {
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      const box = nav.current?.getBoundingClientRect();
+      if (!box || box.height === 0) return;
+      const hit = [...document.querySelectorAll("[data-breakout]")].some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top < box.bottom && r.bottom > box.top && r.left < box.right && r.right > box.left;
+      });
+      setCovered(hit);
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(check); };
+    check();
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); cancelAnimationFrame(frame); };
+  }, []);
 
   useEffect(() => {
     const targets = chapters
@@ -31,7 +53,11 @@ export function ChapterIndex({ chapters }: { chapters: Chapter[] }) {
   }, [chapters]);
 
   return (
-    <nav aria-label="Chapters" className="md:sticky md:top-masthead">
+    <nav
+      ref={nav}
+      aria-label="Chapters"
+      className={`transition-opacity motion-normal ease-standard md:sticky md:top-masthead ${covered ? "pointer-events-none opacity-0" : ""}`}
+    >
       <ol>
         {chapters.map((chapter, i) => {
           const isCurrent = chapter.id === current;

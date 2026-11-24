@@ -78,3 +78,17 @@ body:has(main[data-canvas="home"]) > nav {
   object-fit: cover;
   vertical-align: baseline;
 }
+
+/* Case study breakout: a `full` image leaves the 6-column reading column and spans the whole
+   12-column page, under the jump nav (which steps aside while it passes). The reading column
+   starts at column 5 at md and column 4 at lg, so the image shifts left by that many columns. */
+.breakout {
+  --page: calc(min(100vw, var(--container-wide)) - 2 * var(--spacing-gutter));
+  --col: calc((var(--page) - 11 * var(--spacing-gutter)) / 12);
+}
+@variant md {
+  .breakout { width: var(--page); margin-left: calc(-4 * (var(--col) + var(--spacing-gutter))); }
+}
+@variant lg {
+  .breakout { margin-left: calc(-3 * (var(--col) + var(--spacing-gutter))); }
+}
