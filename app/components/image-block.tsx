@@ -47,7 +47,7 @@ function FullBlock({ images, caption }: { images: ImageBlockImage[]; caption?: s
 /** pair: two side by side, equal width, stack on mobile. */
 function PairBlock({ images, caption }: { images: ImageBlockImage[]; caption?: string }) {
   return (
-    <figure className="my-section">
+    <figure className="breakout my-section" data-breakout>
       <div className="grid grid-cols-1 items-start gap-gutter sm:grid-cols-2">
         {images.map((image, i) => (
           <Media key={i} image={image} aspect="aspect-[4/3]" />
@@ -104,9 +104,12 @@ export function ImageBlock({ type, payload }: ImageBlockProps) {
       return <PairBlock images={images} caption={caption} />;
     case "inset":
       return <InsetBlock images={images} caption={caption} />;
+    case "motion":
+      // A single loop (v1: its poster frame) is a big image moment, so it breaks out like `full`.
+      if (images.length === 1) return <FullBlock images={images} caption={caption} />;
+      return <StackBlock images={images} caption={caption} />;
     case "stagger":
     case "scroll":
-    case "motion":
       return <StackBlock images={images} caption={caption} />;
   }
 }

@@ -133,12 +133,12 @@ component's children. Six types are recognized:
 
 | Type | Behavior |
 |---|---|
-| `full` | Full-bleed single image, breaks the text column (wide container) |
-| `pair` | Two side by side, equal width, stack on mobile (wide container) |
+| `full` | Single image, breaks out of the reading column to the whole 12-column page (passes under the case study's jump nav, which steps aside) |
+| `pair` | Two side by side, equal width, stack on mobile; breaks out like `full` |
 | `inset` | Single image inline in the text column, no break (prose container) |
 | `stagger` | v1: grid, up to 3 across. Later: 2–3 offset images at different scales |
 | `scroll` | v1: grid, up to 3 across. Later: horizontal scroll-snap strip |
-| `motion` | v1: grid (poster frame). Later: silent autoplay loop |
+| `motion` | v1: poster frame (one image breaks out like `full`; several sit in a grid). Later: silent autoplay loop |
 
 Every block takes an optional caption, styled as content, not metadata.
 

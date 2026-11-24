@@ -33,7 +33,10 @@ export function ChapterIndex({ chapters }: { chapters: Chapter[] }) {
     check();
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onScroll);
-    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); cancelAnimationFrame(frame); };
+    // Images loading above shift the page without a scroll event; re-check when the page grows.
+    const grow = new ResizeObserver(onScroll);
+    grow.observe(document.body);
+    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); grow.disconnect(); cancelAnimationFrame(frame); };
   }, []);
 
   useEffect(() => {
