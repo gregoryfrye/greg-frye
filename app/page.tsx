@@ -241,7 +241,7 @@ export default async function Home() {
                     role.company
                   )}
                 </p>
-                <span className="italic text-muted-home">{role.location}</span>
+                <span className="text-muted-home">{role.location}</span>
               </li>
             ))}
           </ol>
