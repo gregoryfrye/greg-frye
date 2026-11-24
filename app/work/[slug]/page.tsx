@@ -104,17 +104,31 @@ export default async function ClientPage({
     .flatMap((item) => (item.kind === "client" ? [item.client] : []))
     .filter((other) => other.slug !== slug);
 
+  // The hero shows the client's lead image; a body block that only repeats it is dropped.
+  const lead = getClientLeadImageUrl(slug);
+  const leadFile = lead?.startsWith(clientImages) ? lead.split("/").pop() : undefined;
+  const story = leadFile
+    ? spine.source.replace(new RegExp(`::: \\w+\\n${leadFile.replace(/\./g, "\\.")}[^\\n]*\\n(?:Caption:[^\\n]*\\n)?:::\\n?`), "")
+    : spine.source;
+
   return (
     <main className="mx-auto flex w-full max-w-wide flex-1 flex-col gap-20 px-gutter pt-40 pb-20">
-      {/* Index · story on the same 4-column grid as the case hero: the chapter index sits in the first
-          column (sticky from md), the case study in the other three. On phones the index follows the header. */}
-      <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-4">
-        <header className="md:col-span-3 md:col-start-2">
-          {eyebrow && <p className="type-label text-muted">{eyebrow}</p>}
-          <h1 className="mt-item type-display text-ink">{client.name}</h1>
-          <p className="mt-block max-w-hero type-body-lede text-ink">{client.summary}</p>
+      {/* Figma 01_Client_1280 on the 12-column grid. lg: jump nav (3) · title, image, lede, then the
+          reading column (6) · stats (3). md: jump nav (4) · everything else (8), stats in a row. Phones
+          stack: hero, stats, jump nav, story. */}
+      <div className="grid grid-cols-1 items-start gap-x-gutter gap-y-section md:grid-cols-12">
+        <header className="grid grid-cols-1 gap-x-gutter gap-y-section md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4 lg:grid-cols-9">
+          <div className="text-center lg:col-span-6">
+            {eyebrow && <p className="type-label text-muted">{eyebrow}</p>}
+            <h1 className="mt-item type-display text-ink">{client.name}</h1>
+            {lead && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={lead} alt="" className="mt-block block h-auto w-full bg-placeholder" />
+            )}
+            <p className="mt-block type-body-lede text-ink">{client.summary}</p>
+          </div>
           {client.stats && client.stats.length > 0 && (
-            <dl aria-label="Stats" className="mt-section grid grid-cols-1 gap-gutter sm:grid-cols-3">
+            <dl aria-label="Stats" className="grid grid-cols-3 gap-gutter lg:col-span-3 lg:flex lg:flex-col lg:gap-block">
               {client.stats.slice(0, 3).map((stat) => (
                 <div key={stat.label}>
                   <dt className="sr-only">{stat.label}</dt>
@@ -128,14 +142,14 @@ export default async function ClientPage({
         </header>
 
         {chapters.length > 1 && (
-          <aside className="self-stretch md:col-start-1 md:row-span-2 md:row-start-1">
+          <aside className="self-stretch md:col-span-4 md:col-start-1 md:row-span-2 md:row-start-1 lg:col-span-3">
             <ChapterIndex chapters={chapters} />
           </aside>
         )}
 
-        <div className="md:col-span-3 md:col-start-2">
+        <div className="md:col-span-8 md:col-start-5 lg:col-span-6 lg:col-start-4">
           <article>
-            <MDXRemote source={preprocessFenceBlocks(spine.source, clientImages)} components={mdxComponents} />
+            <MDXRemote source={preprocessFenceBlocks(story, clientImages)} components={mdxComponents} />
           </article>
 
           {projects.map((project, i) => (
@@ -158,7 +172,7 @@ export default async function ClientPage({
 
           {closing && (
             <section id="results" className="mt-section scroll-mt-masthead">
-              <BeatHeader label="Results" />
+              <p className="type-label text-ink">Results</p>
               <div className="mt-block">
                 <MDXRemote source={preprocessFenceBlocks(closing.replace(/^##\s+Results\s*\n/, ""), clientImages)} components={mdxComponents} />
               </div>

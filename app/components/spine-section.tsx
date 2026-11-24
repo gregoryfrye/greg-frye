@@ -1,25 +1,24 @@
 import type { ReactNode } from "react";
-import { BeatHeader } from "@/app/components/ui/beat-header";
 
 type SpineSectionProps = {
   label: string;
   subhead: string;
-  /** Set by the case study page: the beat's letter (A, B, C …) and anchor for the chapter index. */
-  marker?: string;
+  /** Set by the case study page: the anchor the chapter index jumps to. */
   id?: string;
+  marker?: string;
   children: ReactNode;
 };
 
 /**
- * Narrative (the argument): the rule-and-label row (marker + functional
- * label), then the subhead as a big statement. Text-led: children render at
- * prose width except for ImageBlock variants that explicitly break the column.
+ * Narrative (the argument): the functional label, then the subhead as the
+ * section's opening line, then the text. One reading column; ImageBlocks sit
+ * in the same column.
  */
-export function SpineSection({ label, subhead, marker, id, children }: SpineSectionProps) {
+export function SpineSection({ label, subhead, id, children }: SpineSectionProps) {
   return (
     <section id={id} className="mt-section scroll-mt-masthead first:mt-0">
-      <BeatHeader marker={marker} label={label} />
-      <h2 className="mt-block max-w-hero type-headline text-ink">{subhead}</h2>
+      <p className="type-label text-ink">{label}</p>
+      <h2 className="mt-block type-body-lede text-ink">{subhead}</h2>
       <div className="mt-block">{children}</div>
     </section>
   );
