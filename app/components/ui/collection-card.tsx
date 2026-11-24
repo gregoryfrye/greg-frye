@@ -30,9 +30,9 @@ export function CollectionCard({ label, years, title, summary, imageSrc, href, e
   const small = size === "small";
   const body = (
     <>
-      <div className="flex flex-wrap items-start justify-between gap-x-inline gap-y-item">
+      <div className="flex flex-wrap items-start justify-between gap-item">
         <Tag>{label}</Tag>
-        {years && <Years years={years} className="text-right type-caption text-ink" />}
+        {years && <Years years={years} className="whitespace-nowrap text-right type-caption text-ink" />}
       </div>
       {imageSrc ? (
         // Plain <img>: natural aspect ratio, served at size by the content-images route.
