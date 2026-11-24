@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { showYears } from "@/app/components/ui/years";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllRoles, getClientsByRole, getRoleBySlug } from "@/lib/content";
@@ -32,7 +33,7 @@ export default async function RolePage({
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-gutter pt-40 pb-20">
       <p className="text-caption tracking-tight text-muted uppercase">
-        {role.title} · {role.years} · {role.location}
+        {role.title} · {showYears(role.years)} · {role.location}
       </p>
       <h1 className="mt-2 font-serif text-heading text-ink">{role.company}</h1>
       <p className="mt-6 text-body text-muted">{role.description}</p>

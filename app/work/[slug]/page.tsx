@@ -9,6 +9,7 @@ import { preprocessFenceBlocks, splitClientContent } from "@/lib/content-blocks"
 import { BeatHeader } from "@/app/components/ui/beat-header";
 import { CollectionCard } from "@/app/components/ui/collection-card";
 import { Stat } from "@/app/components/ui/stat";
+import { showYears } from "@/app/components/ui/years";
 import { ChapterIndex, type Chapter } from "@/app/components/modules/chapter-index";
 import { caseStudiesLive } from "@/lib/site";
 import {
@@ -88,7 +89,7 @@ export default async function ClientPage({
   const roleTitles = getRolesByClient(slug)
     .map((role) => role.title)
     .join(", ");
-  const eyebrow = [client.draft ? "Draft" : null, roleTitles, client.years].filter(Boolean).join(" · ");
+  const eyebrow = [client.draft ? "Draft" : null, roleTitles, client.years && showYears(client.years)].filter(Boolean).join(" · ");
   const { narrative, closing } = splitClientContent(client.content);
   const spine = markSpine(narrative);
   const clientImages = `/content-images/clients/${slug}/images`;
