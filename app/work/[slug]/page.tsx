@@ -152,7 +152,7 @@ export default async function ClientPage({
               <ChapterIndex chapters={chapters} />
             </details>
             <div className="hidden h-full md:block">
-              <ChapterIndex chapters={chapters} collapsible />
+              <ChapterIndex chapters={chapters} />
             </div>
           </aside>
         )}

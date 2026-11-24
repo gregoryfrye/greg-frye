@@ -133,7 +133,7 @@ component's children. Six types are recognized:
 
 | Type | Behavior |
 |---|---|
-| `full` | Single image, breaks out of the reading column to the whole 12-column page (passes under the case study's jump nav, which steps aside) |
+| `full` | Single image, breaks out of the reading column to the whole 12-column page (the case study's sticky jump nav slides behind it) |
 | `pair` | Two side by side, equal width, stack on mobile; breaks out like `full` |
 | `inset` | Single image inline in the text column, no break (prose container) |
 | `stagger` | v1: grid, up to 3 across. Later: 2–3 offset images at different scales |
