@@ -164,7 +164,8 @@ export default async function Home() {
           <div className="flex items-center gap-gutter sm:col-span-6 md:col-span-4 lg:flex-col lg:items-start">
             <Globe className="aspect-[2/1] w-full min-w-0 flex-1 lg:flex-none" />
             <p className="shrink-0 whitespace-nowrap type-caption text-ink">
-              Kingston, NY
+              {/* Location, weather and moon each lead with a plain text glyph, so they line up as one set. */}
+              <span aria-hidden="true">⌖</span> Kingston, NY
               {weather && (
                 <>
                   <br />
